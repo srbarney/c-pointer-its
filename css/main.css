@@ -1,0 +1,132 @@
+/* Generic CSS */
+body {
+    background-color: #AAAAAA;
+    /*background: #AAAAAA url("../images/pinstripe.png") repeat right top;*/
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-size: 14px;
+    color: #111111;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-width: 980px;
+    max-width: 100%;
+}
+a {
+    color:#1790DB;
+    text-decoration: none !important;
+}
+a:hover {
+    color:#115F8F;
+    text-decoration: none !important;
+}
+p {
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    line-height: 1.2em;
+    color: #111111;
+    text-align:left;
+    font-size: 14px;
+    font-style:normal;
+    font-weight:normal;
+}
+h1 {
+    letter-spacing: 1px;
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    font-weight: bold;
+    line-height: 1.4em;
+    color: #111111;
+    text-decoration: none;
+    font-size: 20px;
+}
+h2 {
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    line-height: 1.4em;
+    color: #111111;
+    text-decoration: none;
+    font-size: 16px
+}
+h3 {
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    line-height: 1.4em;
+    color: #111111;
+    text-decoration: none;
+    font-size: 14px;
+}
+h4 {
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    line-height: 1.4em;
+    color: #111111;
+    text-decoration: none;
+    font-size: 12px;
+}
+h5 {
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    line-height: 1.4em;
+    color: #333333;
+    text-decoration: none;
+    font-size: 10px;
+}
+h6 {
+    font-family: Futura, "Trebuchet MS", Arial, sans-serif;
+    line-height: 1.4em;
+    color: #333333;
+    text-decoration: none;
+    font-size: 8px;
+}
+.center {
+    text-align: center !important;
+}
+.center-img {
+    display: block;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+.hidden {
+    display: none !important;
+}
+.clear {
+    clear: both;
+}
+
+/* Building-Block CSS */
+#main-content {
+    padding: 0;
+    background-color: #FFFFFF;
+    min-height: 1000px;
+    max-width: 960px;
+    margin: 50px auto 50px auto;
+    box-shadow: 2px 2px 2px 2px #333333;
+}
+.site-content {
+    margin: 20px;
+    padding: 30px;
+}
+
+/* Submit Button CSS */
+.button {
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #53cffc), color-stop(1, #0088c2) );
+    background:-moz-linear-gradient( center top, #53cffc 5%, #0088c2 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#53cffc', endColorstr='#0088c2');
+    background-color:#53cffc;
+    text-indent:0;
+    border:1px solid #333333;
+    display:inline-block;
+    color:#FFFFFF;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-size:13px;
+    font-weight:bold;
+    font-style:normal;
+    height:30px;
+    line-height:25px;
+    width:80px;
+    text-decoration:none;
+    text-align:center;
+    text-shadow:1px 1px 0px #333333;
+}
+.button:hover {
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #0088c2), color-stop(1, #53cffc) );
+    background:-moz-linear-gradient( center top, #0088c2 5%, #53cffc 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088c2', endColorstr='#53cffc');
+    background-color:#0088c2;
+}.button:active {
+     position:relative;
+     top:1px;
+ }

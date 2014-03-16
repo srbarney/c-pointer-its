@@ -1,0 +1,34 @@
+<?php
+    // Start a session to store user data
+    if(!isset($_SESSION))
+    {
+        session_start();
+    }
+    require_once "includes/functions.php";
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<title>C Pointer Tutoring System</title>
+<meta name="keywords" content="c pointer tutoring system">
+<meta name="description" content="C Pointer Tutoring System">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+<!--  Force IE to use the latest version of its rendering engine -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<link rel="stylesheet" type="text/css" href="css/forms.css">
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="css/navigation.css">
+<link rel="stylesheet" type="text/css" href="css/jpanelmenu.css">
+<link rel="stylesheet" type="text/css" href="css/jquery.powertip.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="js/functions.js"></script>
+<script type="text/javascript" src="js/jquery.powertip.min.js"></script>
+<script type="text/javascript" src="js/jquery.jpanelmenu.js"></script>
+<script type="text/javascript" src="js/jquery.sticky.js"></script>
+<script type="text/javascript" src="js/nav-menu-init.js"></script>
+
+</head>
