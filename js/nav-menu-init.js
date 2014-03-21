@@ -1,19 +1,19 @@
 $(document).ready(function() {
     /* Initialize JPanelMenu */
-    var jPM = $.jPanelMenu({
+    /*var jPM = $.jPanelMenu({
         menu: '#nav-menu',
         trigger: '.menu-link',
         duration: 200,    /* Animation duration */
-        openPosition: 200 /* Width of open menu */
-    });
-    jPM.on();
+        /*openPosition: 200 /* Width of open menu */
+    /*});
+    jPM.on();*/
     $("#master-header").sticky({ topSpacing: 0 });
 
     /* Initialize Login/Register ToolTip */
-    var loginForm = '<div class="tooltip-form"><form action="login.php" method="POST">' +
-        '<h2>System Login/Register</h2><fieldset>' +
-        '<p><label class="form-label" for="log_username">Username</label><input id="log_email" name="log_email" placeholder="e-mail" required="" type="text"></p>' +
-        '<p><label class="form-label" for="log_password">Password</label><input id="log_password" name="log_password" placeholder="password" required="" type="password"></p>' +
+    var loginForm = '<div class="tooltip-form"><h2 class="tooltip-header accent-text"><span class="init-cap">S</span>YSTEM <span class="init-cap">L</span>OGIN/<span class="init-cap">R</span>EGISTER</h2>' +
+        '<form action="login.php" method="POST"><fieldset>' +
+        '<p><label class="form-label white-text" for="log_username"><span class="init-cap">U</span>SERNAME</label><input id="log_email" name="log_email" required="" type="text"></p>' +
+        '<p><label class="form-label white-text" for="log_password"><span class="init-cap">P</span>ASSWORD</label><input id="log_password" name="log_password" required="" type="password"></p>' +
         '</fieldset>' +
         '<p style="text-align: right;"><input name="login" type="submit" value="login" class="button" /></p>' +
         '</form></div>';
@@ -32,5 +32,8 @@ $(document).ready(function() {
         });
 
     /* Initialize standard tooltips */
-    $('.tooltip').powerTip({ mouseOnToPopup: true })
+    $('.tooltip').powerTip({ mouseOnToPopup: true });
+
+    /* Initialize backstretch for site background */
+    $.backstretch("../images/background.jpg");
 });

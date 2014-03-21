@@ -26,8 +26,9 @@
 <link rel="stylesheet" type="text/css" href="css/jquery.powertip.css">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="js/functions.js"></script>
+<script type="text/javascript" src="js/jquery.backstretch.min.js"></script>
 <script type="text/javascript" src="js/jquery.powertip.min.js"></script>
-<script type="text/javascript" src="js/jquery.jpanelmenu.js"></script>
+<!--<script type="text/javascript" src="js/jquery.jpanelmenu.js"></script>-->
 <script type="text/javascript" src="js/jquery.sticky.js"></script>
 <script type="text/javascript" src="js/nav-menu-init.js"></script>
 

@@ -5,5 +5,5 @@
 }
 /* Main Page HTML Wrapper Object */
 #jPanelMenu-panel {
-
+    background-color: transparent !important;
 }

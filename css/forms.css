@@ -1,7 +1,17 @@
 /* Login/Register Form CSS */
 .tooltip-form {
-    background-color: #FFFFFF;
-    padding: 20px;
+    background-color: #8B8B8B;
+}
+.tooltip-form form {
+    padding: 10px 20px;
+    width: 350px;
+}
+.tooltip-header {
+    background-color:#4B4B4B;
+    margin: 0;
+    padding: 15px;
+    text-shadow: 2px 2px 2px #333333;
+    box-shadow: 0 2px 1px #333333;
 }
 fieldset {
     border: 0;
@@ -9,14 +19,19 @@ fieldset {
 }
 label.form-label {
     float: left;
-    width: 25%;
+    width: 90px;
     margin-right: 0.5em;
     padding-top: 0.2em;
     text-align: right;
-    font-weight: bold;
+    font-weight: normal;
 }
 input[type="text"], input[type="password"] {
     width: 200px;
+    margin: 0 5px;
+    border: 1px solid #EEB44F;
+    box-shadow: 1px 1px 1px 1px #333333;
+    padding: 2px;
+    background: #FFFFFF;
 }
 textarea {
     width: 350px;

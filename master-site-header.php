@@ -1,14 +1,17 @@
-<?php require_once "nav-menu.php"; ?>
 <div id="master-header">
-    <a class="menu-link"><img src="/icons/menu-button.png" alt="MENU"/></a>
-    <h1 class="main-title">C Pointer Tutoring System</h1>
-    <?php
+    <!--<a class="menu-link"><img src="/icons/menu-button.png" alt="MENU"/></a>-->
+    <h1 class="main-title"><span class="init-cap">T</span>HE <span class="highlight init-cap">C</span> <span class="init-cap">P</span>OINTER <span class="init-cap">T</span>UTOR</h1>
+    <p class="nav-menu">
+        <a class="nav-link" href="/home.html"><span class="init-cap">*H</span>OME</a>
+        <a class="nav-link" href="/lessons.html"><span class="init-cap">L</span>ESSONS</a>
+        <a class="nav-link" href="/about.html"><span class="init-cap">A</span>BOUT</a>
+        <?php
         if (isset($_SESSION['status']) && $_SESSION['status'] == 1)
         {
-            echo('<p class="menu-account-info">Welcome, ' . $_SESSION["firstname"] . '</p>');
+            echo('<a class="nav-link accent-text menu-account-info"><span class="init-cap">W</span>ELCOME, ' . $_SESSION["firstname"] . '</a>');
             echo('<div id="account-info-form" class="hidden">');
             echo('<form class="tooltip-form" action="logout.php" method="POST">');
-            echo('<h2>Account Information</h2>');
+            echo('<h2><span class="init-cap">A</span>CCOUNT <span class="init-cap">I</span>NFORMATION</h2>');
             echo('<p>' . $_SESSION["firstname"] . ' ' . $_SESSION["lastname"] . ', ' . rankToString($_SESSION["rank"]) . '</p>');
             echo('<p style="text-align: right;"><input class="button" type="submit" value="logout" /></p>');
             echo('</form>');
@@ -16,8 +19,9 @@
         }
         else
         {
-            echo('<a class="menu-login">Login/Register</a>');
+            echo('<a class="nav-link accent-text menu-login"><span class="init-cap">L</span>OGIN/<span class="init-cap">R</span>EGISTER</a>');
         }
-    ?>
+        ?>
+    </p>
 </div>
 

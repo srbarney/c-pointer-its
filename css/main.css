@@ -1,7 +1,6 @@
 /* Generic CSS */
 body {
-    background-color: #AAAAAA;
-    /*background: #AAAAAA url("../images/pinstripe.png") repeat right top;*/
+    background-color: #8B8B8B;
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
     font-size: 14px;
     color: #111111;
@@ -79,21 +78,34 @@ h6 {
     margin-left: auto !important;
     margin-right: auto !important;
 }
+.clear {
+    clear: both;
+}
+.divider {
+    width: 90%;
+    background-color: #FFFFFF;
+    height: 2px;
+    margin: 0 auto;
+}
 .hidden {
     display: none !important;
 }
-.clear {
-    clear: both;
+.highlight {
+    color: #F48C03;
+}
+.init-cap {
+    font-size: 120%;
+}
+.white-text {
+    color: #FFFFFF;
+    text-shadow: 2px 2px #333333;
 }
 
 /* Building-Block CSS */
 #main-content {
     padding: 0;
-    background-color: #FFFFFF;
-    min-height: 1000px;
     max-width: 960px;
-    margin: 50px auto 50px auto;
-    box-shadow: 2px 2px 2px 2px #333333;
+    margin: 30px auto 30px auto;
 }
 .site-content {
     margin: 20px;
@@ -102,31 +114,46 @@ h6 {
 
 /* Submit Button CSS */
 .button {
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #53cffc), color-stop(1, #0088c2) );
-    background:-moz-linear-gradient( center top, #53cffc 5%, #0088c2 100% );
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#53cffc', endColorstr='#0088c2');
-    background-color:#53cffc;
+    -moz-box-shadow:inset 0px 1px 0px 0px #fce2c1;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #fce2c1;
+    box-shadow:inset 0px 1px 0px 0px #fce2c1;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffa42c), color-stop(1, #f48c03) );
+    background:-moz-linear-gradient( center top, #ffa42c 5%, #f48c03 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa42c', endColorstr='#f48c03');
+    background-color:#ffa42c;
+    -webkit-border-top-left-radius:0px;
+    -moz-border-radius-topleft:0px;
+    border-top-left-radius:0px;
+    -webkit-border-top-right-radius:0px;
+    -moz-border-radius-topright:0px;
+    border-top-right-radius:0px;
+    -webkit-border-bottom-right-radius:0px;
+    -moz-border-radius-bottomright:0px;
+    border-bottom-right-radius:0px;
+    -webkit-border-bottom-left-radius:0px;
+    -moz-border-radius-bottomleft:0px;
+    border-bottom-left-radius:0px;
     text-indent:0;
-    border:1px solid #333333;
+    border:1px solid #eeb44f;
     display:inline-block;
-    color:#FFFFFF;
+    color: #42250F;
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
     font-size:13px;
     font-weight:bold;
     font-style:normal;
     height:30px;
     line-height:25px;
-    width:80px;
+    min-width:80px;
     text-decoration:none;
     text-align:center;
-    text-shadow:1px 1px 0px #333333;
+    text-shadow:1px 1px 0px #cc9f52;
 }
 .button:hover {
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #0088c2), color-stop(1, #53cffc) );
-    background:-moz-linear-gradient( center top, #0088c2 5%, #53cffc 100% );
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0088c2', endColorstr='#53cffc');
-    background-color:#0088c2;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f48c03), color-stop(1, #ffa42c) );
+    background:-moz-linear-gradient( center top, #f48c03 5%, #ffa42c 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f48c03', endColorstr='#ffa42c');
+    background-color:#f48c03;
 }.button:active {
      position:relative;
      top:1px;
- }
+}
