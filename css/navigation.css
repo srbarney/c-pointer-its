@@ -4,7 +4,6 @@
     position: absolute;
     top: 0;
     left: 40px;
-    width: 100%;
     text-align: left;
     font-size: 22px;
     font-weight: bolder;
@@ -44,13 +43,14 @@
     z-index: 100;
 }
 #master-header {
-    padding: 5px 10px 5px 10px;
-    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 60px;
     z-index: 50;
-    width: 100%;
     box-shadow: 2px 2px 2px 2px #333333;
     background-color: #4B4B4B;
-
+    width: 100%;
 }
 
 /* Session Message CSS */
@@ -58,7 +58,6 @@
     padding: 20px 0;
     position: relative;
     background-color: #F48C03;
-    width: 100%;
     border-bottom: 1px solid #222222;
 }
 .session-message-close {
