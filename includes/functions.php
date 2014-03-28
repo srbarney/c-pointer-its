@@ -11,11 +11,11 @@ function clipString($string, $length = 10)
 }
 
 function denyAccess() {
-    $_SESSION['username'] = '';
+    $_SESSION['email'] = '';
     $_SESSION['status'] = 0;
     $_SESSION['rank'] = -1;
     unset($_SESSION['token']);
-    unset($_SESSION['username']);
+    unset($_SESSION['email']);
 }
 
 function formRedirectBack() {
@@ -83,6 +83,14 @@ function isAlphaNumeric($str) {
     return !(preg_match('/[^A-Za-z0-9_]/', $str));
 }
 
+function isValidEmail($str){
+    return (preg_match('/([\w\-]+\@[\w\-]+\.[\w\-]+)/',$str));
+}
+
+function isValidURL($str) {
+    return (preg_match('/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i',$str));
+}
+
 function javaRedirectURL($url = "index.html") {
     // Redirect to given page using javascript
     echo('<script>');
@@ -115,32 +123,26 @@ function rankToString($rank) {
     return $str_rank;
 }
 
-function resendVerifToken($user)
+function sendVerifToken($string)
 {
     global $FORM_EMAIL_NO_REPLY;
 
-    // Open user database
-    require "../db/main_db_open.php";
-
-    // Check for duplicate username
-    $query = "SELECT * FROM reg_users WHERE username='" . $user . "';";
+    // Check for duplicate e-mail
+    $query = "SELECT * FROM reg_users WHERE email='" . $string . "';";
     $result = mysql_query($query);
     if(mysql_numrows($result) == 1)
     {
-        $email = mysql_result($result, 0, "email");
+        $user_email = mysql_result($result, 0, "email");
         $tok = mysql_result($result, 0, "token");
 
         // Resend register success email
         $from = $FORM_EMAIL_NO_REPLY;
-        $to = $email;
-        $email_message = "-- Begin Message --\n\nYou are receiving this message because you registered an account at www.severtsonscreens.com.\n\nYour username is: " . $user . " \n\nPlease follow the link below to verify your account and complete registration.\n\n http://severtsonscreens.com/acct_verif.php?vftok=" . $tok . ".\n\n  If you cannot select the link above then please copy and paste it into your browser address bar.\n\n-- End of Message --";
-        $subject = "Severtson Screens Registration";
+        $to = $user_email;
+        $email_message = "-- Begin Message --\n\nYou are receiving this message because you registered an account at The C Pointer Tutor.\n\nYour email is: " . $user_email . " \n\nPlease follow the link below to verify your account and complete registration.\n\n http://c-pointer-its.net16.net/verify-email.php?vftok=" . $tok . ".\n\n  If you cannot select the link above then please copy and paste it into your browser address bar.\n\n-- End of Message --";
+        $subject = "Welcome to The C Pointer Tutor";
         $headers = "From: " . $from;
         mail($to,$subject,$email_message,$headers);
     }
-
-    // Close user database
-    require "../db/main_db_close.php";
 }
 
 function roundTwoDecimal($number)
@@ -195,15 +197,15 @@ function validateToken() {
                 denyAccess();
                 $_SESSION['message'] = 'Session timed out. Please log in again.';
             }
-            // If token is valid and not timed out, fetch username/rank and stay logged in
+            // If token is valid and not timed out, fetch e-mail/rank and stay logged in
             else
             {
-                $_SESSION['username'] = mysql_result($result, 0, "username");
+                $_SESSION['email'] = mysql_result($result, 0, "email");
                 $_SESSION['rank'] = mysql_result($result, 0, "rank");
                 $_SESSION['status'] = 1;
 
                 // Extend token validity
-                $query = "UPDATE reg_users SET token_validity='" . getTokenTimeout() . "' WHERE username='" . $_SESSION['username'] . "';";
+                $query = "UPDATE reg_users SET token_validity='" . getTokenTimeout() . "' WHERE email='" . $_SESSION['email'] . "';";
                 mysql_query($query);
             }
         }

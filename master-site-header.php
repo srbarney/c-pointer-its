@@ -7,13 +7,15 @@
         <?php
         if (isset($_SESSION['status']) && $_SESSION['status'] == 1)
         {
-            echo('<a class="nav-link accent-text menu-account-info"><span class="init-cap">W</span>ELCOME, ' . $_SESSION["firstname"] . '</a>');
+            echo('<a class="nav-link accent-text menu-account-info"><span class="init-cap">W</span>ELCOME, ' . strtoupper($_SESSION["firstname"]) . '</a>');
             echo('<div id="account-info-form" class="hidden">');
-            echo('<form class="tooltip-form" action="logout.php" method="POST">');
-            echo('<h2><span class="init-cap">A</span>CCOUNT <span class="init-cap">I</span>NFORMATION</h2>');
-            echo('<p>' . $_SESSION["firstname"] . ' ' . $_SESSION["lastname"] . ', ' . rankToString($_SESSION["rank"]) . '</p>');
+            echo('<div class="tooltip-form">');
+            echo('<h2 class="tooltip-header accent-text"><span class="init-cap">A</span>CCOUNT <span class="init-cap">I</span>NFORMATION</h2>');
+            echo('<form action="logout.php" method="POST">');
+            echo('<p class="white-text">' . $_SESSION["firstname"] . ' ' . $_SESSION["lastname"] . ', ' . rankToString($_SESSION["rank"]) . '</p>');
             echo('<p style="text-align: right;"><input class="button" type="submit" value="logout" /></p>');
             echo('</form>');
+            echo('</div>');
             echo('</div>');
         }
         else

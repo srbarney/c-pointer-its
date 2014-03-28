@@ -3,6 +3,7 @@
     background-color: #8B8B8B;
 }
 .tooltip-form form {
+    background-color: #8B8B8B;
     padding: 10px 20px;
     width: 350px;
 }
@@ -24,6 +25,7 @@ label.form-label {
     padding-top: 0.2em;
     text-align: right;
     font-weight: normal;
+    font-size: 12px;
 }
 input[type="text"], input[type="password"] {
     width: 200px;

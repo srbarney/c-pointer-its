@@ -10,6 +10,8 @@
 
     // Reset Session
     session_start();
+
+    // Obliterate any leftover session variables
     denyAccess();
     $_SESSION['message'] = 'Logout successful.';
 

@@ -12,7 +12,12 @@
                 <h1 class="center" style="font-size:290%;color:#FFFFFF;"><span class="init-cap">S</span>TRUGGLING <span class="init-cap">W</span>ITH <span class="init-cap">C</span> <span class="init-cap">P</span>OINTERS?</h1>
                 <div class="divider" style="width:100%;"></div>
                 <h1 class="center" style="font-size:290%;color:#FFFFFF;"><span class="init-cap">Y</span>OU'RE IN <span class="init-cap">L</span>UCK.</h1>
-                <p class="center"><a href="/register.html"><button class="button" style="font-size:200%;height:50px;padding:1px 12px;">GET&nbsp;STARTED</button></a></p>
+                <?php
+                if (isset($_SESSION['status']) && $_SESSION['status'] == 1)
+                    echo('<p class="center"><a href="/lessons.html"><button class="button" style="font-size:200%;height:50px;padding:1px 12px;">GET&nbsp;STARTED</button></a></p>');
+                else
+                    echo('<p class="center"><a href="/register.html"><button class="button" style="font-size:200%;height:50px;padding:1px 12px;">GET&nbsp;STARTED</button></a></p>');
+                ?>
             </div>
             <img style="float: left;" src="images/right-bracket.png" alt="{" />
             <div class="clear"></div>

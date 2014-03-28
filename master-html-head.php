@@ -28,7 +28,6 @@
 <script type="text/javascript" src="js/functions.js"></script>
 <script type="text/javascript" src="js/jquery.backstretch.min.js"></script>
 <script type="text/javascript" src="js/jquery.powertip.min.js"></script>
-<!--<script type="text/javascript" src="js/jquery.jpanelmenu.js"></script>-->
 <script type="text/javascript" src="js/jquery.sticky.js"></script>
 <script type="text/javascript" src="js/nav-menu-init.js"></script>
 
