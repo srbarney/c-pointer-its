@@ -1,8 +1,7 @@
 <div id="master-header">
-    <!--<a class="menu-link"><img src="/icons/menu-button.png" alt="MENU"/></a>-->
     <h1 class="main-title"><span class="init-cap">T</span>HE <span class="highlight init-cap">C</span> <span class="init-cap">P</span>OINTER <span class="init-cap">T</span>UTOR</h1>
     <p class="nav-menu">
-        <a class="nav-link" href="/home.html"><span class="init-cap">*H</span>OME</a>
+        <a class="nav-link" href="/index.html"><span class="init-cap">*H</span>OME</a>
         <a class="nav-link" href="/lessons.html"><span class="init-cap">L</span>ESSONS</a>
         <a class="nav-link" href="/about.html"><span class="init-cap">A</span>BOUT</a>
         <?php
@@ -19,7 +18,7 @@
         }
         else
         {
-            echo('<a class="nav-link accent-text menu-login"><span class="init-cap">L</span>OGIN/<span class="init-cap">R</span>EGISTER</a>');
+            echo('<a class="nav-link accent-text menu-login"><span class="init-cap">L</span>OGIN</a>');
         }
         ?>
     </p>

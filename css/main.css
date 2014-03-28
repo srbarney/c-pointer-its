@@ -7,14 +7,13 @@ body {
     padding: 0 !important;
     margin: 0 !important;
     min-width: 980px;
-    max-width: 100%;
 }
 a {
-    color:#1790DB;
+    color: #1790DB;
     text-decoration: none !important;
 }
 a:hover {
-    color:#115F8F;
+    color: #115F8F;
     text-decoration: none !important;
 }
 p {
@@ -81,10 +80,16 @@ h6 {
 .clear {
     clear: both;
 }
+.dark {
+    background-color: #4B4B4B;
+}
 .divider {
     width: 90%;
     background-color: #FFFFFF;
     height: 2px;
+    margin: 0 auto;
+}
+.float-wrapper {
     margin: 0 auto;
 }
 .hidden {
@@ -95,6 +100,12 @@ h6 {
 }
 .init-cap {
     font-size: 120%;
+}
+.page-title {
+    margin-left: 20px;
+    font-size: 22px;
+    font-weight: bolder;
+    text-shadow: 2px 2px #333333;
 }
 .white-text {
     color: #FFFFFF;
@@ -114,25 +125,13 @@ h6 {
 
 /* Submit Button CSS */
 .button {
-    -moz-box-shadow:inset 0px 1px 0px 0px #fce2c1;
-    -webkit-box-shadow:inset 0px 1px 0px 0px #fce2c1;
-    box-shadow:inset 0px 1px 0px 0px #fce2c1;
+    -moz-box-shadow:inset 0 1px 0 0 #fce2c1;
+    -webkit-box-shadow:inset 0 1px 0 0 #fce2c1;
+    box-shadow:inset 0 1px 0 0 #fce2c1;
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ffa42c), color-stop(1, #f48c03) );
     background:-moz-linear-gradient( center top, #ffa42c 5%, #f48c03 100% );
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffa42c', endColorstr='#f48c03');
     background-color:#ffa42c;
-    -webkit-border-top-left-radius:0px;
-    -moz-border-radius-topleft:0px;
-    border-top-left-radius:0px;
-    -webkit-border-top-right-radius:0px;
-    -moz-border-radius-topright:0px;
-    border-top-right-radius:0px;
-    -webkit-border-bottom-right-radius:0px;
-    -moz-border-radius-bottomright:0px;
-    border-bottom-right-radius:0px;
-    -webkit-border-bottom-left-radius:0px;
-    -moz-border-radius-bottomleft:0px;
-    border-bottom-left-radius:0px;
     text-indent:0;
     border:1px solid #eeb44f;
     display:inline-block;
@@ -146,7 +145,7 @@ h6 {
     min-width:80px;
     text-decoration:none;
     text-align:center;
-    text-shadow:1px 1px 0px #cc9f52;
+    text-shadow:1px 1px 0 #cc9f52;
 }
 .button:hover {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f48c03), color-stop(1, #ffa42c) );
