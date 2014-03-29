@@ -6,7 +6,7 @@
     }
     //include "fake-user-script.php"; // Elevates rank of current user to student
     //include "fake-instructor-script.php"; // Elevates rank of current user to instructor
-    include "fake-admin-script.php"; // Elevates rank of current user to admin
+    //include "fake-admin-script.php"; // Elevates rank of current user to admin
 
     require_once "includes/functions.php";
 ?>
