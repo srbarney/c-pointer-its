@@ -26,10 +26,12 @@
 .nav-link {
     color: #FFFFFF;
     margin: 0 15px;
+    transition: 0.2s;
 }
 .nav-link:hover {
     color: #FFA42C;
     text-shadow: 2px 2px 2px #000000;
+    transition: 0.2s;
 }
 .menu-link {
     padding: 2px;

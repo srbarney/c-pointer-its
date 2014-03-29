@@ -9,12 +9,14 @@ body {
     min-width: 980px;
 }
 a {
-    color: #1790DB;
+    color: #F48C03;
     text-decoration: none !important;
+    transition: 0.2s;
 }
 a:hover {
-    color: #115F8F;
+    color: #FFA42C;
     text-decoration: none !important;
+    transition: 0.2s;
 }
 p {
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
@@ -69,6 +71,9 @@ h6 {
     text-decoration: none;
     font-size: 8px;
 }
+.bold {
+    font-weight: bold !important;
+}
 .center {
     text-align: center !important;
 }
@@ -106,6 +111,9 @@ h6 {
     font-size: 22px;
     font-weight: bolder;
     text-shadow: 2px 2px #333333;
+}
+.small-text {
+    font-size: 85%;
 }
 .white-text {
     color: #FFFFFF;
@@ -147,13 +155,16 @@ h6 {
     text-decoration:none;
     text-align:center;
     text-shadow:1px 1px 0 #cc9f52;
+    transition: 0.2s;
 }
 .button:hover {
     background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #f48c03), color-stop(1, #ffa42c) );
     background:-moz-linear-gradient( center top, #f48c03 5%, #ffa42c 100% );
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f48c03', endColorstr='#ffa42c');
     background-color:#f48c03;
+    transition: 0.2s;
 }.button:active {
      position:relative;
      top:1px;
+     transition: 0.2s;
 }

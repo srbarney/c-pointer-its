@@ -1,9 +1,0 @@
-/* Slide-out Menu Object */
-#jPanelMenu-menu {
-    margin: 0 !important;
-    padding: 0 15px 0 0 !important;
-}
-/* Main Page HTML Wrapper Object */
-#jPanelMenu-panel {
-    background-color: transparent !important;
-}

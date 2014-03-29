@@ -1,0 +1,27 @@
+<?php require_once "master-html-head.php" ?>
+<?php
+    // If user is not logged in, redirect to login page
+    if (!(isset($_SESSION['status']) && $_SESSION['status'] == 1))
+        jsRedirectURL();
+?>
+
+<body>
+<?php require_once "master-site-header.php"; ?>
+
+<?php require_once "components/session-message.php" ?>
+<div id="main-content">
+    <h1 class="page-title white-text"><span class="init-cap">D</span>ASHBOARD</h1>
+    <div class="site-content dark">
+        <div class="dashboard-module-list-div">
+            <?php require "components/dashboard-module-list.php"; ?>
+        </div>
+        <div class="dashboard-stats-div">
+            <?php require "components/dashboard-menu.php"; ?>
+            <?php require "components/dashboard-stats.php"; ?>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+</body>
+
+</html>

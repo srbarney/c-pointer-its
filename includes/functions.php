@@ -21,11 +21,17 @@ function denyAccess() {
 function formRedirectBack() {
     $http_ref = $_SERVER['HTTP_REFERER'];
 
-    // If a referrer page is set go back to it
-    if($http_ref)
+    if(isset($_SESSION['destination_url'])) // If a destination was already set go to it
+    {
+        $dest_url = $_SESSION['destination_url'];
+        unset($_SESSION['destination_url']);
+        $header = "location: " . $dest_url;
+    }
+    else if($http_ref) // If a referrer page is set go back to it
         $header = "location: " . $http_ref;
     else // Otherwise go home
         $header = "location: index.html";
+
     header($header);
 }
 
@@ -91,7 +97,10 @@ function isValidURL($str) {
     return (preg_match('/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i',$str));
 }
 
-function javaRedirectURL($url = "index.html") {
+function jsRedirectURL($url = "login.html") {
+    // Preserve current page
+    $_SESSION['destination_url'] = $_SERVER['REQUEST_URI'];
+
     // Redirect to given page using javascript
     echo('<script>');
     echo('window.location.replace("' . $url . '");');

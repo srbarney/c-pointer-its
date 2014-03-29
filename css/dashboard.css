@@ -1,0 +1,19 @@
+/* Dashboard Page CSS */
+.dashboard-module-list-div {
+    float: left;
+    width: 250px;
+    background-color: #8B8B8B;
+}
+.dashboard-stats-div {
+    float: left;
+    width: 610px;
+    background-color: #8B8B8B;
+}
+.dashboard-module-table {
+    width: 100%;
+    table-layout: fixed;
+}
+.dashboard-menu-table {
+    width: 100%;
+    table-layout: fixed;
+}

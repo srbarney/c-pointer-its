@@ -4,6 +4,10 @@
     {
         session_start();
     }
+    //include "fake-user-script.php"; // Elevates rank of current user to student
+    //include "fake-instructor-script.php"; // Elevates rank of current user to instructor
+    include "fake-admin-script.php"; // Elevates rank of current user to admin
+
     require_once "includes/functions.php";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -19,10 +23,10 @@
 <!--  Force IE to use the latest version of its rendering engine -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+<link rel="stylesheet" type="text/css" href="css/dashboard.css">
 <link rel="stylesheet" type="text/css" href="css/forms.css">
 <link rel="stylesheet" type="text/css" href="css/main.css">
 <link rel="stylesheet" type="text/css" href="css/navigation.css">
-<link rel="stylesheet" type="text/css" href="css/jpanelmenu.css">
 <link rel="stylesheet" type="text/css" href="css/jquery.powertip.css">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="js/functions.js"></script>
