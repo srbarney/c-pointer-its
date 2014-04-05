@@ -1,8 +1,7 @@
 <?php require_once "master-html-head.php" ?>
 <?php
     // If user is not logged in, redirect to login page
-    if (!(isset($_SESSION['status']) && $_SESSION['status'] == 1))
-        jsRedirectURL();
+    passwordProtectRange($RANK_STUDENT,$RANK_ADMIN);
 ?>
 
 <body>

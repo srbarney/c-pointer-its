@@ -4,10 +4,8 @@
     {
         session_start();
     }
-    //include "fake-user-script.php"; // Elevates rank of current user to student
-    //include "fake-instructor-script.php"; // Elevates rank of current user to instructor
-    //include "fake-admin-script.php"; // Elevates rank of current user to admin
 
+    require_once "includes/constants.php";
     require_once "includes/functions.php";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

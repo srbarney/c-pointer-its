@@ -1,8 +1,4 @@
 <?php
-// Global variables
-$FORM_EMAIL_ADMIN = "srbarney@asu.edu";
-$FORM_EMAIL_NO_REPLY = "noreply@c-pointer-its.net16.net";
-$MESSAGE_CHAR_MAX = 2500;
 
 function clipString($string, $length = 10)
 {
@@ -107,6 +103,20 @@ function jsRedirectURL($url = "login.html") {
     echo('</script>');
 }
 
+function passwordProtect($rank)
+{
+    // If user is not logged in and does not hold specified rank, redirect to login page
+    if (!((isset($_SESSION['status']) && $_SESSION['status'] == 1) && (isset($_SESSION['rank']) && ($_SESSION['rank'] == $rank))))
+        jsRedirectURL();
+}
+
+function passwordProtectRange($low_rank, $hi_rank)
+{
+    // If user is not logged in and does not hold specified rank range, redirect to login page
+    if (!((isset($_SESSION['status']) && $_SESSION['status'] == 1) && (isset($_SESSION['rank']) && ($_SESSION['rank'] >= $low_rank && $_SESSION['rank'] <= $hi_rank ))))
+        jsRedirectURL();
+}
+
 function rankToString($rank) {
     // Return a string interpretation of users rank
     switch($rank)
@@ -132,6 +142,11 @@ function rankToString($rank) {
     return $str_rank;
 }
 
+function roundTwoDecimal($number)
+{
+    return number_format((float)$number, 2, '.', '');
+}
+
 function sendVerifToken($string)
 {
     global $FORM_EMAIL_NO_REPLY;
@@ -152,11 +167,6 @@ function sendVerifToken($string)
         $headers = "From: " . $from;
         mail($to,$subject,$email_message,$headers);
     }
-}
-
-function roundTwoDecimal($number)
-{
-    return number_format((float)$number, 2, '.', '');
 }
 
 function userStatToString($stat) {
