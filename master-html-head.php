@@ -7,6 +7,7 @@
 
     require_once "includes/constants.php";
     require_once "includes/functions.php";
+    require_once "includes/its-functions.php";
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,6 +29,8 @@
 <link rel="stylesheet" type="text/css" href="css/jquery.powertip.css">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="js/functions.js"></script>
+<script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="js/highcharts/modules/exporting.js"></script>
 <script type="text/javascript" src="js/jquery.backstretch.min.js"></script>
 <script type="text/javascript" src="js/jquery.powertip.min.js"></script>
 <script type="text/javascript" src="js/jquery.sticky.js"></script>

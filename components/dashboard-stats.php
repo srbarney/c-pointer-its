@@ -1,1 +1,1 @@
-<img src="" style="width:100%;height:400px;" />
+<div id="chart" style="width:100%;height:400px;"></div>

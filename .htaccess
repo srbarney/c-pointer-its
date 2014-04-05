@@ -1,2 +1,12 @@
+# Redirects simple URLs to actual page addresses, EX: redirect /what-they-enter /where-they-actually-go
+redirect /about /about.html
+redirect /dashboard /dashboard.html
+redirect /help /about.html
+redirect /home /index.html
+redirect /index /index.html
+redirect /lessons /lessons.html
+redirect /login /login.html
+redirect /register /register.html
+
 AddType application/x-httpd-php .html .htm
 AddHandler application/x-httpd-php .html .htm
