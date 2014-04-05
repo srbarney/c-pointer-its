@@ -1,0 +1,4 @@
+*/.project
+*/.idea
+*/db/main_db_credentials.php
+*.DS_Store
