@@ -1,23 +1,24 @@
 <?php
-
-function parseCLine($str)
+// Start a session to store user data
+if(!isset($_SESSION))
 {
-    $tokens = explode(' ', $str, 20);
-    $array = explodeArrayKeepDelimeter('(',$tokens);
-    $array = explodeArrayKeepDelimeter(')',$array);
-    $array = explodePointer($array);
-    return $array;
+    session_start();
 }
 
-function printCLine($array)
+// Checks to see if the given array of tokens is a C or C++ style commented line
+function cLineIsComment($array)
 {
-    foreach($array as $token)
-    {
-        echo("\"" . $token . "\" ");
-    }
-    echo('<br>');
+    $length = count($array);
+    $first_two_char = substr($array[0], 0, 2);
+    $last_two_char = substr($array[$length - 1], -2, 2);
+    if(!strcmp($first_two_char, "/*") && !strcmp($last_two_char, "*/")) // Check for C style comments
+        return true;
+    else if(!strcmp($first_two_char, "//")) // Check for C++ style comments
+        return true;
+    return false;
 }
 
+// Explodes an array of functions by the given delimeter and keeps the delimeter in the array
 function explodeArrayKeepDelimeter($delim, $tokens) {
     $array = array();
     foreach($tokens as $token)
@@ -43,12 +44,12 @@ function explodeArrayKeepDelimeter($delim, $tokens) {
     return $array;
 }
 
+// Explodes the apostrophe in the given array and sets error flags
 function explodePointer($array)
 {
     $temp_array = array();
     $no_apost_flag = 1; // Set to 1 if no apostrophe is found
     $no_ptr_flag = 1; // Set to 1 if no valid pointer is found
-    $float_ptr_flag = 0; // Set to 1 if a floating apostrophe is found
     foreach($array as $token)
     {
         if(strpos($token, '*') !== FALSE)
@@ -59,8 +60,8 @@ function explodePointer($array)
         $last_char = substr($token, -1, 1);
         if((strcmp($first_char, '*') == 0) && strlen($token) == 1) // If an apostrophe is floating EX: int * ptr
         {
-            $float_ptr_flag = 1;
             $temp_array = array_merge($temp_array, (array)$token);
+            $no_ptr_flag = 0;
         }
         else if((strcmp($first_char, '*') == 0) && strlen($token) > 1) // If an apostrophe is found at the beginning of a token EX: int *ptr
         {
@@ -76,10 +77,123 @@ function explodePointer($array)
             $temp_array = array_merge($temp_array, (array)$token);
     }
     $temp_array = array_values(array_filter($temp_array));
-    $temp_array['FLOAT_PTR'] = $float_ptr_flag;
-    $temp_array['NO_APOST'] = $no_apost_flag;
-    $temp_array['NO_PTR'] = $no_ptr_flag;
+    //$temp_array['NO_APOST'] = $no_apost_flag;
+    //$temp_array['NO_PTR'] = $no_ptr_flag;
+    $_SESSION['C_LINE_ERR']['NO_APOST'] = $no_apost_flag;
+    $_SESSION['C_LINE_ERR']['NO_PTR'] = $no_ptr_flag;
     return $temp_array;
+}
+
+// Main parsing function: takes a string and drives all of the necessary functions to output an array of tokens with error flags
+function parseCLine($str)
+{
+    $_SESSION['C_LINE_ERR'] = array(
+        "NO_APOST" => 'X',
+        "NO_PTR" => 'X',
+        "COMMENTED" => 'X'
+    );
+
+    $tokens = explode(' ', $str, 20);
+    if(!cLineIsComment($tokens))
+    {
+        $_SESSION['C_LINE_ERR']['COMMENTED'] = 0;
+        $array = explodeArrayKeepDelimeter('(',$tokens);
+        $array = explodeArrayKeepDelimeter(')',$array);
+        $array = explodeArrayKeepDelimeter(',',$array);
+        $array = explodeArrayKeepDelimeter(';',$array);
+        $array = explodePointer($array);
+    }
+    else
+    {
+        $array = array('The C line is commented out');
+        $_SESSION['C_LINE_ERR']['COMMENTED'] = 1;
+    }
+    return $array;
+}
+
+// Outputs to HTML page the given C Line array including any $_SESSION C line errors
+function printCLine($array)
+{
+    // Print each token in the C Line
+    foreach($array as $token)
+    {
+        echo("\"" . $token . "\" ");
+    }
+
+    // Print all the error flags stored in session
+    foreach($_SESSION['C_LINE_ERR'] as $error=>$value)
+    {
+        echo ($error . ': ' . $value . ' ');
+    }
+    echo('<br>');
+}
+
+// Outputs a JQuery initialization of the HighChart when called, data can be passed into this function from the SQL database
+function initializeHighChart()
+{
+    echo("$(document).ready(function() {");
+    echo("$('#chart').highcharts({");
+    echo("chart: {");
+    echo("type: 'column'");
+    echo("},");
+    echo("title: {");
+    echo("text: 'Student Mastery Levels'");
+    echo("},");
+    echo("subtitle: {");
+    echo("text: '(Percentages)'");
+    echo("},");
+    echo("xAxis: {");
+    echo("categories: ['Module01', 'Module02', 'Module03', 'Module04', 'Module05'],");
+    echo("title: {");
+    echo("text: null");
+    echo("}");
+    echo("},");
+    echo("yAxis: {");
+    echo("min: 0,");
+    echo("title: {");
+    echo("text: 'Mastery (percent)',");
+    echo("align: 'high'");
+    echo("},");
+    echo("labels: {");
+    echo("overflow: 'justify'");
+    echo("}");
+    echo("},");
+    echo("tooltip: {");
+    echo("valueSuffix: ' percent'");
+    echo("},");
+    echo("plotOptions: {");
+    echo("bar: {");
+    echo("dataLabels: {");
+    echo("enabled: true");
+    echo("}");
+    echo("}");
+    echo("},");
+    echo("legend: {");
+    echo("layout: 'vertical',");
+    echo("align: 'right',");
+    echo("verticalAlign: 'top',");
+    echo("x: -40,");
+    echo("y: 100,");
+    echo("floating: true,");
+    echo("borderWidth: 1,");
+    echo("backgroundColor: '#FFFFFF',");
+    echo("shadow: true");
+    echo("},");
+    echo("credits: {");
+    echo("enabled: false");
+    echo("},");
+    echo("series: [{");
+    echo("name: 'Student 01',");
+    echo("data: [0.78, 0.8, 0.6, 0.2, 0]");
+    echo("}, {");
+    echo("name: 'Student 02',");
+    echo("data: [0.9, 0.83, 0.4, 0.65, 0]");
+    echo("}, {");
+    echo("name: 'Student 03',");
+    echo("data: [0.77, 0.86, 0.51, 0.23, 0.75]");
+    echo("}]");
+    echo("});");
+    echo("});");
 }
 
 ?>
