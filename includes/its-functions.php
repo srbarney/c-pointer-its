@@ -77,8 +77,6 @@ function explodePointer($array)
             $temp_array = array_merge($temp_array, (array)$token);
     }
     $temp_array = array_values(array_filter($temp_array));
-    //$temp_array['NO_APOST'] = $no_apost_flag;
-    //$temp_array['NO_PTR'] = $no_ptr_flag;
     $_SESSION['C_LINE_ERR']['NO_APOST'] = $no_apost_flag;
     $_SESSION['C_LINE_ERR']['NO_PTR'] = $no_ptr_flag;
     return $temp_array;
@@ -129,21 +127,25 @@ function printCLine($array)
 }
 
 // Outputs a JQuery initialization of the HighChart when called, data can be passed into this function from the SQL database
-function initializeHighChart()
+function initializeHighChart($data, $categories=array('KC1','KC2','KC3','KC4'), $type="column", $title="Student Mastery Levels", $subtitle="Percentages", $unit="percent")
 {
     echo("$(document).ready(function() {");
     echo("$('#chart').highcharts({");
     echo("chart: {");
-    echo("type: 'column'");
+    echo("type: '" . $type . "'");
     echo("},");
     echo("title: {");
-    echo("text: 'Student Mastery Levels'");
+    echo("text: '" . $title . "'");
     echo("},");
     echo("subtitle: {");
-    echo("text: '(Percentages)'");
+    echo("text: '(" . $subtitle . ")'");
     echo("},");
     echo("xAxis: {");
-    echo("categories: ['Module01', 'Module02', 'Module03', 'Module04', 'Module05'],");
+
+    // Iterate through all categories
+    echo("categories: ");
+    echo("['". implode("', '", $categories) . "'],");
+
     echo("title: {");
     echo("text: null");
     echo("}");
@@ -151,7 +153,7 @@ function initializeHighChart()
     echo("yAxis: {");
     echo("min: 0,");
     echo("title: {");
-    echo("text: 'Mastery (percent)',");
+    echo("text: 'Mastery (" . $unit . ")',");
     echo("align: 'high'");
     echo("},");
     echo("labels: {");
@@ -159,7 +161,7 @@ function initializeHighChart()
     echo("}");
     echo("},");
     echo("tooltip: {");
-    echo("valueSuffix: ' percent'");
+    echo("valueSuffix: ' " . $unit . "'");
     echo("},");
     echo("plotOptions: {");
     echo("bar: {");

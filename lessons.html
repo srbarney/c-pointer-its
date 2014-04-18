@@ -1,0 +1,32 @@
+<?php require_once "master-html-head.php" ?>
+<?php
+    // If user is not logged in, redirect to login page
+    passwordProtectRange($RANK_STUDENT,$RANK_ADMIN);
+?>
+
+<body>
+<?php require_once "master-site-header.php"; ?>
+
+<?php require_once "components/session-message.php" ?>
+<div id="main-content">
+    <h1 class="page-title white-text"><span class="init-cap">L</span>ESSONS</h1>
+    <div class="site-content dark">
+        <?php
+            // $_SESSION['current_task'] contains HTML to be displayed on the page (lessons, questions, etc.) and is set by the task selector
+            if(isset($_SESSION['current_task']))
+            {
+                echo($_SESSION['current_task']);
+            }
+            else
+            {
+                echo('<h1 class="white-text">No Task Selected</h1>');
+                echo('<form action="/select-task.php" method="POST">');
+                echo('<input class="button" type="submit" value="start">');
+                echo('</form>');
+            }
+        ?>
+    </div>
+</div>
+</body>
+
+</html>
