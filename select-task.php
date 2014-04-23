@@ -6,12 +6,19 @@
     // Start a session to store user data
     session_start();
 
-    // Do some stuff to figure out what to select
+    // If the current task ID is not set, set it to 1
+    if(!isset($_SESSION['current_task']['ct_task_id']))
+    {
+        $_SESSION['current_task']['ct_task_id'] = 1;
+    }
+    else
+    {
+        // Increment to the next task
+        $_SESSION['current_task']['ct_task_id'] += 1;
+    }
 
     // Get the HTML for the task from the Database
-
-    // Store the HTML in the $_SESSION['current_task']
-    $_SESSION['current_task'] = '<h1 class="white-text">DUMMY TASK - NEED TO REPLACE THIS</h1>';
+    loadTaskHTML($_SESSION['current_task']['ct_task_id']);
 
     // Redirect browser
     formRedirectBack();

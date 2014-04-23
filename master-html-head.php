@@ -16,6 +16,8 @@
 <title>C Pointer Tutoring System</title>
 <meta name="keywords" content="c pointer tutoring system">
 <meta name="description" content="C Pointer Tutoring System">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 

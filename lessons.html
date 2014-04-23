@@ -13,9 +13,10 @@
     <div class="site-content dark">
         <?php
             // $_SESSION['current_task'] contains HTML to be displayed on the page (lessons, questions, etc.) and is set by the task selector
-            if(isset($_SESSION['current_task']))
+            if(isset($_SESSION['current_task']['ct_html']))
             {
-                echo($_SESSION['current_task']);
+                echo('Task ID: ' . $_SESSION['current_task']['ct_task_id'] . '<br>'); // REMOVE THIS LATER
+                echo($_SESSION['current_task']['ct_html']);
             }
             else
             {

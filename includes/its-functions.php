@@ -52,6 +52,7 @@ function explodePointer($array)
     $no_ptr_flag = 1; // Set to 1 if no valid pointer is found
     foreach($array as $token)
     {
+        // Check the whole token for an apostrophe
         if(strpos($token, '*') !== FALSE)
         {
             $no_apost_flag = 0;
@@ -82,6 +83,47 @@ function explodePointer($array)
     return $temp_array;
 }
 
+// Get task information with given ID and store it into the $_SESSION
+function loadTaskHTML($id)
+{
+    require "db/main_db_open.php";
+
+    // Search the task database for the given ID
+    $query = "SELECT * FROM tasks WHERE id='" . $id . "';";
+    $result = mysql_query($query);
+    if(mysql_numrows($result) == 1)
+    {
+        $task_type = mysql_result($result, 0, "task_type");
+        $task_id = mysql_result($result, 0, "task_id");
+
+        // Depending on which task type it is, get the data from the database
+        switch($task_type)
+        {
+            case "Q":
+                $query = "SELECT * FROM questions WHERE id='" . $task_id . "';";
+                $result = mysql_query($query);
+                if(mysql_numrows($result) == 1)
+                {
+                    $_SESSION['current_task']['ct_html'] = mysql_result($result, 0, "question");
+                    $_SESSION['current_task']['ct_answer'] = mysql_result($result, 0, "answer");
+                }
+                break;
+            case "L":
+                $query = "SELECT * FROM lessons WHERE id='" . $task_id . "';";
+                $result = mysql_query($query);
+                if(mysql_numrows($result) == 1)
+                {
+                    $_SESSION['current_task']['ct_html'] = mysql_result($result, 0, "html");
+                    if(isset($answer)) unset($answer);
+                }
+                break;
+        }
+    }
+
+
+    require "db/main_db_close.php";
+}
+
 // Main parsing function: takes a string and drives all of the necessary functions to output an array of tokens with error flags
 function parseCLine($str)
 {
@@ -99,6 +141,8 @@ function parseCLine($str)
         $array = explodeArrayKeepDelimeter(')',$array);
         $array = explodeArrayKeepDelimeter(',',$array);
         $array = explodeArrayKeepDelimeter(';',$array);
+        $array = explodePointer($array); // Lame way to test for up to a triple pointer, but it works
+        $array = explodePointer($array);
         $array = explodePointer($array);
     }
     else

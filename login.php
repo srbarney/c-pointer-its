@@ -56,6 +56,7 @@ if(isset($_POST['login'])) {
             $_SESSION['status'] = 1;
             $_SESSION['token'] = $token;
             $_SESSION['message'] = 'Login successful.';
+            $_SESSION['current_task']['ct_task_id'] = 0; // THIS NEEDS TO BE CHANGED!!!!
             $login_success = 1;
 
             // Set last_login
