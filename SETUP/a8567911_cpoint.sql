@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `knowledge_components` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
 --
--- Table structure for table `lesson`
+-- Table structure for table `lessons`
 --
 
 DROP TABLE IF EXISTS `lessons`;
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `questions` (
 
 INSERT INTO `questions` (`id`, `kc`, `question`, `answer`) VALUES
 (1, 0, '<form method="post" action="select-task.php">\r\nDeclare a pointer of type integer with the pointer name ''intptr'' <br>\r\nType your answer below: <br>\r\n<input type="text" name="answer">\r\n<br>\r\n<input type="submit" name="send" value="Submit">\r\n</form>', 'int * intptr;'),
-(2, 0, '<form method="post" action="select-task.php">\r\nassign the address of an integer named ''num'' to a pointer named ''numptr'' <br>\r\nType your answer below: <br>\r\n<input type="text" name="answer">\r\n<br>\r\n<input type="submit" name="send" value="Submit">\r\n</form>', 'numptr = &num;'),
+(2, 0, '<form method="post" action="select-task.php">\r\nAssign the address of an integer named ''num'' to a pointer named ''numptr'' <br>\r\nType your answer below: <br>\r\n<input type="text" name="answer">\r\n<br>\r\n<input type="submit" name="send" value="Submit">\r\n</form>', 'numptr = &num;'),
 (3, 0, '<form method="post" action="select-task.php">\r\nSuppose you have a char variable:<br>\r\nchar charData;<br>\r\nStore the contents of this variable into the location that a char pointer named ''charptr'' points to.<br>\r\nType your answer below: <br>\r\n<input type="text" name="answer">\r\n<br>\r\n<input type="submit" name="send" value="Submit">\r\n</form>', '*charptr = charData;'),
 (4, 0, '<form method="post" action="select-task.php">\r\nConsider the following code:<br><br>\r\nint * intPointer1;<br>\r\nint * intPointer2 = malloc(sizeof(int));<br>\r\n*intPointer2 = 8;<br>\r\n*intPointer2 = *intPointer2 + 1;<br>\r\nintPointer1 = intPointer2;<br>\r\n*intPointer2 = *intPointer2 + 3;<br><br>\r\nWhat value will will intPointer1 be pointing to?<br>\r\nType your answer below: <br>\r\n<input type="text" name="answer">\r\n<br>\r\n<input type="submit" name="send" value="Submit">\r\n</form>', '9'),
 (5, 0, '<form method="post" action="select-task.php">\r\nDeclare a pointer of type char with the pointer name ''charptr'' <br>\r\nType your answer below: <br>\r\n<input type="text" name="answer">\r\n<br>\r\n<input type="submit" name="send" value="Submit">\r\n</form>', 'char * charptr;'),
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `reg_login_attempt` (
 
 DROP TABLE IF EXISTS `reg_users`;
 CREATE TABLE IF NOT EXISTS `reg_users` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `first_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `last_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -111,6 +111,7 @@ CREATE TABLE IF NOT EXISTS `reg_users` (
   `token_validity` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `reg_ip` varchar(45) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
   `user_stat` varchar(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'U',
+  `current_task` int(11) unsigned NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   UNIQUE KEY `token` (`token`),
   UNIQUE KEY `email` (`email`)
@@ -120,8 +121,8 @@ CREATE TABLE IF NOT EXISTS `reg_users` (
 -- Dumping data for table `reg_users`
 --
 
-INSERT INTO `reg_users` (`id`, `first_name`, `last_name`, `password`, `email`, `rank`, `registered`, `last_login`, `token`, `token_validity`, `reg_ip`, `user_stat`) VALUES
-(1, 'Steven', 'Barney', 'acdd77bc283941db353f3936a5a9b847', 'srbarney@asu.edu', 3, '2014-03-13 05:10:12', '2014-04-05 15:03:44', '9dfb1c02b3a778c5132ee0d617fbdf293f85dc47', '2014-04-05 16:03:44', '0.0.0.0', 'A');
+INSERT INTO `reg_users` (`id`, `first_name`, `last_name`, `password`, `email`, `rank`, `registered`, `last_login`, `token`, `token_validity`, `reg_ip`, `user_stat`, `current_task`) VALUES
+(1, 'Steven', 'Barney', 'acdd77bc283941db353f3936a5a9b847', 'srbarney@asu.edu', 3, '2014-03-13 05:10:12', '2014-04-05 15:03:44', '9dfb1c02b3a778c5132ee0d617fbdf293f85dc47', '2014-04-05 16:03:44', '0.0.0.0', 'A', 1);
 
 --
 -- Table structure for table `tasks`

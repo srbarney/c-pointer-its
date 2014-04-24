@@ -186,9 +186,9 @@ function userStatToString($stat) {
 }
 
 function validateToken() {
-    if ($_SESSION['token'] != '' || isset($_SESSION['token']) || !empty($_SESSION['token']))
+    if (isset($_SESSION['token']))
     {
-        require_once "../db/main_db_open.php";
+        require __ROOT__ . "/db/main_db_open.php";
         $query = "SELECT * FROM reg_users WHERE token='" . $_SESSION['token'] . "';";
         $result = mysql_query($query);
 
@@ -219,8 +219,13 @@ function validateToken() {
             // If token is valid and not timed out, fetch e-mail/rank and stay logged in
             else
             {
+                $_SESSION['userid'] = mysql_result($result, 0, "id");
+                $_SESSION['firstname'] = mysql_result($result, 0, "first_name");
+                $_SESSION['lastname'] = mysql_result($result, 0, "last_name");
                 $_SESSION['email'] = mysql_result($result, 0, "email");
                 $_SESSION['rank'] = mysql_result($result, 0, "rank");
+                $_SESSION['current_task']['ct_task_id'] = mysql_result($result, 0, "current_task");
+                loadTask($_SESSION['current_task']['ct_task_id']);
                 $_SESSION['status'] = 1;
 
                 // Extend token validity
@@ -228,7 +233,7 @@ function validateToken() {
                 mysql_query($query);
             }
         }
-        require_once "../db/main_db_close.php";
+        require __ROOT__ . "/db/main_db_close.php";
     }
 }
 

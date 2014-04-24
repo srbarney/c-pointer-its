@@ -50,13 +50,15 @@ if(isset($_POST['login'])) {
             $token = generateToken($user_email);
 
             // Set session variables
+            $_SESSION['userid'] = mysql_result($result, 0, "id");
             $_SESSION['firstname'] = mysql_result($result, 0, "first_name");
             $_SESSION['lastname'] = mysql_result($result, 0, "last_name");
+            $_SESSION['email'] = mysql_result($result, 0, "email");
             $_SESSION['rank'] = $rank;
             $_SESSION['status'] = 1;
             $_SESSION['token'] = $token;
             $_SESSION['message'] = 'Login successful.';
-            $_SESSION['current_task']['ct_task_id'] = 0; // THIS NEEDS TO BE CHANGED!!!!
+            $_SESSION['current_task']['ct_task_id'] = mysql_result($result, 0, "current_task");
             $login_success = 1;
 
             // Set last_login

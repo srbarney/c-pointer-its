@@ -5,6 +5,10 @@ if(!isset($_SESSION))
     session_start();
 }
 
+function arrayEqual($a, $b) {
+    return (is_array($a) && is_array($b) && array_diff($a, $b) === array_diff($b, $a));
+}
+
 // Checks to see if the given array of tokens is a C or C++ style commented line
 function cLineIsComment($array)
 {
@@ -16,6 +20,72 @@ function cLineIsComment($array)
     else if(!strcmp($first_two_char, "//")) // Check for C++ style comments
         return true;
     return false;
+}
+
+// Check if the answer is correct by checking the question database
+// Returns -1 if the provided task ID is not a question or is not found
+// Otherwise returns 0 if incorrect and 1 if correct
+function checkAnswer($id, $answer_string)
+{
+    require __ROOT__ . "/db/main_db_open.php";
+
+    // Search the task database for the given ID
+    $query = "SELECT * FROM tasks WHERE id='" . $id . "';";
+    $result = mysql_query($query);
+    if(mysql_numrows($result) == 1)
+    {
+        $task_type = mysql_result($result, 0, "task_type");
+        $task_id = mysql_result($result, 0, "task_id");
+
+        // If the task is a question
+        if(!strcmp($task_type,'Q'))
+        {
+            $query = "SELECT * FROM questions WHERE id='" . $task_id . "';";
+            $result = mysql_query($query);
+            if(mysql_numrows($result) == 1)
+            {
+                // Collect and parse the database answer and the user's answer
+                $correct_answer = parseCLine(mysql_result($result, 0, "answer"));
+                $user_answer = parseCLine($answer_string);
+
+                // If the users answer matches the correct answer
+                if (arrayEqual($user_answer, $correct_answer))
+                    return 1;
+                else
+                    return 0;
+            }
+        }
+        else
+            return (-1);
+    }
+    else
+        return (-1);
+
+    require __ROOT__ . "/db/main_db_close.php";
+}
+
+// Chooses the next task ID (currently just increments it by one)
+function chooseNextTask($current_task_id)
+{
+    // Prepare error message
+    if(!isset($_SESSION['message']))
+    {
+        $_SESSION['message'] == '';
+    }
+
+    // Go through C_LINE_ERR array to determine if error messages should be displayed
+    // Check for no semi-colon -- NEED TO KNOW IF THE ANSWER IS CODE OR NOT BEFORE CHECKING
+    if(isset($_SESSION['current_task']['ct_correct']) && $_SESSION['current_task']['ct_correct'] == 0)
+    {
+        if(isset($_SESSION['C_LINE_ERR']['NO_SEMI_COLON']) && $_SESSION['C_LINE_ERR']['NO_SEMI_COLON'] == 1)
+        {
+            $_SESSION['message'] .= 'Did you forget to put a semi-colon at the end of your line of code?';
+        }
+    }
+    else
+    {
+        $_SESSION['current_task']['ct_task_id'] = $current_task_id + 1;
+    }
 }
 
 // Explodes an array of functions by the given delimeter and keeps the delimeter in the array
@@ -84,9 +154,9 @@ function explodePointer($array)
 }
 
 // Get task information with given ID and store it into the $_SESSION
-function loadTaskHTML($id)
+function loadTask($id)
 {
-    require "db/main_db_open.php";
+    require __ROOT__ . "/db/main_db_open.php";
 
     // Search the task database for the given ID
     $query = "SELECT * FROM tasks WHERE id='" . $id . "';";
@@ -104,8 +174,8 @@ function loadTaskHTML($id)
                 $result = mysql_query($query);
                 if(mysql_numrows($result) == 1)
                 {
-                    $_SESSION['current_task']['ct_html'] = mysql_result($result, 0, "question");
-                    $_SESSION['current_task']['ct_answer'] = mysql_result($result, 0, "answer");
+                    $_SESSION['current_task']['ct_html'] = mysql_result($result, 0, "question"); // Store question HTML
+                    $_SESSION['current_task']['ct_kc'] = mysql_result($result, 0, "kc"); // Store question knowledge component ID
                 }
                 break;
             case "L":
@@ -121,7 +191,7 @@ function loadTaskHTML($id)
     }
 
 
-    require "db/main_db_close.php";
+    require __ROOT__ . "/db/main_db_close.php";
 }
 
 // Main parsing function: takes a string and drives all of the necessary functions to output an array of tokens with error flags
@@ -130,13 +200,24 @@ function parseCLine($str)
     $_SESSION['C_LINE_ERR'] = array(
         "NO_APOST" => 'X',
         "NO_PTR" => 'X',
-        "COMMENTED" => 'X'
+        "COMMENTED" => 'X',
+        "NO_SEMI_COLON" => 'X'
     );
+
+    // Clear whitespace before and after string
+    $str = trim($str);
 
     $tokens = explode(' ', $str, 20);
     if(!cLineIsComment($tokens))
     {
         $_SESSION['C_LINE_ERR']['COMMENTED'] = 0;
+
+        // Check if the last character is a semi-colon
+        if(!strcmp(substr($str, -1, 1), ';'))
+            $_SESSION['C_LINE_ERR']['NO_SEMI_COLON'] = 0;
+        else
+            $_SESSION['C_LINE_ERR']['NO_SEMI_COLON'] = 1;
+
         $array = explodeArrayKeepDelimeter('(',$tokens);
         $array = explodeArrayKeepDelimeter(')',$array);
         $array = explodeArrayKeepDelimeter(',',$array);
@@ -168,6 +249,73 @@ function printCLine($array)
         echo ($error . ': ' . $value . ' ');
     }
     echo('<br>');
+}
+
+// Stores the given task ID into the specified users profile in reg_users database
+function saveTaskID($user_id, $task_id)
+{
+    require __ROOT__ . "/db/main_db_open.php";
+
+    // Search the reg_users database for the given ID
+    $query = "SELECT * FROM `reg_users` WHERE id='" . $user_id . "';";
+    $result = mysql_query($query);
+    if(mysql_numrows($result) == 1)
+    {
+        mysql_query("UPDATE `reg_users` SET current_task='" . $task_id . "' WHERE id='" . $user_id . "';");
+    }
+
+    require __ROOT__ . "/db/main_db_close.php";
+}
+
+// Updates the learner model in the database
+function updateUserProfile($user_id, $kc_id, $correct)
+{
+    require __ROOT__ . "/db/main_db_open.php";
+
+    // Search the user_profile database for the given ID
+    $query = "SELECT * FROM `user_profile` WHERE user_id='" . $user_id . "';";
+    $result = mysql_query($query);
+
+    // Create a new user profile with given ID
+    if(mysql_numrows($result) != 1)
+    {
+        mysql_query("INSERT INTO user_profile(user_id, KC1correct, KC1attempts, KC2correct, KC2attempts, KC3correct, KC3attempts, KC4correct, KC4attempts) VALUES ('$user_id','0','0','0','0','0','0','0','0')") or die("".mysql_error());
+
+        // Store the user profile in $result
+        $query = "SELECT * FROM `user_profile` WHERE user_id='" . $user_id . "';";
+        $result = mysql_query($query);
+    }
+
+    // Update current profile according to which knowledge component is tested
+    switch($kc_id)
+    {
+        case 0:
+            $num_correct = mysql_result($result, 0, "KC1correct");
+            $num_attempts = mysql_result($result, 0, "KC1attempts");
+            mysql_query("UPDATE `user_profile` SET KC1correct='" . ($num_correct + $correct) . "' WHERE user_id='" . $user_id . "';");
+            mysql_query("UPDATE `user_profile` SET KC1attempts='" . ($num_attempts + 1) . "' WHERE user_id='" . $user_id . "';");
+            break;
+        case 1:
+            $num_correct = mysql_result($result, 0, "KC2correct");
+            $num_attempts = mysql_result($result, 0, "KC2attempts");
+            mysql_query("UPDATE `user_profile` SET KC2correct='" . ($num_correct + $correct) . "' WHERE user_id='" . $user_id . "';");
+            mysql_query("UPDATE `user_profile` SET KC2attempts='" . ($num_attempts + 1) . "' WHERE user_id='" . $user_id . "';");
+            break;
+        case 2:
+            $num_correct = mysql_result($result, 0, "KC3correct");
+            $num_attempts = mysql_result($result, 0, "KC3attempts");
+            mysql_query("UPDATE `user_profile` SET KC3correct='" . ($num_correct + $correct) . "' WHERE user_id='" . $user_id . "';");
+            mysql_query("UPDATE `user_profile` SET KC3attempts='" . ($num_attempts + 1) . "' WHERE user_id='" . $user_id . "';");
+            break;
+        case 3:
+            $num_correct = mysql_result($result, 0, "KC4correct");
+            $num_attempts = mysql_result($result, 0, "KC4attempts");
+            mysql_query("UPDATE `user_profile` SET KC4correct='" . ($num_correct + $correct) . "' WHERE user_id='" . $user_id . "';");
+            mysql_query("UPDATE `user_profile` SET KC4attempts='" . ($num_attempts + 1) . "' WHERE user_id='" . $user_id . "';");
+            break;
+    }
+
+    require __ROOT__ . "/db/main_db_close.php";
 }
 
 // Outputs a JQuery initialization of the HighChart when called, data can be passed into this function from the SQL database
