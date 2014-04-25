@@ -11,7 +11,7 @@ $(document).ready(function() {
             text: '(Percentages)'
         },
         xAxis: {
-            categories: ['Module01', 'Module02', 'Module03', 'Module04', 'Module05'],
+            categories: ['Syntax', 'Basic Theory', 'Advanced Theory', 'Applications'],
             title: {
                 text: null
             }
@@ -52,13 +52,28 @@ $(document).ready(function() {
         },
         series: [{
             name: 'Student 01',
-            data: [0.78, 0.8, 0.6, 0.2, 0]
+            data: [0.78, 0.8, 0.6, 0.2]
         }, {
             name: 'Student 02',
-            data: [0.9, 0.83, 0.4, 0.65, 0]
+            data: [0.9, 0.83, 0.4, 0.65]
         }, {
             name: 'Student 03',
-            data: [0.77, 0.86, 0.51, 0.23, 0.75]
+            data: [0.77, 0.86, 0.51, 0.23]
+        }, {
+            name: 'Student 04',
+            data: [0.9, 0.83, 0.4, 0.65]
+        }, {
+            name: 'Student 05',
+            data: [0.9, 0.83, 0.4, 0.65]
+        }, {
+            name: 'Student 06',
+            data: [0.9, 0.83, 0.4, 0.65]
+        }, {
+            name: 'Student 07',
+            data: [0.9, 0.83, 0.4, 0.65]
+        }, {
+            name: 'Student 08',
+            data: [0.9, 0.83, 0.4, 0.65]
         }]
     });
 });

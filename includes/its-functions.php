@@ -65,26 +65,16 @@ function checkAnswer($id, $answer_string)
 }
 
 // Chooses the next task ID (currently just increments it by one)
-function chooseNextTask($current_task_id)
+function chooseNextTask($current_task_id, $override)
 {
-    // Prepare error message
-    if(!isset($_SESSION['message']))
-    {
-        $_SESSION['message'] == '';
-    }
+    // Set default increment
+    $increment = 1;
 
-    // Go through C_LINE_ERR array to determine if error messages should be displayed
-    // Check for no semi-colon -- NEED TO KNOW IF THE ANSWER IS CODE OR NOT BEFORE CHECKING
-    if(isset($_SESSION['current_task']['ct_correct']) && $_SESSION['current_task']['ct_correct'] == 0)
+    // If override is not set, then increment to the next task
+    if ($override == 0)
     {
-        if(isset($_SESSION['C_LINE_ERR']['NO_SEMI_COLON']) && $_SESSION['C_LINE_ERR']['NO_SEMI_COLON'] == 1)
-        {
-            $_SESSION['message'] .= 'Did you forget to put a semi-colon at the end of your line of code?';
-        }
-    }
-    else
-    {
-        $_SESSION['current_task']['ct_task_id'] = $current_task_id + 1;
+        $_SESSION['current_task']['ct_task_id'] = $current_task_id + $increment;
+
     }
 }
 
@@ -153,6 +143,135 @@ function explodePointer($array)
     return $temp_array;
 }
 
+function getMasteryLevels($id=0)
+{
+    require __ROOT__ . "/db/main_db_open.php";
+
+    // If ID == 0 select only the given ID
+    if ($id > 0)
+        $query = "SELECT * FROM `user_profile` WHERE `user_id`='" . $id . "';";
+    else if ($id == 0) // If ID == 0 select all users from the database
+        $query = "SELECT * FROM `user_profile`";
+
+    $data = array();
+    $result = mysql_query($query);
+    $numusers = mysql_numrows($result);
+    for($i = 0; $i < $numusers; $i++)
+    {
+        // Calculate all the KC mastery percentages
+        if (mysql_result($result, $i, "KC1attempts") != 0)
+            $kc01mastery = roundTwoDecimal(100 * mysql_result($result, $i, "KC1correct") / mysql_result($result, $i, "KC1attempts"));
+        else
+            $kc01mastery = 0;
+
+        if (mysql_result($result, $i, "KC2attempts") != 0)
+            $kc02mastery = roundTwoDecimal(100 * mysql_result($result, $i, "KC2correct") / mysql_result($result, $i, "KC2attempts"));
+        else
+            $kc02mastery = 0;
+
+        if (mysql_result($result, $i, "KC3attempts") != 0)
+            $kc03mastery = roundTwoDecimal(100 * mysql_result($result, $i, "KC3correct") / mysql_result($result, $i, "KC3attempts"));
+        else
+            $kc03mastery = 0;
+
+        if (mysql_result($result, $i, "KC4attempts") != 0)
+            $kc04mastery = roundTwoDecimal(100 * mysql_result($result, $i, "KC4correct") / mysql_result($result, $i, "KC4attempts"));
+        else
+            $kc04mastery = 0;
+
+        // Create user array
+        $array = array(
+            'id' => mysql_result($result, $i, "user_id"),
+            'scores' => array($kc01mastery, $kc02mastery, $kc03mastery, $kc04mastery)
+        );
+
+        // Add user array to data array
+        $data[$i] = $array;
+    }
+
+    require __ROOT__ . "/db/main_db_close.php";
+
+    return $data;
+}
+
+function hashArray ($array)
+{
+    return md5(serialize($array));
+}
+
+// Outputs a JQuery initialization of the HighChart when called, data can be passed into this function from the SQL database
+function initializeHighChart($data="", $categories=array('Syntax', 'Basic Theory', 'Advanced Theory', 'Applications'), $type="column", $title="Student Mastery Levels", $subtitle="Percentages", $unit="percent")
+{
+    echo("<script>");
+    echo("$(document).ready(function() {");
+    echo("$('#chart').highcharts({");
+    echo("chart: {");
+    echo("type: '" . $type . "'");
+    echo("},");
+    echo("title: {");
+    echo("text: '" . $title . "'");
+    echo("},");
+    echo("subtitle: {");
+    echo("text: '(" . $subtitle . ")'");
+    echo("},");
+    echo("xAxis: {");
+    echo("categories: ");
+    echo("['". implode("', '", $categories) . "'],");
+    echo("title: {");
+    echo("text: null");
+    echo("}");
+    echo("},");
+    echo("yAxis: {");
+    echo("min: 0,");
+    echo("title: {");
+    echo("text: 'Mastery (" . $unit . ")',");
+    echo("align: 'high'");
+    echo("},");
+    echo("labels: {");
+    echo("overflow: 'justify'");
+    echo("}");
+    echo("},");
+    echo("tooltip: {");
+    echo("valueSuffix: ' " . $unit . "'");
+    echo("},");
+    echo("plotOptions: {");
+    echo("bar: {");
+    echo("dataLabels: {");
+    echo("enabled: true");
+    echo("}");
+    echo("}");
+    echo("},");
+    echo("legend: {");
+    echo("layout: 'vertical',");
+    echo("align: 'right',");
+    echo("verticalAlign: 'top',");
+    echo("x: -40,");
+    echo("y: 100,");
+    echo("floating: true,");
+    echo("borderWidth: 1,");
+    echo("backgroundColor: '#FFFFFF',");
+    echo("shadow: true");
+    echo("},");
+    echo("credits: {");
+    echo("enabled: false");
+    echo("},");
+    echo("series: [{");
+
+    // Output the data
+    $i = count($data);
+    foreach ($data as $learner)
+    {
+        echo("name: 'User " . $learner['id'] . "',");
+        echo("data: [". implode(", ", $learner['scores']) . "]");
+        if(--$i) // While still has another user
+            echo("}, {");
+    }
+    echo("}]");
+    echo("});");
+    echo("});");
+    echo("</script>");
+}
+
 // Get task information with given ID and store it into the $_SESSION
 function loadTask($id)
 {
@@ -176,6 +295,7 @@ function loadTask($id)
                 {
                     $_SESSION['current_task']['ct_html'] = mysql_result($result, 0, "question"); // Store question HTML
                     $_SESSION['current_task']['ct_kc'] = mysql_result($result, 0, "kc"); // Store question knowledge component ID
+                    $_SESSION['current_task']['ct_atype'] = mysql_result($result, 0, "answer_type"); // Store answer type
                 }
                 break;
             case "L":
@@ -270,124 +390,100 @@ function saveTaskID($user_id, $task_id)
 // Updates the learner model in the database
 function updateUserProfile($user_id, $kc_id, $correct)
 {
-    require __ROOT__ . "/db/main_db_open.php";
+    // Retry flag is used to specify whether or not the user can retry the question without being penalized
+    $retry_flag = 0;
 
-    // Search the user_profile database for the given ID
-    $query = "SELECT * FROM `user_profile` WHERE user_id='" . $user_id . "';";
-    $result = mysql_query($query);
-
-    // Create a new user profile with given ID
-    if(mysql_numrows($result) != 1)
+    // Prepare error message
+    if(!isset($_SESSION['message']))
     {
-        mysql_query("INSERT INTO user_profile(user_id, KC1correct, KC1attempts, KC2correct, KC2attempts, KC3correct, KC3attempts, KC4correct, KC4attempts) VALUES ('$user_id','0','0','0','0','0','0','0','0')") or die("".mysql_error());
+        $_SESSION['message'] == '';
+    }
 
-        // Store the user profile in $result
+    // Check if the answer is expected to be a line of code 'C' or text 'T'
+    if(isset($_SESSION['current_task']['ct_atype']) && !strcmp($_SESSION['current_task']['ct_atype'],'C'))
+    {
+        // Check if the answer was incorrect, then we will see if they get a second chance for a simple mistake
+        if(isset($_SESSION['current_task']['ct_correct']) && $_SESSION['current_task']['ct_correct'] == 0)
+        {
+            // Check for missing semi-colon at the end of the line
+            if(isset($_SESSION['C_LINE_ERR']['NO_SEMI_COLON']) && $_SESSION['C_LINE_ERR']['NO_SEMI_COLON'] == 1)
+            {
+                $_SESSION['message'] .= 'Did you forget to put a semi-colon at the end of your line of code? ';
+                $retry_flag = 1;
+            }
+            // Check if the line was commented out
+            if(isset($_SESSION['C_LINE_ERR']['COMMENTED']) && $_SESSION['C_LINE_ERR']['COMMENTED'] == 1)
+            {
+                $_SESSION['message'] .= 'The line you entered is a comment. Remove comment characters and try again. ';
+                $retry_flag = 1;
+            }
+        }
+    }
+    else if (isset($_SESSION['current_task']['ct_atype']) && !strcmp($_SESSION['current_task']['ct_atype'],'T'))
+    {
+        // Check if the answer was incorrect, then we will see if they get a second chance for a simple mistake
+        if(isset($_SESSION['current_task']['ct_correct']) && $_SESSION['current_task']['ct_correct'] == 0)
+        {
+            // Check for added semi-colon at the end of the line
+            if(isset($_SESSION['C_LINE_ERR']['NO_SEMI_COLON']) && $_SESSION['C_LINE_ERR']['NO_SEMI_COLON'] == 0)
+            {
+                $_SESSION['message'] .= 'The answer is not a line of code, so no semi-colon is needed. Read the question carefully and try again. ';
+                $retry_flag = 1;
+            }
+        }
+    }
+
+    // If the retry flag is not set, then log the answer
+    if ($retry_flag == 0)
+    {
+        require __ROOT__ . "/db/main_db_open.php";
+
+        // Search the user_profile database for the given ID
         $query = "SELECT * FROM `user_profile` WHERE user_id='" . $user_id . "';";
         $result = mysql_query($query);
+
+        // Create a new user profile with given ID
+        if(mysql_numrows($result) != 1)
+        {
+            mysql_query("INSERT INTO user_profile(user_id, KC1correct, KC1attempts, KC2correct, KC2attempts, KC3correct, KC3attempts, KC4correct, KC4attempts) VALUES ('$user_id','0','0','0','0','0','0','0','0')") or die("".mysql_error());
+
+            // Store the user profile in $result
+            $query = "SELECT * FROM `user_profile` WHERE user_id='" . $user_id . "';";
+            $result = mysql_query($query);
+        }
+
+        // Update current profile according to which knowledge component is tested
+        switch($kc_id)
+        {
+            case 0:
+                $num_correct = mysql_result($result, 0, "KC1correct");
+                $num_attempts = mysql_result($result, 0, "KC1attempts");
+                mysql_query("UPDATE `user_profile` SET KC1correct='" . ($num_correct + $correct) . "' WHERE user_id='" . $user_id . "';");
+                mysql_query("UPDATE `user_profile` SET KC1attempts='" . ($num_attempts + 1) . "' WHERE user_id='" . $user_id . "';");
+                break;
+            case 1:
+                $num_correct = mysql_result($result, 0, "KC2correct");
+                $num_attempts = mysql_result($result, 0, "KC2attempts");
+                mysql_query("UPDATE `user_profile` SET KC2correct='" . ($num_correct + $correct) . "' WHERE user_id='" . $user_id . "';");
+                mysql_query("UPDATE `user_profile` SET KC2attempts='" . ($num_attempts + 1) . "' WHERE user_id='" . $user_id . "';");
+                break;
+            case 2:
+                $num_correct = mysql_result($result, 0, "KC3correct");
+                $num_attempts = mysql_result($result, 0, "KC3attempts");
+                mysql_query("UPDATE `user_profile` SET KC3correct='" . ($num_correct + $correct) . "' WHERE user_id='" . $user_id . "';");
+                mysql_query("UPDATE `user_profile` SET KC3attempts='" . ($num_attempts + 1) . "' WHERE user_id='" . $user_id . "';");
+                break;
+            case 3:
+                $num_correct = mysql_result($result, 0, "KC4correct");
+                $num_attempts = mysql_result($result, 0, "KC4attempts");
+                mysql_query("UPDATE `user_profile` SET KC4correct='" . ($num_correct + $correct) . "' WHERE user_id='" . $user_id . "';");
+                mysql_query("UPDATE `user_profile` SET KC4attempts='" . ($num_attempts + 1) . "' WHERE user_id='" . $user_id . "';");
+                break;
+        }
+
+        require __ROOT__ . "/db/main_db_close.php";
     }
-
-    // Update current profile according to which knowledge component is tested
-    switch($kc_id)
-    {
-        case 0:
-            $num_correct = mysql_result($result, 0, "KC1correct");
-            $num_attempts = mysql_result($result, 0, "KC1attempts");
-            mysql_query("UPDATE `user_profile` SET KC1correct='" . ($num_correct + $correct) . "' WHERE user_id='" . $user_id . "';");
-            mysql_query("UPDATE `user_profile` SET KC1attempts='" . ($num_attempts + 1) . "' WHERE user_id='" . $user_id . "';");
-            break;
-        case 1:
-            $num_correct = mysql_result($result, 0, "KC2correct");
-            $num_attempts = mysql_result($result, 0, "KC2attempts");
-            mysql_query("UPDATE `user_profile` SET KC2correct='" . ($num_correct + $correct) . "' WHERE user_id='" . $user_id . "';");
-            mysql_query("UPDATE `user_profile` SET KC2attempts='" . ($num_attempts + 1) . "' WHERE user_id='" . $user_id . "';");
-            break;
-        case 2:
-            $num_correct = mysql_result($result, 0, "KC3correct");
-            $num_attempts = mysql_result($result, 0, "KC3attempts");
-            mysql_query("UPDATE `user_profile` SET KC3correct='" . ($num_correct + $correct) . "' WHERE user_id='" . $user_id . "';");
-            mysql_query("UPDATE `user_profile` SET KC3attempts='" . ($num_attempts + 1) . "' WHERE user_id='" . $user_id . "';");
-            break;
-        case 3:
-            $num_correct = mysql_result($result, 0, "KC4correct");
-            $num_attempts = mysql_result($result, 0, "KC4attempts");
-            mysql_query("UPDATE `user_profile` SET KC4correct='" . ($num_correct + $correct) . "' WHERE user_id='" . $user_id . "';");
-            mysql_query("UPDATE `user_profile` SET KC4attempts='" . ($num_attempts + 1) . "' WHERE user_id='" . $user_id . "';");
-            break;
-    }
-
-    require __ROOT__ . "/db/main_db_close.php";
-}
-
-// Outputs a JQuery initialization of the HighChart when called, data can be passed into this function from the SQL database
-function initializeHighChart($data, $categories=array('KC1','KC2','KC3','KC4'), $type="column", $title="Student Mastery Levels", $subtitle="Percentages", $unit="percent")
-{
-    echo("$(document).ready(function() {");
-    echo("$('#chart').highcharts({");
-    echo("chart: {");
-    echo("type: '" . $type . "'");
-    echo("},");
-    echo("title: {");
-    echo("text: '" . $title . "'");
-    echo("},");
-    echo("subtitle: {");
-    echo("text: '(" . $subtitle . ")'");
-    echo("},");
-    echo("xAxis: {");
-
-    // Iterate through all categories
-    echo("categories: ");
-    echo("['". implode("', '", $categories) . "'],");
-
-    echo("title: {");
-    echo("text: null");
-    echo("}");
-    echo("},");
-    echo("yAxis: {");
-    echo("min: 0,");
-    echo("title: {");
-    echo("text: 'Mastery (" . $unit . ")',");
-    echo("align: 'high'");
-    echo("},");
-    echo("labels: {");
-    echo("overflow: 'justify'");
-    echo("}");
-    echo("},");
-    echo("tooltip: {");
-    echo("valueSuffix: ' " . $unit . "'");
-    echo("},");
-    echo("plotOptions: {");
-    echo("bar: {");
-    echo("dataLabels: {");
-    echo("enabled: true");
-    echo("}");
-    echo("}");
-    echo("},");
-    echo("legend: {");
-    echo("layout: 'vertical',");
-    echo("align: 'right',");
-    echo("verticalAlign: 'top',");
-    echo("x: -40,");
-    echo("y: 100,");
-    echo("floating: true,");
-    echo("borderWidth: 1,");
-    echo("backgroundColor: '#FFFFFF',");
-    echo("shadow: true");
-    echo("},");
-    echo("credits: {");
-    echo("enabled: false");
-    echo("},");
-    echo("series: [{");
-    echo("name: 'Student 01',");
-    echo("data: [0.78, 0.8, 0.6, 0.2, 0]");
-    echo("}, {");
-    echo("name: 'Student 02',");
-    echo("data: [0.9, 0.83, 0.4, 0.65, 0]");
-    echo("}, {");
-    echo("name: 'Student 03',");
-    echo("data: [0.77, 0.86, 0.51, 0.23, 0.75]");
-    echo("}]");
-    echo("});");
-    echo("});");
+    return $retry_flag;
 }
 
 ?>

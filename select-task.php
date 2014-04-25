@@ -18,19 +18,22 @@
     // Check answer correctness
     if(isset($_POST['answer']))
     {
-        // Check if the answer is correct
-        $_SESSION['current_task']['ct_correct'] = checkAnswer($_SESSION['current_task']['ct_task_id'], htmlspecialchars($_POST['answer']));
+        // Get answer string
+        $_SESSION['current_task']['ct_user_answer'] = htmlspecialchars($_POST['answer']);
         unset($_POST['answer']);
+
+        // Check if the answer is correct
+        $_SESSION['current_task']['ct_correct'] = checkAnswer($_SESSION['current_task']['ct_task_id'], $_SESSION['current_task']['ct_user_answer']);
 
         // Update learner model database
         if($_SESSION['current_task']['ct_correct'] == 0 || $_SESSION['current_task']['ct_correct'] == 1)
-            updateUserProfile($_SESSION['userid'], $_SESSION['current_task']['ct_kc'], $_SESSION['current_task']['ct_correct']);
+            $retry_flag = updateUserProfile($_SESSION['userid'], $_SESSION['current_task']['ct_kc'], $_SESSION['current_task']['ct_correct']);
         else
             $_SESSION['message'] = "Error: Question ID not found.";
     }
 
     // Choose the next task
-    chooseNextTask($_SESSION['current_task']['ct_task_id']);
+    chooseNextTask($_SESSION['current_task']['ct_task_id'], $retry_flag);
 
     // Get the HTML for the task from the Database
     loadTask($_SESSION['current_task']['ct_task_id']);

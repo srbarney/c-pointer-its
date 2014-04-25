@@ -7,6 +7,13 @@
 <body>
 <?php require_once "master-site-header.php"; ?>
 
+<script>
+    $(document).ready(function() {
+        $('.lesson-div').hide();
+        $('.section-1').show();
+    });
+</script>
+
 <?php require_once "components/session-message.php" ?>
 <div id="main-content">
     <h1 class="page-title white-text"><span class="init-cap">L</span>ESSONS</h1>
@@ -15,8 +22,16 @@
             // $_SESSION['current_task'] contains HTML to be displayed on the page (lessons, questions, etc.) and is set by the task selector
             if(isset($_SESSION['current_task']['ct_html']))
             {
-                echo('Task ID: ' . $_SESSION['current_task']['ct_task_id'] . '<br>'); // REMOVE THIS LATER
+                //echo('Task ID: ' . $_SESSION['current_task']['ct_task_id'] . '<br>'); // REMOVE THIS LATER
                 echo($_SESSION['current_task']['ct_html']);
+                if(isset($_SESSION['current_task']['ct_user_answer']))
+                {
+                    echo('<script>');
+                    echo('$(document).ready(function() {');
+                    echo('$("#answer").val("' . $_SESSION['current_task']['ct_user_answer'] . '");');
+                    echo('});');
+                    echo('</script>');
+                }
             }
             else
             {

@@ -100,9 +100,6 @@ h6 {
 .hidden {
     display: none !important;
 }
-.highlight {
-    color: #F48C03;
-}
 .init-cap {
     font-size: 120%;
 }
@@ -118,6 +115,24 @@ h6 {
 .white-text {
     color: #FFFFFF;
     text-shadow: 2px 2px #333333;
+}
+
+/* Text Coloring CSS */
+.correct {
+    color: #72f300 !important;
+}
+.highlight {
+    color: #F48C03;
+}
+.incorrect {
+    color: #ff0000 !important;
+}
+
+.correct-check {
+    background: url('../icons/green-check-sm.png');
+}
+.incorrect-x {
+    background: url('../icons/red-x-sm.png');
 }
 
 /* Building-Block CSS */
@@ -149,7 +164,7 @@ h6 {
     font-size:13px;
     font-weight:bold;
     font-style:normal;
-    height:30px;
+    height:28px;
     line-height:25px;
     min-width:80px;
     text-decoration:none;
@@ -167,4 +182,51 @@ h6 {
      position:relative;
      top:1px;
      transition: 0.2s;
+}
+
+/* Code Block CSS */
+ol.code {
+    counter-reset: line;
+    background: #FFFFFF;
+    color: #111111;
+    margin: 0;
+    padding: 2px;
+    width: 500px;
+    list-style: none;
+    box-shadow: 2px 2px 2px #222222;
+}
+ol.code li:before
+{
+    counter-increment: line;
+    content: counter(line) ". ";
+    background: #444444;
+    color: #DDDDDD;
+    display: inline-block;
+    line-height: 24px;
+    margin-right: 20px;
+    padding-right: 5px;
+    text-align: right;
+    width: 40px;
+}
+ol.code code {
+    font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace;
+}
+ol.code li {
+    background: #EEEEEE;
+}
+ol.code li:nth-child(even)
+{
+    background: #CCCCCC;
+}
+
+/* Lesson Page CSS */
+.lesson-div p {
+    color: #FFFFFF !important;
+    text-shadow: 1px 1px #333333;
+}
+
+/* Question Styling CSS */
+.dark form p {
+    color: #FFFFFF !important;
+    text-shadow: 1px 1px #333333;
 }

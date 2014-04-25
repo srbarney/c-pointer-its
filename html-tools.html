@@ -1,0 +1,19 @@
+<?php require_once "master-html-head.php" ?>
+
+<body>
+<?php require_once "master-site-header.php"; ?>
+
+<?php require_once "components/session-message.php" ?>
+<div id="main-content">
+    <h1 class="page-title white-text"><span class="init-cap">H</span>TML <span class="init-cap">T</span>OOLS</h1>
+    <div class="site-content dark">
+        <h1 class="white-text">HTML Compressor</h1>
+        <h3 class="white-text">Enter HTML Here:</h3>
+        <textarea style="width: 100%; height: 150px;" id="html" onkeyup="compressHTML()"></textarea>
+        <h3 class="white-text">Compressed HTML:</h3>
+        <textarea style="width: 100%; height: 150px;" id="compressed"></textarea>
+    </div>
+</div>
+</body>
+
+</html>
