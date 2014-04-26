@@ -9,6 +9,40 @@ function arrayEqual($a, $b) {
     return (is_array($a) && is_array($b) && array_diff($a, $b) === array_diff($b, $a));
 }
 
+function attemptsToHTML($array)
+{
+    $html = '<script>$(document).ready(function() {$(".answer-area").hide();});</script>';
+
+    foreach ($array as $question)
+    {
+        foreach ($question as $index=>$value)
+        {
+            if (isset($value['correct']) && !strcmp($value['correct'],'1'))
+            {
+                $src = "icons/green-check-sm.png";
+                $correct = "correct";
+            }
+            else
+            {
+                $src = "icons/red-x-sm.png";
+                $correct = "incorrect";
+            }
+            if(!strcmp($index,'qhtml'))
+                $html .= $value;
+            else if(!strcmp($index,'answer'))
+                $html .= '<p class="white-text">Correct Answer: <span class="highlight">' . $value . '</span></p>';
+            else
+            {
+                $html .= '<p class="white-text">Your Answer: <span class="' . $correct . '">' . $value['answer'] . '&nbsp;&nbsp;<img src="' . $src . '" style="margin:0;padding:0 3px 0 0;height:14px;"> ' . ucfirst($correct) . '</span></p>';
+            }
+        }
+    }
+
+    $html .= '<form method="POST" action="select-task.php"><input class="button" type="submit" name="send" value="Next"></form>';
+
+    return $html;
+}
+
 // Checks to see if the given array of tokens is a C or C++ style commented line
 function cLineIsComment($array)
 {
@@ -194,6 +228,46 @@ function getMasteryLevels($id=0)
     return $data;
 }
 
+function getUnreviewedAttempts($user_id)
+{
+    require __ROOT__ . "/db/main_db_open.php";
+
+    $query = "SELECT * FROM `task_attempts` WHERE `student_id`='" . $user_id . "' AND `reviewed`='0' ORDER BY id ASC;";
+    $result = mysql_query($query);
+    $num_attempts = mysql_numrows($result);
+    $attempt = array();
+
+    if ($num_attempts == 0)
+        $attempt = array(0 => array('qhtml' => "<p class='white-text'>Nothing to Display</p>"));
+    else
+    {
+        // Capture all unreviewed attempts
+        for($i = 0; $i < $num_attempts; $i++)
+        {
+            $qid = mysql_result($result, $i, "question_id");
+            $user_answer = mysql_result($result, $i, "user_answer");
+            $correct = mysql_result($result, $i, "correct");
+
+            // Get the question HTML
+            $query = "SELECT * FROM `questions` WHERE `id`='" . $qid . "';";
+            $qresult = mysql_query($query);
+
+            if(mysql_numrows($qresult) == 1)
+            {
+                $attempt[$qid]['qhtml'] = mysql_result($qresult, 0, "question");
+                $attempt[$qid]['answer'] = mysql_result($qresult, 0, "answer");
+            }
+
+            $attempt[$qid][$i]['answer'] = $user_answer;
+            $attempt[$qid][$i]['correct'] = $correct;
+        }
+    }
+
+    require __ROOT__ . "/db/main_db_close.php";
+
+    return $attempt;
+}
+
 function hashArray ($array)
 {
     return md5(serialize($array));
@@ -307,9 +381,30 @@ function loadTask($id)
                     if(isset($answer)) unset($answer);
                 }
                 break;
+            case "A":
+                $_SESSION['current_task']['ct_html'] = attemptsToHTML(getUnreviewedAttempts($_SESSION['userid'])); // Prep assessment HTML
+                //setReviewedAttempts($_SESSION['userid']);
+                break;
         }
     }
+    require __ROOT__ . "/db/main_db_close.php";
+}
 
+function logAttempt($user_id, $task_id, $user_answer, $correct)
+{
+    require __ROOT__ . "/db/main_db_open.php";
+
+    // Search the task database for the given ID
+    $query = "SELECT * FROM tasks WHERE id='" . $task_id . "' AND task_type='Q';";
+    $result = mysql_query($query);
+    if(mysql_numrows($result) == 1)
+    {
+        // Get the question ID
+        $question_id = mysql_result($result, 0, "task_id");
+
+        // Insert the attempt into the database
+        mysql_query("INSERT INTO task_attempts(question_id, student_id, user_answer, correct) VALUES ('$question_id','$user_id', '$user_answer', '$correct')") or die("".mysql_error());
+    }
 
     require __ROOT__ . "/db/main_db_close.php";
 }
@@ -383,6 +478,17 @@ function saveTaskID($user_id, $task_id)
     {
         mysql_query("UPDATE `reg_users` SET current_task='" . $task_id . "' WHERE id='" . $user_id . "';");
     }
+
+    require __ROOT__ . "/db/main_db_close.php";
+}
+
+function setReviewedAttempts($user_id)
+{
+    require __ROOT__ . "/db/main_db_open.php";
+
+    // Mark attempts as reviewed
+    $query = "UPDATE `task_attempts` SET reviewed='1' WHERE `student_id`='" . $user_id . "' AND `reviewed`='0';";
+    mysql_query($query);
 
     require __ROOT__ . "/db/main_db_close.php";
 }

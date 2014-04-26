@@ -122,7 +122,7 @@ h6 {
     color: #72f300 !important;
 }
 .highlight {
-    color: #F48C03;
+    color: #F48C03 !important;
 }
 .incorrect {
     color: #ff0000 !important;
@@ -195,8 +195,7 @@ ol.code {
     list-style: none;
     box-shadow: 2px 2px 2px #222222;
 }
-ol.code li:before
-{
+ol.code li:before {
     counter-increment: line;
     content: counter(line) ". ";
     background: #444444;
@@ -214,8 +213,7 @@ ol.code code {
 ol.code li {
     background: #EEEEEE;
 }
-ol.code li:nth-child(even)
-{
+ol.code li:nth-child(even) {
     background: #CCCCCC;
 }
 
@@ -223,6 +221,9 @@ ol.code li:nth-child(even)
 .lesson-div p {
     color: #FFFFFF !important;
     text-shadow: 1px 1px #333333;
+}
+.lesson-div p b {
+    color: #F48C03;
 }
 
 /* Question Styling CSS */

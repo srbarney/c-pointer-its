@@ -147,10 +147,30 @@ INSERT INTO `tasks` (`id`, `task_type`, `task_id`) VALUES
 (3, 'Q', 2),
 (4, 'Q', 3),
 (5, 'Q', 4),
-(6, 'Q', 5),
-(7, 'Q', 6),
-(8, 'Q', 7),
-(9, 'Q', 8);
+(6, 'A', 0),
+(7, 'Q', 5),
+(8, 'Q', 6),
+(9, 'Q', 7),
+(10, 'Q', 8),
+(11, 'A', 0);
+
+--
+-- Table structure for table `task_attempts`
+--
+
+DROP TABLE IF EXISTS `task_attempts`;
+CREATE TABLE IF NOT EXISTS `task_attempts` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `question_id` int(11) unsigned NOT NULL,
+  `student_id` int(11) unsigned NOT NULL,
+  `tstamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `time_spent` time NOT NULL DEFAULT '00:00:00',
+  `hint_level_used` int(5) NOT NULL DEFAULT '0',
+  `user_answer` varchar(250) NOT NULL,
+  `correct` int(4) unsigned NOT NULL,
+  `reviewed` int(4) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
 -- Table structure for table `user_profile`
@@ -171,21 +191,6 @@ CREATE TABLE IF NOT EXISTS `user_profile` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
 
---
--- Table structure for table `task_attempts`
---
-
---
--- CREATE TABLE IF NOT EXISTS `task_attempts` (
---  `id` int(11) NOT NULL AUTO_INCREMENT,
---  `question_id` int(11) NOT NULL,
---  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
---  `time_spent` time NOT NULL,
---  `hint_level_used` int(5) NOT NULL,
---  `student_id` int(11) NOT NULL,
---  PRIMARY KEY (`id`)
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
---
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

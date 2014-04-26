@@ -3,15 +3,78 @@
 <body>
 <?php require_once "master-site-header.php"; ?>
 
+<script>
+    $(document).ready(function() {
+        // Initialize stuff
+        $("#html").val('Type question content here. To make a block of code:\n<code>\nOpen with a &lt;code&gt; tag on its own line\nThen type each line on its own line\nClose with a &lt;/code&gt; tag on its own line\n</code>\nThen type whatever else you would like to say.');
+        generateQuestion();
+    });
+    function compressHTML(html)
+    {
+        var compressed = html.replace(/(\r\n|\n|\r|\t)/gm,"");
+        compressed = compressed.replace(/\s+/g," ");
+        document.getElementById("compressed").value = compressed;
+    }
+    function generateQuestion()
+    {
+        setTimeout(function() {
+            var output = '<form method="post" action="select-task.php">';
+            var html = document.getElementById("html").value;
+            var lines = html.split("\n");
+            var codeFlag = 0;
+            for (var i = 0; i < lines.length; ++i)
+            {
+                var line = lines[i].trim();
+                if(line == '<code>')
+                {
+                    codeFlag = 1;
+                    line = '<ol class="code">';
+                }
+                else if (line == '</code>')
+                {
+                    codeFlag = 0;
+                    line = '</ol>';
+                }
+                else {
+                    if (codeFlag == 0)
+                        line = '<p>' + line + '</p>';
+                    else
+                        line = '<li><code>' + line + '</code></li>';
+                }
+
+                output = output + line;
+            }
+            output = output + '<span class="answer-area"><p>Type your answer below:</p><p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" id="submit" type="submit" name="send" value="Submit"></p></span></form>';
+            $('#preview').html(output);
+            $('#submit').on('click',function() {
+                $(this).attr("disabled","disabled");
+            });
+            compressHTML(output);
+        },250);
+    }
+    function outputMD5()
+    {
+        string = $('#string').val();
+        $('#md5').val(md5(string));
+    }
+</script>
+
 <?php require_once "components/session-message.php" ?>
 <div id="main-content">
     <h1 class="page-title white-text"><span class="init-cap">H</span>TML <span class="init-cap">T</span>OOLS</h1>
     <div class="site-content dark">
-        <h1 class="white-text">HTML Compressor</h1>
-        <h3 class="white-text">Enter HTML Here:</h3>
-        <textarea style="width: 100%; height: 150px;" id="html" onkeyup="compressHTML()"></textarea>
+        <h1 class="white-text">Question Authoring Tool</h1>
+        <h3 class="white-text">Enter Question Content Here:</h3>
+        <p class="white-text">Don't use any HTML formatting tags other than &lt;code&gt; and &lt;/code&gt;. A preview is automatically generated below.</p>
+        <textarea style="width:100%;height:100px;" id="html" onkeyup="generateQuestion()"></textarea>
+        <h3 class="white-text">Preview</h3>
+        <div id="preview" style="padding:20px; border: 1px solid #FFFFFF; background-color:#3a3a3a;"></div>
         <h3 class="white-text">Compressed HTML:</h3>
-        <textarea style="width: 100%; height: 150px;" id="compressed"></textarea>
+        <textarea style="width:100%;height:100px;" id="compressed" disabled="disabled"></textarea>
+        <br>
+        <h1 class="white-text">MD5 Hash</h1>
+        <input type="text" id="string" onkeyup="outputMD5()">
+        <input type="text" id="md5" disabled="disabled">
     </div>
 </div>
 </body>

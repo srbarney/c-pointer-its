@@ -1,10 +1,3 @@
-function compressHTML()
-{
-    var html = document.getElementById("html").value;
-    var compressed = html.replace(/(\r\n|\n|\r|\t)/gm,"");
-    compressed = compressed.replace(/\s+/g," ");
-    document.getElementById("compressed").value = compressed;
-}
 function checkSectionAnswer(box, sectionNum) {
     setTimeout(function() {
         answer = box.value;

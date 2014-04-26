@@ -13,7 +13,7 @@
     // Force the user data and question data to be refreshed from the database
     validateToken();
 
-    //print_r($_SESSION['current_task']);
+    $retry_flag = 0;
 
     // Check answer correctness
     if(isset($_POST['answer']))
@@ -22,12 +22,15 @@
         $_SESSION['current_task']['ct_user_answer'] = htmlspecialchars($_POST['answer']);
         unset($_POST['answer']);
 
-        // Check if the answer is correct
+        // Check if the answer is correct (1), incorrect (0), or not found (-1)
         $_SESSION['current_task']['ct_correct'] = checkAnswer($_SESSION['current_task']['ct_task_id'], $_SESSION['current_task']['ct_user_answer']);
 
         // Update learner model database
         if($_SESSION['current_task']['ct_correct'] == 0 || $_SESSION['current_task']['ct_correct'] == 1)
+        {
             $retry_flag = updateUserProfile($_SESSION['userid'], $_SESSION['current_task']['ct_kc'], $_SESSION['current_task']['ct_correct']);
+            logAttempt($_SESSION['userid'], $_SESSION['current_task']['ct_task_id'], $_SESSION['current_task']['ct_user_answer'], $_SESSION['current_task']['ct_correct']);
+        }
         else
             $_SESSION['message'] = "Error: Question ID not found.";
     }
@@ -37,8 +40,6 @@
 
     // Get the HTML for the task from the Database
     loadTask($_SESSION['current_task']['ct_task_id']);
-
-    //print_r($_SESSION['current_task']);
 
     // Save current task in the user database
     saveTaskID($_SESSION['userid'], $_SESSION['current_task']['ct_task_id']);
