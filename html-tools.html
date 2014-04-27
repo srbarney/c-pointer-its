@@ -1,4 +1,8 @@
 <?php require_once "master-html-head.php" ?>
+<?php
+    // If user is not logged in, redirect to login page
+    passwordProtect($RANK_ADMIN);
+?>
 
 <body>
 <?php require_once "master-site-header.php"; ?>
@@ -18,6 +22,7 @@
     function generateQuestion()
     {
         setTimeout(function() {
+            // Generate HTML preview
             var output = '<form method="post" action="select-task.php">';
             var html = document.getElementById("html").value;
             var lines = html.split("\n");
@@ -49,19 +54,33 @@
             $('#submit').on('click',function() {
                 $(this).attr("disabled","disabled");
             });
+
+            // Generate compressed HTML
             compressHTML(output);
         },250);
     }
     function outputMD5()
     {
         string = $('#string').val();
-        $('#md5').val(md5(string));
+        if(string.length > 0){
+            $.ajax({
+                type: "POST",
+                url: "/hash-answer.php",
+                data: { answer: string },
+                cache: false,
+                success: function(html){
+                    $('#md5').val(html);
+                }
+            });
+        }
+        else
+            $('#md5').val('');
     }
 </script>
 
 <?php require_once "components/session-message.php" ?>
 <div id="main-content">
-    <h1 class="page-title white-text"><span class="init-cap">H</span>TML <span class="init-cap">T</span>OOLS</h1>
+    <h1 class="page-title white-text"><span class="init-cap">A</span>UTHORING <span class="init-cap">T</span>OOLS</h1>
     <div class="site-content dark">
         <h1 class="white-text">Question Authoring Tool</h1>
         <h3 class="white-text">Enter Question Content Here:</h3>
@@ -69,12 +88,12 @@
         <textarea style="width:100%;height:100px;" id="html" onkeyup="generateQuestion()"></textarea>
         <h3 class="white-text">Preview</h3>
         <div id="preview" style="padding:20px; border: 1px solid #FFFFFF; background-color:#3a3a3a;"></div>
-        <h3 class="white-text">Compressed HTML:</h3>
+        <h3 class="white-text">Compressed Question HTML:</h3>
         <textarea style="width:100%;height:100px;" id="compressed" disabled="disabled"></textarea>
         <br>
-        <h1 class="white-text">MD5 Hash</h1>
-        <input type="text" id="string" onkeyup="outputMD5()">
-        <input type="text" id="md5" disabled="disabled">
+        <h1 class="white-text">Lesson Authoring Tool</h1>
+        <p><span style="width:125px !important;text-align:right;">Enter C Line:</span>&nbsp;&nbsp;<input type="text" id="string" style="width:500px;" onkeyup="outputMD5()"></p>
+        <p><span style="width:125px !important;text-align:right;">Hashed Answer:</span>&nbsp;&nbsp;<input type="text" id="md5" style="width:500px;" disabled="disabled"></p>
     </div>
 </div>
 </body>

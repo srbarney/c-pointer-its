@@ -13,6 +13,13 @@
     // Force the user data and question data to be refreshed from the database
     validateToken();
 
+    // If reviewed flag is set, mark the attempts as reviewed in the database
+    if(isset($_SESSION['current_task']['ct_reviewed_flag']) && $_SESSION['current_task']['ct_reviewed_flag'] == 1)
+    {
+        setReviewedAttempts($_SESSION['userid']);
+        unset($_SESSION['current_task']['ct_reviewed_flag']);
+    }
+
     $retry_flag = 0;
 
     // Check answer correctness
@@ -23,6 +30,7 @@
         unset($_POST['answer']);
 
         // Check if the answer is correct (1), incorrect (0), or not found (-1)
+        $_SESSION['current_task']['ct_correct_ci'] = checkAnswer($_SESSION['current_task']['ct_task_id'], $_SESSION['current_task']['ct_user_answer'], 1);
         $_SESSION['current_task']['ct_correct'] = checkAnswer($_SESSION['current_task']['ct_task_id'], $_SESSION['current_task']['ct_user_answer']);
 
         // Update learner model database

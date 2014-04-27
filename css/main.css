@@ -109,6 +109,10 @@ h6 {
     font-weight: bolder;
     text-shadow: 2px 2px #333333;
 }
+.session-message {
+    color: #111111 !important;
+    text-shadow: none !important;
+}
 .small-text {
     font-size: 85%;
 }
@@ -144,6 +148,8 @@ h6 {
 .site-content {
     margin: 20px;
     padding: 30px;
+    box-shadow: 3px 3px 3px #222222;
+    border-radius: 4px;
 }
 
 /* Submit Button CSS */
@@ -191,7 +197,7 @@ ol.code {
     color: #111111;
     margin: 0;
     padding: 2px;
-    width: 500px;
+    width: 600px;
     list-style: none;
     box-shadow: 2px 2px 2px #222222;
 }
@@ -218,7 +224,7 @@ ol.code li:nth-child(even) {
 }
 
 /* Lesson Page CSS */
-.lesson-div p {
+.lesson-div h1, h2, h3, h4, h5, p {
     color: #FFFFFF !important;
     text-shadow: 1px 1px #333333;
 }

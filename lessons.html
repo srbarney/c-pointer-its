@@ -19,10 +19,9 @@
     <h1 class="page-title white-text"><span class="init-cap">L</span>ESSONS</h1>
     <div class="site-content dark">
         <?php
-            // $_SESSION['current_task'] contains HTML to be displayed on the page (lessons, questions, etc.) and is set by the task selector
+            // $_SESSION['current_task'] contains HTML to be displayed on the page (lessons, questions, etc.) and is set by the task selector (select-task.php)
             if(isset($_SESSION['current_task']['ct_html']))
             {
-                //echo('Task ID: ' . $_SESSION['current_task']['ct_task_id'] . '<br>'); // REMOVE THIS LATER
                 echo($_SESSION['current_task']['ct_html']);
                 if(isset($_SESSION['current_task']['ct_user_answer']))
                 {
@@ -32,13 +31,6 @@
                     echo('});');
                     echo('</script>');
                 }
-            }
-            else
-            {
-                echo('<h1 class="white-text">No Task Selected</h1>');
-                echo('<form action="/select-task.php" method="POST">');
-                echo('<input class="button" type="submit" value="start">');
-                echo('</form>');
             }
         ?>
     </div>

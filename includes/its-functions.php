@@ -11,7 +11,7 @@ function arrayEqual($a, $b) {
 
 function attemptsToHTML($array)
 {
-    $html = '<script>$(document).ready(function() {$(".answer-area").hide();});</script>';
+    $html = '<script>$(document).ready(function() {$(".answer-area").hide();});</script><h1 class="white-text">REVIEW</h1>';
 
     foreach ($array as $question)
     {
@@ -19,16 +19,16 @@ function attemptsToHTML($array)
         {
             if (isset($value['correct']) && !strcmp($value['correct'],'1'))
             {
-                $src = "icons/green-check-sm.png";
+                $src = __ROOT__ . "/icons/green-check-sm.png";
                 $correct = "correct";
             }
             else
             {
-                $src = "icons/red-x-sm.png";
+                $src = __ROOT__ . "/icons/red-x-sm.png";
                 $correct = "incorrect";
             }
             if(!strcmp($index,'qhtml'))
-                $html .= $value;
+                $html .= '<br><br><h2 class="white-text">QUESTION</h2>' . $value;
             else if(!strcmp($index,'answer'))
                 $html .= '<p class="white-text">Correct Answer: <span class="highlight">' . $value . '</span></p>';
             else
@@ -38,7 +38,7 @@ function attemptsToHTML($array)
         }
     }
 
-    $html .= '<form method="POST" action="select-task.php"><input class="button" type="submit" name="send" value="Next"></form>';
+    $html .= '<br><form method="POST" action="select-task.php"><input class="button" type="submit" name="send" value="Next"></form>';
 
     return $html;
 }
@@ -59,7 +59,7 @@ function cLineIsComment($array)
 // Check if the answer is correct by checking the question database
 // Returns -1 if the provided task ID is not a question or is not found
 // Otherwise returns 0 if incorrect and 1 if correct
-function checkAnswer($id, $answer_string)
+function checkAnswer($id, $answer_string, $case_insensitive = 0)
 {
     require __ROOT__ . "/db/main_db_open.php";
 
@@ -79,8 +79,16 @@ function checkAnswer($id, $answer_string)
             if(mysql_numrows($result) == 1)
             {
                 // Collect and parse the database answer and the user's answer
-                $correct_answer = parseCLine(mysql_result($result, 0, "answer"));
-                $user_answer = parseCLine($answer_string);
+                if ($case_insensitive == 0)
+                {
+                    $correct_answer = parseCLine(htmlentities(mysql_result($result, 0, "answer")));
+                    $user_answer = parseCLine(htmlentities($answer_string));
+                }
+                else if ($case_insensitive == 1) // If the case insensitive flag is set, check the answer disregarding case
+                {
+                    $correct_answer = parseCLine(strtoupper(htmlentities(mysql_result($result, 0, "answer"))));
+                    $user_answer = parseCLine(strtoupper(htmlentities($answer_string)));
+                }
 
                 // If the users answer matches the correct answer
                 if (arrayEqual($user_answer, $correct_answer))
@@ -367,7 +375,7 @@ function loadTask($id)
                 $result = mysql_query($query);
                 if(mysql_numrows($result) == 1)
                 {
-                    $_SESSION['current_task']['ct_html'] = mysql_result($result, 0, "question"); // Store question HTML
+                    $_SESSION['current_task']['ct_html'] = '<h2 class="white-text">QUESTION</h2>'. mysql_result($result, 0, "question"); // Store question HTML
                     $_SESSION['current_task']['ct_kc'] = mysql_result($result, 0, "kc"); // Store question knowledge component ID
                     $_SESSION['current_task']['ct_atype'] = mysql_result($result, 0, "answer_type"); // Store answer type
                 }
@@ -383,7 +391,7 @@ function loadTask($id)
                 break;
             case "A":
                 $_SESSION['current_task']['ct_html'] = attemptsToHTML(getUnreviewedAttempts($_SESSION['userid'])); // Prep assessment HTML
-                //setReviewedAttempts($_SESSION['userid']);
+                $_SESSION['current_task']['ct_reviewed_flag'] = 1; // Set flag to indicate that attempts are being reviewed
                 break;
         }
     }
@@ -505,36 +513,55 @@ function updateUserProfile($user_id, $kc_id, $correct)
         $_SESSION['message'] == '';
     }
 
-    // Check if the answer is expected to be a line of code 'C' or text 'T'
-    if(isset($_SESSION['current_task']['ct_atype']) && !strcmp($_SESSION['current_task']['ct_atype'],'C'))
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // THIS BLOCK OF CODE TRIES TO DETECT SIMPLE MISTAKES MADE BY THE USER AND ALLOWS THEM TO RETRY WITHOUT PENALTY //
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // Check if the answer was left blank
+    if(isset($_SESSION['current_task']['ct_user_answer']) && strlen($_SESSION['current_task']['ct_user_answer']) == 0)
     {
-        // Check if the answer was incorrect, then we will see if they get a second chance for a simple mistake
-        if(isset($_SESSION['current_task']['ct_correct']) && $_SESSION['current_task']['ct_correct'] == 0)
+        $_SESSION['message'] .= 'Please enter an answer in the textbox, then click "Submit". ';
+        $retry_flag = 1;
+    }
+    else if (isset($_SESSION['current_task']['ct_correct']) && $_SESSION['current_task']['ct_correct'] == 0 && isset($_SESSION['current_task']['ct_correct_ci']) && $_SESSION['current_task']['ct_correct_ci'] == 1)
+    {
+        // Display message if the answer has the incorrect case
+        $_SESSION['message'] .= 'Your answer is nearly correct -- the answers are case-sensitive, so check your upper and lowercase characters and try again. ';
+        $retry_flag = 1;
+    }
+    else
+    {
+        // Check if the answer is expected to be a line of code 'C' or text 'T'
+        if(isset($_SESSION['current_task']['ct_atype']) && !strcmp($_SESSION['current_task']['ct_atype'],'C'))
         {
-            // Check for missing semi-colon at the end of the line
-            if(isset($_SESSION['C_LINE_ERR']['NO_SEMI_COLON']) && $_SESSION['C_LINE_ERR']['NO_SEMI_COLON'] == 1)
+            // Check if the answer was incorrect, then we will see if they get a second chance for a simple mistake
+            if(isset($_SESSION['current_task']['ct_correct']) && $_SESSION['current_task']['ct_correct'] == 0)
             {
-                $_SESSION['message'] .= 'Did you forget to put a semi-colon at the end of your line of code? ';
-                $retry_flag = 1;
-            }
-            // Check if the line was commented out
-            if(isset($_SESSION['C_LINE_ERR']['COMMENTED']) && $_SESSION['C_LINE_ERR']['COMMENTED'] == 1)
-            {
-                $_SESSION['message'] .= 'The line you entered is a comment. Remove comment characters and try again. ';
-                $retry_flag = 1;
+                // Check for missing semi-colon at the end of the line
+                if(isset($_SESSION['C_LINE_ERR']['NO_SEMI_COLON']) && $_SESSION['C_LINE_ERR']['NO_SEMI_COLON'] == 1)
+                {
+                    $_SESSION['message'] .= 'Did you forget to put a semi-colon at the end of your line of code? ';
+                    $retry_flag = 1;
+                }
+                // Check if the line was commented out
+                if(isset($_SESSION['C_LINE_ERR']['COMMENTED']) && $_SESSION['C_LINE_ERR']['COMMENTED'] == 1)
+                {
+                    $_SESSION['message'] .= 'The line you entered is a comment. Remove comment characters and try again. ';
+                    $retry_flag = 1;
+                }
             }
         }
-    }
-    else if (isset($_SESSION['current_task']['ct_atype']) && !strcmp($_SESSION['current_task']['ct_atype'],'T'))
-    {
-        // Check if the answer was incorrect, then we will see if they get a second chance for a simple mistake
-        if(isset($_SESSION['current_task']['ct_correct']) && $_SESSION['current_task']['ct_correct'] == 0)
+        else if (isset($_SESSION['current_task']['ct_atype']) && !strcmp($_SESSION['current_task']['ct_atype'],'T'))
         {
-            // Check for added semi-colon at the end of the line
-            if(isset($_SESSION['C_LINE_ERR']['NO_SEMI_COLON']) && $_SESSION['C_LINE_ERR']['NO_SEMI_COLON'] == 0)
+            // Check if the answer was incorrect, then we will see if they get a second chance for a simple mistake
+            if(isset($_SESSION['current_task']['ct_correct']) && $_SESSION['current_task']['ct_correct'] == 0)
             {
-                $_SESSION['message'] .= 'The answer is not a line of code, so no semi-colon is needed. Read the question carefully and try again. ';
-                $retry_flag = 1;
+                // Check for added semi-colon at the end of the line
+                if(isset($_SESSION['C_LINE_ERR']['NO_SEMI_COLON']) && $_SESSION['C_LINE_ERR']['NO_SEMI_COLON'] == 0)
+                {
+                    $_SESSION['message'] .= 'The answer is not a line of code, so no semi-colon is needed. Read the question carefully and try again. ';
+                    $retry_flag = 1;
+                }
             }
         }
     }
