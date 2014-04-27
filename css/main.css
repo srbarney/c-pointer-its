@@ -85,7 +85,8 @@ h6 {
 .clear {
     clear: both;
 }
-.dark {
+div.dark {
+    box-shadow: 3px 3px 3px #222222;
     background-color: #4B4B4B;
 }
 .divider {
@@ -148,7 +149,6 @@ h6 {
 .site-content {
     margin: 20px;
     padding: 30px;
-    box-shadow: 3px 3px 3px #222222;
     border-radius: 4px;
 }
 

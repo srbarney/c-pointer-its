@@ -86,26 +86,6 @@ INSERT INTO `questions` (`id`, `kc`, `question`, `answer`, `answer_type`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `question_multiple_choice`
---
-
-CREATE TABLE IF NOT EXISTS `question_multiple_choice` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
-  `option_01` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-  `option_02` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-  `option_03` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-  `option_04` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-  `kc_id_01` int(11) NOT NULL,
-  `kc_id_02` int(11) NOT NULL,
-  `kc_id_03` int(11) NOT NULL,
-  `difficulty` int(5) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `reg_login_attempt`
 --
 
