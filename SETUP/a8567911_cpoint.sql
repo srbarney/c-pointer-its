@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.4.1
+-- version 3.5.2.2
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 15, 2014 at 03:58 AM
--- Server version: 5.5.32
--- PHP Version: 5.4.19
+-- Generation Time: Apr 26, 2014 at 09:58 PM
+-- Server version: 5.5.27
+-- PHP Version: 5.4.7
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -19,52 +19,53 @@ SET time_zone = "+00:00";
 --
 -- Database: `a8567911_cpoint`
 --
-CREATE DATABASE IF NOT EXISTS `a8567911_cpoint` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
-USE `a8567911_cpoint`;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `knowledge_components`
 --
 
-DROP TABLE IF EXISTS `knowledge_components`;
 CREATE TABLE IF NOT EXISTS `knowledge_components` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `category` varchar(35) COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `lessons`
 --
 
-DROP TABLE IF EXISTS `lessons`;
 CREATE TABLE IF NOT EXISTS `lessons` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `html` varchar(10000) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `lessons`
 --
 
 INSERT INTO `lessons` (`id`, `html`) VALUES
-(1, '<div class="lesson-div section-1"><p><span class="highlight">Bacon</span> ipsum dolor sit amet venison beef ball tip, filet mignon bacon landjaeger t-bone shank ham chicken pork belly. Ribeye leberkas ball tip flank jerky capicola fatback pork loin t-bone shank bacon. Ball tip ribeye venison brisket pig pancetta filet mignon pork spare ribs. Fatback spare ribs bresaola, strip steak capicola leberkas beef prosciutto frankfurter pancetta. Strip steak bresaola ham beef kevin, tail beef ribs ribeye turkey ball tip andouille. Pork loin tenderloin sausage short ribs short loin jowl venison strip steak kielbasa flank. Pork loin shankle porchetta turkey tongue frankfurter tenderloin venison spare ribs rump prosciutto short ribs ground round.</p><ol class="code"><li><code>Sample Code</code></li><li><code>Testing</code></li><li><code>Testing</code></li><li><code>Testing</code></li><li><code>Testing</code></li></ol><p><input type="text" id="section-1-answer" onkeyup="checkSectionAnswer(this, ''1'')"/>&nbsp;&nbsp;<span id="section-1-feedback">Enter Answer</span><span class="hidden" id="section-1-hash">b46170535240d2c507556a050d79908b</span></p></div><div class="lesson-div section-2"><p>Pork kevin rump, salami pastrami doner shoulder. Ham hock prosciutto frankfurter cow, beef ribs tail doner ground round flank chuck pastrami ribeye. Jerky ball tip pork belly salami strip steak corned beef, andouille tenderloin tail. Shoulder meatloaf pork chop ribeye. Ribeye prosciutto kevin pork chop doner, rump beef biltong pancetta ground round tri-tip. Landjaeger tenderloin filet mignon, pork loin venison leberkas chuck bacon ham. Drumstick rump andouille, beef ribs bresaola ground round frankfurter leberkas pork chop turducken tri-tip chuck tenderloin.</p><p><input type="text" id="section-2-answer" onkeyup="checkSectionAnswer(this, ''2'')"/>&nbsp;&nbsp;<span id="section-2-feedback">Enter Answer</span><span class="hidden" id="section-2-hash">b46170535240d2c507556a050d79908b</span></p></div><div class="lesson-div section-3"><p>Landjaeger shoulder hamburger, jerky tail leberkas boudin capicola fatback chicken spare ribs ground round. Sausage prosciutto cow filet mignon porchetta corned beef hamburger short ribs biltong jowl meatball fatback salami jerky. Shank shoulder meatloaf tenderloin, ball tip turducken beef beef ribs. T-bone spare ribs pig, ball tip biltong <span class="highlight">frankfurter</span> bacon filet mignon. Tail shoulder kielbasa shank ground round fatback meatball chicken bacon pig leberkas. Ball tip chuck turducken, flank shoulder drumstick jerky t-bone hamburger porchetta ham brisket sausage.</p><p><input type="text" id="section-3-answer" onkeyup="checkSectionAnswer(this, ''3'')"/>&nbsp;&nbsp;<span id="section-3-feedback">Enter Answer</span><span class="hidden" id="section-3-hash">b46170535240d2c507556a050d79908b</span></p></div><div class="lesson-div section-4"><p>Pork chop boudin sirloin fatback. Biltong landjaeger turducken pork chop doner, drumstick leberkas pastrami shankle. Short loin cow bresaola shank ball tip, pancetta shankle pig. Ham tenderloin corned beef, filet mignon bresaola short loin landjaeger beef chuck tail ribeye pork loin ham hock kielbasa turducken. Prosciutto meatball bresaola, strip steak pig cow pork belly hamburger biltong.</p><p><input type="text" id="section-4-answer" onkeyup="checkSectionAnswer(this, ''4'')"/>&nbsp;&nbsp;<span id="section-4-feedback">Enter Answer</span><span class="hidden" id="section-4-hash">b46170535240d2c507556a050d79908b</span></p></div><div class="lesson-div section-5"><p>Ham sausage corned beef pastrami spare ribs. Meatloaf ham chuck strip steak short loin pig shoulder jowl corned beef cow ribeye landjaeger hamburger. Shank sirloin frankfurter prosciutto rump ham. Brisket andouille ball tip pancetta meatloaf salami strip steak rump venison sausage leberkas. Landjaeger pancetta pork chop jerky corned beef prosciutto cow, turkey chicken <span class="highlight">salami</span> shoulder andouille. Pork ball tip short loin pork loin pork belly turkey tail fatback, brisket andouille t-bone beef ribs bresaola tenderloin.</p><form method="POST" action="select-task.php"><input class="button" type="submit" name="send" value="Next"></form></div>');
+(1, '<div class="lesson-div section-1">  <h1>Lesson 1</h1> <p><span class="highlight">Pointers</span> in the C programming language have been known to be a confusing topic amongst beginning programmers. In this lesson, we will introduce pointers and their syntax as well as some theory. </p> <p>More often than not, students struggle with pointers due to a lack of conceptual understanding of variables. Thus we will begin with some review.</p> <p>A variable in a C program is something that is assigned a name, the value of which can be changed. The compiler and linker then assign that variable a certain block in memory. The size of that block will depend on the range over which the variable is allowed to vary. For example, on 32 bit PC''s the size of an integer variable is 4 bytes. However, on older 16 bit PCs integers were 2 bytes.  In C the size of a variable type such as an integer need not be the same on all types of machines.  Adding upon that,  there are more than one type of integer variables in the C language (such as long, long long, and short integers). To keep things simple, this tutoring system will assume the use of a 32 bit computer system with 4 byte (32 bit) integers.</p> <p>When a variable is declared, we are telling the compiler two things. These two things are the name of the variable and the type of the variable (such as an int or char). For example, we declare a variable of type integer assigning it the name f with this instruction: </p>     <ol class="code"><li><code>int f;</code></li></ol>  <p>When the compiler sees the "int" in the above statement, it will reserve 4 bytes of memory to hold the value of the integer. It will also create a symbol table in which the symbol "f" (from the above example) to a relative address in memory where those 4 bytes were set aside. Thus, later if we write: </p>     <ol class="code"><li><code>f = 6;</code></li></ol> <p>we expect that, at run time when the above statement is executed, the value 6 will be placed in that memory location reserved for the storage of the value of f. This is the case. </p> <p>In essence there are two "values" associated with the object f. The first is the value of the integer stored there, which would be 6 in the example above. The other is the "value" of the memory location, in other words, the address of f. These two values can be refered with the nomenclature rvalue (right value, pronounced "are value") and lvalue (left value, pronounced "el value") respectively. </p> <p>In some languages, the lvalue is the value permitted on the left side of the assignment operator ''='' (i.e. the address where the result of evaluation of the right side ends up). The rvalue is that which is on the right side of the assignment statement, the 6 above. Rvalues cannot be used on the left side of the assignment statement. Thus: 6 = f; is illegal. </p> <p>Actually, the above definition of "lvalue" is somewhat modified for C. According to K&R II (page 197): [1] </p> <p>"An object is a named region of storage; an lvalue is an expression referring to an object." </p> <p>However, at this point, the definition originally cited above is sufficient. As we become more familiar with pointers we will go into more detail on this. </p> Okay, now consider:<br>     <ol class="code"><li><code>int j, k;</code></li>      <li><code>k = 2;</code></li>     <li><code>j = 7;  // line 1</code></li>     <li><code>k = j;  // line 2</code></li> 	</ol> <p>In the above, the compiler interprets the j in line 1 as the address of the variable j (its lvalue) and creates code to copy the value 7 to that address. In line 2, however, the j is interpreted as its rvalue (since it is on the right hand side of the assignment operator ''=''). That is, here the j refers to the value stored at the memory location set aside for j, in this case 7. So, the 7 is copied to the address designated by the lvalue of k. </p> <p>In all of these examples, we are using 4 byte integers so all copying of rvalues from one storage location to the other is done by copying 4 bytes. Had we been using two byte integers, we would be copying 2 bytes. </p> <p>Now, what if you wanted to create a variable that was designed to hold an lvalue? A variable of this kind is called a pointer variable. In the C programming language, a pointer variable is defined similarly to a regular variable except an asterisk is placed before the variable name. In C when we define a pointer variable we do so by preceding its name with an asterisk. We must also remember to give the pointer variable a type. For example, consider the variable declaration: </p>    <ol class="code"><li><code>int *ptr;</code></li></ol> <p>ptr is the name of our variable (just as f was the name of our integer variable). The ''*'' informs the compiler that we want a pointer variable, i.e. to set aside however many bytes is required to store an address in memory. The int says that we intend to use our pointer variable to store the address of an integer. Such a pointer is said to "point to" an integer. However, note that when we wrote int k; we did not give f a value. If this definition is made outside of any function ANSI compliant compilers will initialize it to zero. Similarly, ptr has no value, that is we haven''t stored an address in it in the above declaration. In this case, again if the declaration is outside of any function, it is initialized to a value guaranteed in such a way that it is guaranteed to not point to any C object or function. A pointer initialized in this manner is called a "null" pointer. </p> <p>The actual bit pattern used for a null pointer may or may not evaluate to zero since it depends on the specific system on which the code is developed. To make the source code compatible between various compilers on various systems, a macro is used to represent a null pointer. That macro goes under the name NULL. Thus, setting the value of a pointer using the NULL macro, as with an assignment statement such as ptr = NULL, guarantees that the pointer has become a null pointer. Similarly, just as one can test for an integer value of zero, as in if(k == 0), we can test for a null pointer using if (ptr == NULL). </p>    <p> Before moving on, try declaring a pointer by yourself. Use the data type "char" and the name "charPtr".</p>  	<p><input type="text" id="section-1-answer" onkeyup="checkSectionAnswer(this, ''1'')"/>&nbsp;&nbsp;<span id="section-1-feedback">Enter Answer</span><span class="hidden" id="section-1-hash">f654a8ea7a6d0f62b348e382ea21a808</span></p></div>  	<div class="lesson-div section-2"><p>But, back to using our new variable ptr. Suppose now that we want to store in ptr the address of our integer variable k. To do this we use the unary & operator and write: </p> 		<ol class="code"><li><code>ptr = &k;</code></li></ol> 	<p>What the & operator does is retrieve the lvalue (address) of k, even though k is on the right hand side of the assignment operator ''='', and copies that to the contents of our pointer ptr. Now, ptr is said to "point to" k. Bear with us now, there is only one more operator we need to discuss. </p> 	<p>Once again, before moving on, using the char pointer do created before, assign it the address of a char variable named "anotherChar"</p> 		<p><input type="text" id="section-2-answer" onkeyup="checkSectionAnswer(this, ''2'')"/>&nbsp;&nbsp;<span id="section-2-feedback">Enter Answer</span><span class="hidden" id="section-2-hash">55fdbb46a45ee615cf311e8d57d4a777</span></p></div>  	<div class="lesson-div section-3"><p>The "dereferencing operator" is the asterisk and it is used as follows: </p> 		<ol class="code"><li><code>*ptr = 7;</code></li></ol> 		<p>will copy 7 to the address pointed to by ptr. Thus if ptr "points to" (contains the address of) k, the above statement will set the value of k to 7. That is, when we use the ''*'' this way we are referring to the value of that which ptr is pointing to, not the value of the pointer itself. </p> 		<p>Using the char pointer you created before, assign the character ''c'' to it by dereferencing it.  		<p><input type="text" id="section-3-answer" onkeyup="checkSectionAnswer(this, ''3'')"/>&nbsp;&nbsp;<span id="section-3-feedback">Enter Answer</span><span class="hidden" id="section-3-hash">dec1fd0d84c8a76bb9790d540e28bee6</span></p></div>  	<div class="lesson-div section-4"><p>Similarly, we could write: </p>  <ol class="code"><li><code>printf("%d\\n",*ptr);</code></li></ol>  <p>to print to the screen the integer value stored at the address pointed to by ptr;. </p><form method="POST" action="select-task.php"><input class="button" type="submit" name="send" value="Next"></form> </div>');
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `questions`
 --
 
-DROP TABLE IF EXISTS `questions`;
 CREATE TABLE IF NOT EXISTS `questions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `kc` int(11) NOT NULL,
-  `question` varchar(5000) NOT NULL,
-  `answer` varchar(250) NOT NULL,
-  `answer_type` varchar(5) NOT NULL,
+  `question` varchar(5000) COLLATE utf8_unicode_ci NOT NULL,
+  `answer` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `answer_type` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `questions`
@@ -80,11 +81,32 @@ INSERT INTO `questions` (`id`, `kc`, `question`, `answer`, `answer_type`) VALUES
 (7, 2, '<form method="post" action="select-task.php"> <p>Consider the following code: <ol class="code"> <li><code>int * intPointer1 = malloc(sizeof(int));</code></li> <li><code>int * intPointer2 = malloc(sizeof(int));</code></li> <li><code>*intPointer2 = 8;</code></li> <li><code>*intPointer2 = *intPointer2 + 1;</code></li> <li><code>intPointer1 = intPointer2;</code></li> <li><code>*intPointer2 = *intPointer2 - 6;</code></li> </ol> <p>On which line is memory leaked?</p> <p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></form>', '5', 'T'),
 (8, 2, '<form method="post" action="select-task.php"> <p>Create an integer pointer named "intptr", allocate space for one integer and make your pointer point to it all in one line of code</p> <p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></form>', 'int * intptr = malloc(sizeof(int));', 'C');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `question_multiple_choice`
+--
+
+CREATE TABLE IF NOT EXISTS `question_multiple_choice` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `question` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
+  `option_01` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `option_02` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `option_03` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `option_04` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `kc_id_01` int(11) NOT NULL,
+  `kc_id_02` int(11) NOT NULL,
+  `kc_id_03` int(11) NOT NULL,
+  `difficulty` int(5) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `reg_login_attempt`
 --
-DROP TABLE IF EXISTS `reg_login_attempt`;
+
 CREATE TABLE IF NOT EXISTS `reg_login_attempt` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ip` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
@@ -92,13 +114,23 @@ CREATE TABLE IF NOT EXISTS `reg_login_attempt` (
   `login_success` tinyint(1) NOT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `reg_login_attempt`
+--
+
+INSERT INTO `reg_login_attempt` (`id`, `ip`, `email`, `login_success`, `ts`) VALUES
+(1, '::1', 'cameronk313@cox.net', 1, '2014-04-27 03:18:05'),
+(2, '::1', 'cameronk313@cox.net', 1, '2014-04-27 04:01:59'),
+(3, '::1', 'cameronk313@cox.net', 1, '2014-04-27 04:20:13');
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `reg_users`
 --
 
-DROP TABLE IF EXISTS `reg_users`;
 CREATE TABLE IF NOT EXISTS `reg_users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `first_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -112,30 +144,32 @@ CREATE TABLE IF NOT EXISTS `reg_users` (
   `token_validity` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `reg_ip` varchar(45) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
   `user_stat` varchar(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'U',
-  `current_task` int(11) unsigned NOT NULL DEFAULT 1,
+  `current_task` int(11) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `token` (`token`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `reg_users`
 --
 
 INSERT INTO `reg_users` (`id`, `first_name`, `last_name`, `password`, `email`, `rank`, `registered`, `last_login`, `token`, `token_validity`, `reg_ip`, `user_stat`, `current_task`) VALUES
-(1, 'Steven', 'Barney', 'acdd77bc283941db353f3936a5a9b847', 'srbarney@asu.edu', 3, '2014-03-13 05:10:12', '2014-04-05 15:03:44', '9dfb1c02b3a778c5132ee0d617fbdf293f85dc47', '2014-04-05 16:03:44', '0.0.0.0', 'A', 1);
+(1, 'Steven', 'Barney', 'acdd77bc283941db353f3936a5a9b847', 'srbarney@asu.edu', 3, '2014-03-13 05:10:12', '2014-04-05 15:03:44', '9dfb1c02b3a778c5132ee0d617fbdf293f85dc47', '2014-04-05 16:03:44', '0.0.0.0', 'A', 1),
+(2, 'Cameron', 'Keith', 'c59b47fbcf66b482e2ed3db39ab05155', 'cameronk313@cox.net', 3, '2014-04-27 03:17:53', '2014-04-27 04:20:13', 'ad1d100b041774249793cdff5644270af3374636', '2014-04-27 05:20:13', '0.0.0.0', 'A', 1);
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `tasks`
 --
 
-DROP TABLE IF EXISTS `tasks`;
 CREATE TABLE IF NOT EXISTS `tasks` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `task_type` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   `task_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `tasks`
@@ -154,11 +188,12 @@ INSERT INTO `tasks` (`id`, `task_type`, `task_id`) VALUES
 (10, 'Q', 8),
 (11, 'A', 0);
 
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `task_attempts`
 --
 
-DROP TABLE IF EXISTS `task_attempts`;
 CREATE TABLE IF NOT EXISTS `task_attempts` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `question_id` int(11) unsigned NOT NULL,
@@ -166,17 +201,18 @@ CREATE TABLE IF NOT EXISTS `task_attempts` (
   `tstamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `time_spent` time NOT NULL DEFAULT '00:00:00',
   `hint_level_used` int(5) NOT NULL DEFAULT '0',
-  `user_answer` varchar(250) NOT NULL,
+  `user_answer` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `correct` int(4) unsigned NOT NULL,
   `reviewed` int(4) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `user_profile`
 --
 
-DROP TABLE IF EXISTS `user_profile`;
 CREATE TABLE IF NOT EXISTS `user_profile` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -189,8 +225,7 @@ CREATE TABLE IF NOT EXISTS `user_profile` (
   `KC4correct` double NOT NULL,
   `KC4attempts` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
-
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
