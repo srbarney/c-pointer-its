@@ -225,8 +225,16 @@ function validateToken() {
                 $_SESSION['email'] = mysql_result($result, 0, "email");
                 $_SESSION['rank'] = mysql_result($result, 0, "rank");
                 $_SESSION['current_task']['ct_task_id'] = mysql_result($result, 0, "current_task");
-                loadTask($_SESSION['current_task']['ct_task_id']);
                 $_SESSION['status'] = 1;
+
+                // Handle task list and task loading
+                loadTaskList($_SESSION['userid']);
+                if(strlen($_SESSION['json_task_list']) < 5)
+                {
+                    storeTaskList($_SESSION['userid'], generateTaskList());
+                    loadTaskList($_SESSION['userid']);
+                }
+                loadTask($_SESSION['current_task']['ct_task_id']);
 
                 // Extend token validity
                 $query = "UPDATE reg_users SET token_validity='" . getTokenTimeout() . "' WHERE email='" . $_SESSION['email'] . "';";

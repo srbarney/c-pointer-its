@@ -26,6 +26,9 @@ SET time_zone = "+00:00";
 -- Table structure for table `knowledge_components`
 --
 
+DROP TABLE IF EXISTS `tasks`;
+DROP TABLE IF EXISTS `question_multiple_choice`;
+
 DROP TABLE IF EXISTS `knowledge_components`;
 CREATE TABLE IF NOT EXISTS `knowledge_components` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -67,7 +70,7 @@ DROP TABLE IF EXISTS `questions`;
 CREATE TABLE IF NOT EXISTS `questions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `kc` int(11) NOT NULL,
-   `lesson_tag` int(11) NOT NULL,
+  `lesson_tag` int(11) NOT NULL,
   `question` varchar(5000) COLLATE utf8_unicode_ci NOT NULL,
   `answer` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
   `hint` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
@@ -151,40 +154,6 @@ CREATE TABLE IF NOT EXISTS `reg_users` (
 INSERT INTO `reg_users` (`id`, `first_name`, `last_name`, `password`, `email`, `rank`, `registered`, `last_login`, `token`, `token_validity`, `reg_ip`, `user_stat`, `current_task`) VALUES
 (1, 'Steven', 'Barney', 'acdd77bc283941db353f3936a5a9b847', 'srbarney@asu.edu', 3, '2014-03-13 05:10:12', '2014-04-05 15:03:44', '9dfb1c02b3a778c5132ee0d617fbdf293f85dc47', '2014-04-05 16:03:44', '0.0.0.0', 'A', 1),
 (2, 'Cameron', 'Keith', 'c59b47fbcf66b482e2ed3db39ab05155', 'cameronk313@cox.net', 3, '2014-04-27 03:17:53', '2014-04-29 05:19:03', 'f6d7bcd792a2dc3d6f6d79c45b9877572fef4475', '2014-04-29 06:19:03', '0.0.0.0', 'A', 6);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tasks`
---
-
-DROP TABLE IF EXISTS `tasks`;
-CREATE TABLE IF NOT EXISTS `tasks` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `task_type` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
-  `task_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
-
---
--- Dumping data for table `tasks`
---
-
-INSERT INTO `tasks` (`id`, `task_type`, `task_id`) VALUES
-(1, 'L', 1),
-(2, 'Q', 1),
-(3, 'Q', 2),
-(4, 'Q', 3),
-(5, 'Q', 4),
-(6, 'A', 1),
-(7, 'Q', 5),
-(8, 'Q', 6),
-(9, 'Q', 7),
-(10, 'Q', 8),
-(11, 'A', 2),
-(12, 'L', 2),
-(13, 'L', 3),
-(14, 'L', 4);
 
 -- --------------------------------------------------------
 

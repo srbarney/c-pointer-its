@@ -11,10 +11,10 @@
     }
 
     // Check if the start over flag is set
-    if(isset($_SESSION['current_task']['ct_start_over']))
+    if(isset($_SESSION['current_task']['ct_start_over']) || isset($_GET['rst']))
     {
         // For now restart from the first task
-        $_SESSION['current_task']['ct_task_id'] = 1;
+        saveTaskID($_SESSION['userid'], 0);
         unset($_SESSION['current_task']['ct_start_over']);
     }
 

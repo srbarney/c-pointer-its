@@ -38,6 +38,7 @@ function attemptsToHTML($array)
         }
     }
 
+    $html .= '<a href="select-task.php?rst=1">Start Over From Lesson 1</a>';
     $html .= '<br><form method="POST" action="select-task.php"><input class="button" type="submit" name="send" value="Next"></form>';
 
     return $html;
@@ -64,41 +65,41 @@ function checkAnswer($id, $answer_string, $case_insensitive = 0)
     require __ROOT__ . "/db/main_db_open.php";
 
     // Search the task database for the given ID
-    $query = "SELECT * FROM tasks WHERE id='" . $id . "';";
-    $result = mysql_query($query);
-    if(mysql_numrows($result) == 1)
+    //$query = "SELECT * FROM tasks WHERE id='" . $id . "';";
+    //$result = mysql_query($query);
+    //if(mysql_numrows($result) == 1)
+
+    //$task_type = mysql_result($result, 0, "task_type");
+    //$task_id = mysql_result($result, 0, "task_id");
+
+    $task_id = getTaskID($id);
+    $task_type = getTaskType($id);
+
+    // If the task is founc and is a question
+    if($task_id != 0 && !strcmp($task_type,'Q'))
     {
-        $task_type = mysql_result($result, 0, "task_type");
-        $task_id = mysql_result($result, 0, "task_id");
-
-        // If the task is a question
-        if(!strcmp($task_type,'Q'))
+        $query = "SELECT * FROM questions WHERE id='" . $task_id . "';";
+        $result = mysql_query($query);
+        if(mysql_numrows($result) == 1)
         {
-            $query = "SELECT * FROM questions WHERE id='" . $task_id . "';";
-            $result = mysql_query($query);
-            if(mysql_numrows($result) == 1)
+            // Collect and parse the database answer and the user's answer
+            if ($case_insensitive == 0)
             {
-                // Collect and parse the database answer and the user's answer
-                if ($case_insensitive == 0)
-                {
-                    $correct_answer = parseCLine(htmlentities(mysql_result($result, 0, "answer")));
-                    $user_answer = parseCLine(htmlentities($answer_string));
-                }
-                else if ($case_insensitive == 1) // If the case insensitive flag is set, check the answer disregarding case
-                {
-                    $correct_answer = parseCLine(strtoupper(htmlentities(mysql_result($result, 0, "answer"))));
-                    $user_answer = parseCLine(strtoupper(htmlentities($answer_string)));
-                }
-
-                // If the users answer matches the correct answer
-                if (arrayEqual($user_answer, $correct_answer))
-                    return 1;
-                else
-                    return 0;
+                $correct_answer = parseCLine(htmlentities(mysql_result($result, 0, "answer")));
+                $user_answer = parseCLine(htmlentities($answer_string));
             }
+            else if ($case_insensitive == 1) // If the case insensitive flag is set, check the answer disregarding case
+            {
+                $correct_answer = parseCLine(strtoupper(htmlentities(mysql_result($result, 0, "answer"))));
+                $user_answer = parseCLine(strtoupper(htmlentities($answer_string)));
+            }
+
+            // If the users answer matches the correct answer
+            if (arrayEqual($user_answer, $correct_answer))
+                return 1;
+            else
+                return 0;
         }
-        else
-            return (-1);
     }
     else
         return (-1);
@@ -185,11 +186,106 @@ function explodePointer($array)
     return $temp_array;
 }
 
+function generateTaskList()
+{
+    // CONSTANTS THAT CAN BE CHANGED
+    $QUESTIONS_PER_SECTION = 4;
+    $NUMBER_OF_LESSONS = 1;
+
+    // COUNTERS -- do not change
+    $id = 1;
+    $l_task_id = 1;
+    $a_task_id = 1;
+
+    $array = array();
+
+    // Outer loop generates lesson block, inner loops generate question blocks
+    for($j = 0; $j < $NUMBER_OF_LESSONS; $j++)
+    {
+        // Output lesson task
+        $array[$id] = '"task' . $id . '": {"id": ' . $id . ',"type": "L","taskid": ' . $l_task_id . '}';
+        $id++;
+
+        // Get an array of random question IDs
+        $q_ids = generateRandomQIDArray($QUESTIONS_PER_SECTION, $l_task_id, false);
+
+        // Output the first section of questions for each unit
+        for($i = 0; $i < $QUESTIONS_PER_SECTION; $i++)
+        {
+            $array[$id] = '"task' . $id . '": {"id": ' . $id . ',"type": "Q","taskid": ' . $q_ids[$i] . '}';
+            $id++;
+        }
+        // Output assessment task
+        $array[$id] = '"task' . $id . '": {"id": ' . $id . ',"type": "A","taskid": ' . $a_task_id . '}';
+        $a_task_id++;
+        $id++;
+
+        // Get an array of random question IDs
+        $q_ids = generateRandomQIDArray($QUESTIONS_PER_SECTION, $l_task_id, true);
+
+        // Output the second set of questions for each unit
+        for($i = 0; $i < $QUESTIONS_PER_SECTION; $i++)
+        {
+            $array[$id] = '"task' . $id . '": {"id": ' . $id . ',"type": "Q","taskid": ' . $q_ids[$i] . '}';
+            $id++;
+        }
+        // Output assessment task
+        $array[$id] = '"task' . $id . '": {"id": ' . $id . ',"type": "A","taskid": ' . $a_task_id . '}';
+        $a_task_id++;
+        $id++;
+
+        // Increment lesson number
+        $l_task_id++;
+    }
+
+    $string = '{' . implode(',', $array) . '}';
+
+    return $string;
+}
+
+function generateRandomQIDArray($length, $lesson, $cumulative = false)
+{
+    require __ROOT__ . "/db/main_db_open.php";
+
+    // Check if the question ID array is cumulative or not
+    if ($cumulative)
+        $query = "SELECT * FROM `questions` WHERE `lesson_tag`<='" . $lesson . "';";
+    else
+        $query = "SELECT * FROM `questions` WHERE `lesson_tag`='" . $lesson . "';";
+
+    $result = mysql_query($query);
+    $numquestions = mysql_numrows($result);
+
+    // Build the full question array
+    $array = array();
+    for($i = 0; $i < $numquestions; $i++)
+    {
+        $array[$i] = mysql_result($result, $i, "id");
+    }
+
+    require __ROOT__ . "/db/main_db_close.php";
+
+    // Build the random question ID array
+    $i = 0;
+    $random_id_array = array();
+    while($i < $length)
+    {
+        $temp = rand(0, $numquestions - 1); // $temp is the accessor for $array
+        if (!in_array($array[$temp], $random_id_array, true))
+        {
+            $random_id_array[$i] = $array[$temp];
+            $i++;
+        }
+    }
+
+    return $random_id_array;
+}
+
 function getMasteryLevels($id=0)
 {
     require __ROOT__ . "/db/main_db_open.php";
 
-    // If ID == 0 select only the given ID
+    // If ID == 0 select all, otherwise select only the given ID
     if ($id > 0)
         $query = "SELECT * FROM `user_profile` WHERE `user_id`='" . $id . "';";
     else if ($id == 0) // If ID == 0 select all users from the database
@@ -234,6 +330,32 @@ function getMasteryLevels($id=0)
     require __ROOT__ . "/db/main_db_close.php";
 
     return $data;
+}
+
+function getTaskID($id)
+{
+    //Default task ID -- error
+    $task_id = 0;
+
+    foreach(json_decode($_SESSION['json_task_list']) as $task)
+    {
+        if($task->id == $id)
+            $task_id = $task->taskid;
+    }
+    return $task_id;
+}
+
+function getTaskType($id)
+{
+    //Default task ID -- error
+    $task_type = 'X';
+
+    foreach(json_decode($_SESSION['json_task_list']) as $task)
+    {
+        if($task->id == $id)
+            $task_type = $task->type;
+    }
+    return $task_type;
 }
 
 function getUnreviewedAttempts($user_id)
@@ -360,41 +482,59 @@ function loadTask($id)
     require __ROOT__ . "/db/main_db_open.php";
 
     // Search the task database for the given ID
-    $query = "SELECT * FROM tasks WHERE id='" . $id . "';";
+    //$query = "SELECT * FROM tasks WHERE id='" . $id . "';";
+    //$result = mysql_query($query);
+    //if(mysql_numrows($result) == 1)
+    //{
+    //$task_type = mysql_result($result, 0, "task_type");
+    //$task_id = mysql_result($result, 0, "task_id");
+
+    $task_id = getTaskID($id);
+    $task_type = getTaskType($id);
+
+    // Depending on which task type it is, get the data from the database
+    switch($task_type)
+    {
+        case "Q":
+            $query = "SELECT * FROM questions WHERE id='" . $task_id . "';";
+            $result = mysql_query($query);
+            if(mysql_numrows($result) == 1)
+            {
+                $_SESSION['current_task']['ct_html'] = '<h2 class="white-text">QUESTION</h2>'. mysql_result($result, 0, "question"); // Store question HTML
+                $_SESSION['current_task']['ct_kc'] = mysql_result($result, 0, "kc"); // Store question knowledge component ID
+                $_SESSION['current_task']['ct_atype'] = mysql_result($result, 0, "answer_type"); // Store answer type
+            }
+            break;
+        case "L":
+            $query = "SELECT * FROM lessons WHERE id='" . $task_id . "';";
+            $result = mysql_query($query);
+            if(mysql_numrows($result) == 1)
+            {
+                $_SESSION['current_task']['ct_html'] = mysql_result($result, 0, "html");
+                if(isset($answer)) unset($answer);
+            }
+            break;
+        case "A":
+            $_SESSION['current_task']['ct_html'] = attemptsToHTML(getUnreviewedAttempts($_SESSION['userid'])); // Prep assessment HTML
+            $_SESSION['current_task']['ct_reviewed_flag'] = 1; // Set flag to indicate that attempts are being reviewed
+            break;
+    }
+    //}
+    require __ROOT__ . "/db/main_db_close.php";
+}
+
+function loadTaskList($user_id)
+{
+    require __ROOT__ . "/db/main_db_open.php";
+
+    // Search the reg_users database for the given ID
+    $query = "SELECT * FROM `reg_users` WHERE id='" . $user_id . "';";
     $result = mysql_query($query);
     if(mysql_numrows($result) == 1)
     {
-        $task_type = mysql_result($result, 0, "task_type");
-        $task_id = mysql_result($result, 0, "task_id");
-
-        // Depending on which task type it is, get the data from the database
-        switch($task_type)
-        {
-            case "Q":
-                $query = "SELECT * FROM questions WHERE id='" . $task_id . "';";
-                $result = mysql_query($query);
-                if(mysql_numrows($result) == 1)
-                {
-                    $_SESSION['current_task']['ct_html'] = '<h2 class="white-text">QUESTION</h2>'. mysql_result($result, 0, "question"); // Store question HTML
-                    $_SESSION['current_task']['ct_kc'] = mysql_result($result, 0, "kc"); // Store question knowledge component ID
-                    $_SESSION['current_task']['ct_atype'] = mysql_result($result, 0, "answer_type"); // Store answer type
-                }
-                break;
-            case "L":
-                $query = "SELECT * FROM lessons WHERE id='" . $task_id . "';";
-                $result = mysql_query($query);
-                if(mysql_numrows($result) == 1)
-                {
-                    $_SESSION['current_task']['ct_html'] = mysql_result($result, 0, "html");
-                    if(isset($answer)) unset($answer);
-                }
-                break;
-            case "A":
-                $_SESSION['current_task']['ct_html'] = attemptsToHTML(getUnreviewedAttempts($_SESSION['userid'])); // Prep assessment HTML
-                $_SESSION['current_task']['ct_reviewed_flag'] = 1; // Set flag to indicate that attempts are being reviewed
-                break;
-        }
+        $_SESSION['json_task_list'] = mysql_result($result, 0, "task_list");
     }
+
     require __ROOT__ . "/db/main_db_close.php";
 }
 
@@ -403,16 +543,18 @@ function logAttempt($user_id, $task_id, $user_answer, $correct)
     require __ROOT__ . "/db/main_db_open.php";
 
     // Search the task database for the given ID
-    $query = "SELECT * FROM tasks WHERE id='" . $task_id . "' AND task_type='Q';";
-    $result = mysql_query($query);
-    if(mysql_numrows($result) == 1)
-    {
+    //$query = "SELECT * FROM tasks WHERE id='" . $task_id . "' AND task_type='Q';";
+    //$result = mysql_query($query);
+    //if(mysql_numrows($result) == 1)
+    //{
         // Get the question ID
-        $question_id = mysql_result($result, 0, "task_id");
+        //$question_id = mysql_result($result, 0, "task_id");
+
+        $question_id = getTaskID($task_id);
 
         // Insert the attempt into the database
         mysql_query("INSERT INTO task_attempts(question_id, student_id, user_answer, correct) VALUES ('$question_id','$user_id', '$user_answer', '$correct')") or die("".mysql_error());
-    }
+    //}
 
     require __ROOT__ . "/db/main_db_close.php";
 }
@@ -497,6 +639,21 @@ function setReviewedAttempts($user_id)
     // Mark attempts as reviewed
     $query = "UPDATE `task_attempts` SET reviewed='1' WHERE `student_id`='" . $user_id . "' AND `reviewed`='0';";
     mysql_query($query);
+
+    require __ROOT__ . "/db/main_db_close.php";
+}
+
+function storeTaskList($user_id, $list)
+{
+    require __ROOT__ . "/db/main_db_open.php";
+
+    // Search the reg_users database for the given ID
+    $query = "SELECT * FROM `reg_users` WHERE id='" . $user_id . "';";
+    $result = mysql_query($query);
+    if(mysql_numrows($result) == 1)
+    {
+        mysql_query("UPDATE `reg_users` SET `task_list`='" . $list . "' WHERE id='" . $user_id . "';");
+    }
 
     require __ROOT__ . "/db/main_db_close.php";
 }
