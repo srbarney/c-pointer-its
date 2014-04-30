@@ -10,6 +10,14 @@
         session_start();
     }
 
+    // Check if the start over flag is set
+    if(isset($_SESSION['current_task']['ct_start_over']))
+    {
+        // For now restart from the first task
+        $_SESSION['current_task']['ct_task_id'] = 1;
+        unset($_SESSION['current_task']['ct_start_over']);
+    }
+
     // Force the user data and question data to be refreshed from the database
     validateToken();
 

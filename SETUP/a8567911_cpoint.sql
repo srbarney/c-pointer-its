@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `knowledge_components`
 --
 
+DROP TABLE IF EXISTS `knowledge_components`;
 CREATE TABLE IF NOT EXISTS `knowledge_components` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `category` varchar(35) COLLATE utf8_unicode_ci NOT NULL,
@@ -39,6 +40,7 @@ CREATE TABLE IF NOT EXISTS `knowledge_components` (
 -- Table structure for table `lessons`
 --
 
+DROP TABLE IF EXISTS `lessons`;
 CREATE TABLE IF NOT EXISTS `lessons` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `html` varchar(15000) COLLATE utf8_unicode_ci NOT NULL,
@@ -61,11 +63,14 @@ INSERT INTO `lessons` (`id`, `html`) VALUES
 -- Table structure for table `questions`
 --
 
+DROP TABLE IF EXISTS `questions`;
 CREATE TABLE IF NOT EXISTS `questions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `kc` int(11) NOT NULL,
+   `lesson_tag` int(11) NOT NULL,
   `question` varchar(5000) COLLATE utf8_unicode_ci NOT NULL,
   `answer` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
+  `hint` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
   `answer_type` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
@@ -74,35 +79,15 @@ CREATE TABLE IF NOT EXISTS `questions` (
 -- Dumping data for table `questions`
 --
 
-INSERT INTO `questions` (`id`, `kc`, `question`, `answer`, `answer_type`) VALUES
-(1, 0, '<form method="post" action="select-task.php"> <p>Declare a pointer of type integer with the pointer name "intptr"</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', 'int * intptr;', 'C'),
-(2, 0, '<form method="post" action="select-task.php"> <p>Assign the address of an integer named "num" to a pointer named "numptr"</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', 'numptr = &amp;num;', 'C'),
-(3, 0, '<form method="post" action="select-task.php"> <p>Suppose you have a char variable:</p> <p>char charData;</p> <p>Store the contents of this variable into the location that a char pointer named "charptr" points to.</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', '*charptr = charData;', 'C'),
-(4, 0, '<form method="post" action="select-task.php"> <p>Consider the following code:</p> <ol class="code"> <li><code>int * intPointer1;</code></li> <li><code>int * intPointer2 = malloc(sizeof(int));</code></li> <li><code>*intPointer2 = 8;</code></li> <li><code>*intPointer2 = *intPointer2 + 1;</code></li> <li><code>intPointer1 = intPointer2;</code></li> <li><code>*intPointer2 = *intPointer2 + 3;</code></li> </ol> <p>What value will will intPointer1 be pointing to?</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', '9', 'T'),
-(5, 0, '<form method="post" action="select-task.php"> <p>Declare a pointer of type char with the pointer name "charptr"</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', 'char * charptr;', 'C'),
-(6, 0, '<form method="post" action="select-task.php"> <p>Declare a double pointer of type char with the pointer name "doubleCharPtr"</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', 'char ** doubleCharPtr;', 'C'),
-(7, 2, '<form method="post" action="select-task.php"> <p>Consider the following code: <ol class="code"> <li><code>int * intPointer1 = malloc(sizeof(int));</code></li> <li><code>int * intPointer2 = malloc(sizeof(int));</code></li> <li><code>*intPointer2 = 8;</code></li> <li><code>*intPointer2 = *intPointer2 + 1;</code></li> <li><code>intPointer1 = intPointer2;</code></li> <li><code>*intPointer2 = *intPointer2 - 6;</code></li> </ol> <p>On which line is memory leaked?</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', '5', 'T'),
-(8, 2, '<form method="post" action="select-task.php"> <p>Create an integer pointer named "intptr", allocate space for one integer and make your pointer point to it all in one line of code</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', 'int * intptr = malloc(sizeof(int));', 'C');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `question_multiple_choice`
---
-
-CREATE TABLE IF NOT EXISTS `question_multiple_choice` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `question` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
-  `option_01` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-  `option_02` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-  `option_03` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-  `option_04` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-  `kc_id_01` int(11) NOT NULL,
-  `kc_id_02` int(11) NOT NULL,
-  `kc_id_03` int(11) NOT NULL,
-  `difficulty` int(5) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+INSERT INTO `questions` (`id`, `kc`, `lesson_tag`, `question`, `answer`, `hint`, `answer_type`) VALUES
+(1, 0, 1, '<form method="post" action="select-task.php"> <p>Declare a pointer of type integer with the pointer name "intptr"</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', 'int * intptr;', 'EDIT ME', 'C'),
+(2, 0, 1, '<form method="post" action="select-task.php"> <p>Assign the address of an integer named "num" to a pointer named "numptr"</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', 'numptr = &amp;num;', 'EDIT ME', 'C'),
+(3, 0, 1, '<form method="post" action="select-task.php"> <p>Suppose you have a char variable:</p> <p>char charData;</p> <p>Store the contents of this variable into the location that a char pointer named "charptr" points to.</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', '*charptr = charData;', 'EDIT ME', 'C'),
+(4, 0, 1, '<form method="post" action="select-task.php"> <p>Consider the following code:</p> <ol class="code"> <li><code>int * intPointer1;</code></li> <li><code>int * intPointer2 = malloc(sizeof(int));</code></li> <li><code>*intPointer2 = 8;</code></li> <li><code>*intPointer2 = *intPointer2 + 1;</code></li> <li><code>intPointer1 = intPointer2;</code></li> <li><code>*intPointer2 = *intPointer2 + 3;</code></li> </ol> <p>What value will will intPointer1 be pointing to?</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', '9', 'EDIT ME', 'T'),
+(5, 0, 1, '<form method="post" action="select-task.php"> <p>Declare a pointer of type char with the pointer name "charptr"</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', 'char * charptr;', 'EDIT ME', 'C'),
+(6, 0, 1, '<form method="post" action="select-task.php"> <p>Declare a double pointer of type char with the pointer name "doubleCharPtr"</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', 'char ** doubleCharPtr;', 'EDIT ME', 'C'),
+(7, 2, 2, '<form method="post" action="select-task.php"> <p>Consider the following code: <ol class="code"> <li><code>int * intPointer1 = malloc(sizeof(int));</code></li> <li><code>int * intPointer2 = malloc(sizeof(int));</code></li> <li><code>*intPointer2 = 8;</code></li> <li><code>*intPointer2 = *intPointer2 + 1;</code></li> <li><code>intPointer1 = intPointer2;</code></li> <li><code>*intPointer2 = *intPointer2 - 6;</code></li> </ol> <p>On which line is memory leaked?</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', '5', 'EDIT ME', 'T'),
+(8, 2, 1, '<form method="post" action="select-task.php"> <p>Create an integer pointer named "intptr", allocate space for one integer and make your pointer point to it all in one line of code</p> <span class="answer-area"><p>Type your answer below:</p> <p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" type="submit" name="send" value="Submit"></p></span></form>', 'int * intptr = malloc(sizeof(int));', 'EDIT ME', 'C');
 
 -- --------------------------------------------------------
 
@@ -110,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `question_multiple_choice` (
 -- Table structure for table `reg_login_attempt`
 --
 
+DROP TABLE IF EXISTS `reg_login_attempt`;
 CREATE TABLE IF NOT EXISTS `reg_login_attempt` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ip` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
@@ -137,6 +123,7 @@ INSERT INTO `reg_login_attempt` (`id`, `ip`, `email`, `login_success`, `ts`) VAL
 -- Table structure for table `reg_users`
 --
 
+DROP TABLE IF EXISTS `reg_users`;
 CREATE TABLE IF NOT EXISTS `reg_users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `first_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -151,6 +138,7 @@ CREATE TABLE IF NOT EXISTS `reg_users` (
   `reg_ip` varchar(45) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
   `user_stat` varchar(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'U',
   `current_task` int(11) unsigned NOT NULL DEFAULT '1',
+  `task_list` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `token` (`token`),
   UNIQUE KEY `email` (`email`)
@@ -170,6 +158,7 @@ INSERT INTO `reg_users` (`id`, `first_name`, `last_name`, `password`, `email`, `
 -- Table structure for table `tasks`
 --
 
+DROP TABLE IF EXISTS `tasks`;
 CREATE TABLE IF NOT EXISTS `tasks` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `task_type` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
@@ -192,7 +181,10 @@ INSERT INTO `tasks` (`id`, `task_type`, `task_id`) VALUES
 (8, 'Q', 6),
 (9, 'Q', 7),
 (10, 'Q', 8),
-(11, 'A', 2);
+(11, 'A', 2),
+(12, 'L', 2),
+(13, 'L', 3),
+(14, 'L', 4);
 
 -- --------------------------------------------------------
 
@@ -200,6 +192,7 @@ INSERT INTO `tasks` (`id`, `task_type`, `task_id`) VALUES
 -- Table structure for table `task_attempts`
 --
 
+DROP TABLE IF EXISTS `task_attempts`;
 CREATE TABLE IF NOT EXISTS `task_attempts` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `question_id` int(11) unsigned NOT NULL,
@@ -229,6 +222,7 @@ INSERT INTO `task_attempts` (`id`, `question_id`, `student_id`, `tstamp`, `time_
 -- Table structure for table `user_profile`
 --
 
+DROP TABLE IF EXISTS `user_profile`;
 CREATE TABLE IF NOT EXISTS `user_profile` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
