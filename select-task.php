@@ -10,12 +10,16 @@
         session_start();
     }
 
-    // Check if the start over flag is set
-    if(isset($_SESSION['current_task']['ct_start_over']) || isset($_GET['rst']))
+    // Check if the lesson select is set
+    if(isset($_GET['lsn']))
     {
         // For now restart from the first task
-        saveTaskID($_SESSION['userid'], 0);
-        unset($_SESSION['current_task']['ct_start_over']);
+        $lesson_id = getLessonTaskID(isset($_GET['lsn']));
+        if ($lesson_id > 0)
+            saveTaskID($_SESSION['userid'], $lesson_id - 1);
+        else
+            saveTaskID($_SESSION['userid'], 0);
+        unset($_GET['lsn']);
     }
 
     // Force the user data and question data to be refreshed from the database

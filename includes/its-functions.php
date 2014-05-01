@@ -38,8 +38,9 @@ function attemptsToHTML($array)
         }
     }
 
-    $html .= '<a href="select-task.php?rst=1">Start Over From Lesson 1</a>';
-    $html .= '<br><form method="POST" action="select-task.php"><input class="button" type="submit" name="send" value="Next"></form>';
+    $html .= '<br><p><a href="select-task.php?lsn=' . getCurrentLessonID() . '"><button class="button">Retry Lesson</button></a>&nbsp;&nbsp;';
+    $html .= '<a href="select-task.php"><button class="button">Next</button></a></p>';
+    //$html .= '<form method="POST" action="select-task.php"><input class="button" type="submit" name="send" value="Next"></form></p>';
 
     return $html;
 }
@@ -281,6 +282,26 @@ function generateRandomQIDArray($length, $lesson, $cumulative = false)
     return $random_id_array;
 }
 
+// Returns the Lesson ID based on the current task
+function getCurrentLessonID()
+{
+    //Default lesson ID
+    $lesson_id = 1;
+    $current_task = $_SESSION['current_task']['ct_task_id'];
+    $task_reached = false;
+
+    foreach(json_decode($_SESSION['json_task_list']) as $task)
+    {
+        if($task->id == $current_task)
+            $task_reached = true;
+
+        // Iterate through lessons while current task is not reached
+        if($task_reached == false && !strcmp($task->type,"L"))
+            $lesson_id = $task->taskid;
+    }
+    return $lesson_id;
+}
+
 function getMasteryLevels($id=0)
 {
     require __ROOT__ . "/db/main_db_open.php";
@@ -330,6 +351,19 @@ function getMasteryLevels($id=0)
     require __ROOT__ . "/db/main_db_close.php";
 
     return $data;
+}
+
+function getLessonTaskID($id)
+{
+    //Default lesson ID -- error
+    $task_id = 0;
+
+    foreach(json_decode($_SESSION['json_task_list']) as $task)
+    {
+        if($task->taskid == $id && !strcmp($task->type,"L"))
+            $task_id = $task->id;
+    }
+    return $task_id;
 }
 
 function getTaskID($id)
