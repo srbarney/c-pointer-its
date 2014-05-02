@@ -25,6 +25,7 @@ $(document).ready(function() {
 
     /* Initialize standard tooltips */
     $('.tooltip').powerTip({ mouseOnToPopup: true });
+    $('.hint-tooltip').powerTip({ manual: true });
 
     /* Initialize backstretch for site background */
     $.backstretch("../images/background.jpg");

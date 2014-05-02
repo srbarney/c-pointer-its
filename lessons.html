@@ -9,9 +9,19 @@
 
 <script>
     $(document).ready(function() {
+        $('#hint-button').data('powertiptarget', 'hint-div');
         $('.lesson-div').hide();
         $('.section-1').show();
     });
+    function showHint()
+    {
+        $('#hint-button').powerTip('show');
+        preventDefault();
+    }
+    function hideHint()
+    {
+        $.powerTip.hide();
+    }
 </script>
 
 <?php require_once "components/session-message.php" ?>
@@ -31,6 +41,10 @@
                     echo('});');
                     echo('</script>');
                 }
+            }
+            if(isset($_SESSION['current_task']['ct_hint']))
+            {
+                echo('<div id="hint-div" class="hidden"><p style="padding: 0 15px;">HINT: ' . $_SESSION['current_task']['ct_hint'] . '</p><img class="session-message-close" src="/icons/close.png" alt="X" onclick="hideHint()"/></div>');
             }
         ?>
     </div>

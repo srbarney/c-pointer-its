@@ -11,7 +11,7 @@ function arrayEqual($a, $b) {
 
 function attemptsToHTML($array)
 {
-    $html = '<script>$(document).ready(function() {$(".answer-area").hide();});</script><h1 class="white-text">REVIEW</h1>';
+    $html = '<script>$(document).ready(function() {$(".answer-area").hide();});</script><h1 class="white-text">SECTION REVIEW</h1>';
 
     foreach ($array as $question)
     {
@@ -29,6 +29,8 @@ function attemptsToHTML($array)
             }
             if(!strcmp($index,'qhtml'))
                 $html .= '<br><br><h2 class="white-text">QUESTION</h2>' . $value;
+            else if(!strcmp($index,'hint'))
+                $html .= '<p class="white-text">Hint: <span class="highlight">' . $value . '</span></p>';
             else if(!strcmp($index,'answer'))
                 $html .= '<p class="white-text">Correct Answer: <span class="highlight">' . $value . '</span></p>';
             else
@@ -419,6 +421,7 @@ function getUnreviewedAttempts($user_id)
             if(mysql_numrows($qresult) == 1)
             {
                 $attempt[$qid]['qhtml'] = mysql_result($qresult, 0, "question");
+                $attempt[$qid]['hint'] = mysql_result($qresult, 0, "hint");
                 $attempt[$qid]['answer'] = mysql_result($qresult, 0, "answer");
             }
 
@@ -526,6 +529,9 @@ function loadTask($id)
     $task_id = getTaskID($id);
     $task_type = getTaskType($id);
 
+    // Clear currently stored hint
+    unset($_SESSION['current_task']['ct_hint']);
+
     // Depending on which task type it is, get the data from the database
     switch($task_type)
     {
@@ -534,9 +540,10 @@ function loadTask($id)
             $result = mysql_query($query);
             if(mysql_numrows($result) == 1)
             {
-                $_SESSION['current_task']['ct_html'] = '<h2 class="white-text">QUESTION</h2>'. mysql_result($result, 0, "question"); // Store question HTML
+                $_SESSION['current_task']['ct_html'] = '<h2 class="white-text">QUESTION</h2><form method="post" action="select-task.php">'. mysql_result($result, 0, "question") . '<span class="answer-area"><p>Type your answer below:</p><p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" id="submit" type="submit" name="send" value="Submit">&nbsp;<input id="hint-button" class="button hint-tooltip" value="Hint" onclick="showHint()"/></p></span></form>'; // Store question HTML
                 $_SESSION['current_task']['ct_kc'] = mysql_result($result, 0, "kc"); // Store question knowledge component ID
                 $_SESSION['current_task']['ct_atype'] = mysql_result($result, 0, "answer_type"); // Store answer type
+                $_SESSION['current_task']['ct_hint'] = mysql_result($result, 0, "hint"); // Store hint
             }
             break;
         case "L":

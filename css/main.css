@@ -237,3 +237,9 @@ ol.code li:nth-child(even) {
     color: #FFFFFF !important;
     text-shadow: 1px 1px #333333;
 }
+
+.hint-tooltip {
+    margin: 0 2px;
+    width: 68px;
+    padding: 1px 6px;
+}
