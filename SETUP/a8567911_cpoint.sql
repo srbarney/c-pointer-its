@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 03, 2014 at 10:40 PM
+-- Generation Time: May 05, 2014 at 12:26 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `questions` (
   `hint` varchar(300) COLLATE utf8_unicode_ci NOT NULL,
   `answer_type` varchar(5) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=33 ;
 
 --
 -- Dumping data for table `questions`
@@ -84,7 +84,7 @@ INSERT INTO `questions` (`id`, `kc`, `lesson_tag`, `question`, `answer`, `hint`,
 (5, 0, 1, '<p>Declare a pointer of type char with the pointer name "charptr"</p> ', 'char * charptr;', 'EDIT ME', 'C'),
 (6, 0, 1, '<p>Declare a double pointer of type char with the pointer name "doubleCharPtr"</p> ', 'char ** doubleCharPtr;', 'EDIT ME', 'C'),
 (7, 2, 2, '<p>Consider the following code: <ol class="code"> <li><code>int * intPointer1 = malloc(sizeof(int));</code></li> <li><code>int * intPointer2 = malloc(sizeof(int));</code></li> <li><code>*intPointer2 = 8;</code></li> <li><code>*intPointer2 = *intPointer2 + 1;</code></li> <li><code>intPointer1 = intPointer2;</code></li> <li><code>*intPointer2 = *intPointer2 - 6;</code></li> </ol> <p>On which line is memory leaked?</p> ', '5', 'EDIT ME', 'T'),
-(8, 2, 1, '<p>Create an integer pointer named "intptr", allocate space for one integer and make your pointer point to it all in one line of code</p> ', 'int * intptr = malloc(sizeof(int));', 'EDIT ME', 'C'),
+(8, 2, 2, '<p>Create an integer pointer named "intptr", allocate space for one integer and make your pointer point to it all in one line of code</p> ', 'int * intptr = malloc(sizeof(int));', 'You must use malloc() and sizeof().', 'C'),
 (9, 1, 1, '<p>Declare a pointer of type "double" and set it equal to NULL. Name the pointer nullPtr;</p>', 'double * nullPtr = NULL;', 'Don''t overthink this one. NULL just means ''nothing'' and is typed exactly how you see it. ', 'C'),
 (10, 1, 1, '<p>Lets say you want to create a pointer to a pointer named "iPoint" of type int. Is the code below the proper way to do this?</p><ol class="code"><li><code>iPoint ** int;</code></li></ol><p>Type "yes" or "no" (in lowercase).</p>', 'no', 'Think about the first thing you need to let the compiler know about the pointer.', 'C'),
 (11, 1, 1, '<p>Is this the proper way to dereference a pointer named "dereferenceMe"?</p><ol class="code"><li><code>int newData = &dereferenceMe;</code></li></ol><p>Type "yes" or "no" (in lowercase).</p>', 'no', 'Think about what character you need to use to dereference, does that one look right?', 'C'),
@@ -96,7 +96,19 @@ INSERT INTO `questions` (`id`, `kc`, `lesson_tag`, `question`, `answer`, `hint`,
 (17, 2, 2, '<p>Is it okay to assign a pointer that has already been allocated memory a new address?</p><p>Type "yes" or "no" (all lower case)</p>', 'no', 'Think about what actually happens behind the scenes when you do this. ', 'C'),
 (18, 2, 2, '<p>Given the following code:</p><ol class="code"><li><code>int * p1 = malloc(sizeof(int));</code></li><li><code>*p1 = 8;</code></li><li><code>int * p2 = malloc(sizeof(int));</code></li><li><code>p1 = p2;</code></li><li><code>*p2 = 20;</code></li></ol><p></p><p>Is there a problem with this code? If not, type "no". If there is, input the line number where the problem occurs.</p>', '4', 'In order to decide if there is a problem in this code, think about what is happening in memory with all instructions.', 'T'),
 (19, 3, 3, '<p>You are wanting to pass a pointer to a function. The function will have only one argument. Refer to the code below:</p><ol class="code"><li><code></code></li><li><code>//You want to pass an integer pointer to the function</code></li><li><code>void myFunction(/*what goes here?*/)</code></li><li><code>{</code></li><li><code>//code for function</code></li><li><code>}</code></li><li><code></code></li></ol><p></p><p>If the argument is an integer and the name of the argument is "arg", what would you replace the "/*what goes here?*/" comment with in the code above?</p>', 'int * arg', 'You must tell the function exactly what it is recieving.', 'C'),
-(20, 3, 3, '<p>You are calling a function named "foo" which recieves one char pointer as an argument. You are passing a variable named "fooVar". Write the line that would accomplish this function call.</p>', 'foo(&fooVar);', 'Remember you must pass an address', 'C');
+(20, 3, 3, '<p>You are calling a function named "foo" which recieves one char pointer as an argument. You are passing a variable named "fooVar". Write the line that would accomplish this function call.</p>', 'foo(&fooVar);', 'Remember you must pass an address', 'C'),
+(21, 3, 3, '<p>Create a void function named foo that accepts two char pointers named: arg1 and arg2. Make sure arg1 comes before arg2. NOTE: assume the the opening bracket of the function will be placed on the next line, thus, do not include it in the line of code.</p>', 'void foo(char * arg1, char * arg2)', 'Declare the function the way you regularly would, but think about what needs to change with declaring the arguments.', 'C'),
+(22, 3, 3, '<p>Create a void function named ''myFunction'' that accepts one float pointers named: p_float. NOTE: assume the the opening bracket of the function will be placed on the next line, thus, do not include it in the line of code.</p>', 'void myFunction(float * p_float)', 'Declare the function the way you regularly would, but think about what needs to change with declaring the arguments.', 'C'),
+(23, 3, 3, '<p>You have two integers that you want to be modified directly by a function. These are named: ''int1'' and ''int2''. The function looks like this:</p><ol class="code"><li><code>void modifyIntegers(int * int1, int * int2)</code></li><li><code>{</code></li><li><code>//modifies the integers in here</code></li><li><code>}</code></li></ol><p></p><p>Correctly pass the integers to the function properly. Note, when passing the arguments, make sure int1 comes before int2.</p>', 'modifyIntegers(&int1, &int2);', 'You need to send the address of the integers to the function.', 'C'),
+(24, 3, 3, '<p>You have a float variable that you want to be modified directly by a function. It is named: ''float1''. The function looks like this:</p><ol class="code"><li><code>void changeFloat(float * float1)</code></li><li><code>{</code></li><li><code>//modifies the float in here</code></li><li><code>}</code></li></ol><p></p><p>Correctly pass the float variable to the function properly. Note, when passing the arguments, make sure int1 comes before int2.</p>', 'changeFloat(&float1);', 'You need to send the address of the float to the function.', 'C'),
+(25, 4, 4, '<p>Suppose you have a struct defined as such:</p><ol class="code"><li><code>typedef struct person{</code></li><li><code>int age;</code></li><li><code>char gender;</code></li><li><code>}Person;</code></li></ol><p></p><p>Now say you have a pointer to the struct named "personPtr". Using the arrow operator, set the age to 42.</p>', 'personPtr->age = 42;', 'The arrow operator is used for pointers in the same way the dot operator is used for non pointers.', 'C'),
+(26, 4, 4, '<p>Suppose you have a struct defined as such:</p><ol class="code"><li><code>typedef struct person{</code></li><li><code>int age;</code></li><li><code>char gender;</code></li><li><code>}Person;</code></li></ol><p></p><p>Now say you have a pointer to the struct named "personPtr". Using the arrow operator, set the gender to ''F''.</p>', 'personPtr->gender = ''F'';', 'The arrow operator is used for pointers in the same way the dot operator is used for non pointers.', 'C'),
+(27, 4, 4, '<p>Suppose you have a struct defined as such:</p><ol class="code"><li><code>typedef struct car{</code></li><li><code>int year;</code></li><li><code>int VIN;</code></li><li><code>}Car;</code></li></ol><p></p><p>Now say you have a pointer to the struct named "carPtr". Using the DOT operator, set the year to 1996. NOTE: This problem might be a little trickier for you, think about it before submitting.</p>', '(*carPtr).year = 1996;', 'Remember, if you want to use the dot operator, the pointer must be dereferenced.', 'C'),
+(28, 4, 4, '<p>Suppose you have a struct defined as such:</p><ol class="code"><li><code>typedef struct car{</code></li><li><code>int year;</code></li><li><code>int VIN;</code></li><li><code>}Car;</code></li></ol><p></p><p>Now say you have a pointer to the struct named "carPtr". Using the arrow operator, set the year to 2014.</p>', 'carPtr->year = 2014;', 'When using pointers to structs, the arrow operator is used in the same way as the dot operator.', 'C'),
+(29, 4, 4, '<p>Suppose you have a dynamic array defined using the struct as such:</p><ol class="code"><li><code>typedef struct car{</code></li><li><code>int year;</code></li><li><code>int VIN;</code></li><li><code>}Car;</code></li><li><code></code></li><li><code>void main()</code></li><li><code>{</code></li><li><code></code></li><li><code>Car * carArr = malloc(10 * sizeof(Car));</code></li><li><code></code></li><li><code>}</code></li></ol><p></p><p>Using the arrow operator, set the year of the 5th (index 4) car element in the array to 2003.</p>', 'carArr[4]->year = 2003;', 'Dynamic can be accessed in the same way as non dynamic arrays.', 'C'),
+(30, 4, 4, '<p>Suppose you have a dynamic array defined using the struct as such:</p><ol class="code"><li><code>typedef struct person{</code></li><li><code>int age;</code></li><li><code>char gender;</code></li><li><code>}Person;</code></li><li><code></code></li><li><code>void main()</code></li><li><code>{</code></li><li><code></code></li><li><code>Person * personArr = malloc(25 * sizeof(Person));</code></li><li><code></code></li><li><code>}</code></li></ol><p></p><p>Using the arrow operator, set the age of the 1st (index 0) car element in the array to 21.</p>', 'personArr[0]->age = 21;', 'Dynamic can be accessed in the same way as non dynamic arrays.', 'C'),
+(31, 4, 4, '<p>Suppose you have a struct defined using the struct as such:</p><ol class="code"><li><code>typedef struct person{</code></li><li><code>int age;</code></li><li><code>char gender;</code></li><li><code>}Person;</code></li></ol><p></p><p>Create a pointer to this struct named ''newPerson''. Allocate it room for 1 person. NOTE: use the alias defined by the typedef: (Person).</p>', 'Person * newPerson = malloc(sizeof(Person));', 'The struct is used in the same way regular types are. Use malloc() and free();', 'C'),
+(32, 4, 4, '<p>Suppose you have a struct defined using the struct as such:</p><ol class="code"><li><code>typedef struct person{</code></li><li><code>int age;</code></li><li><code>char gender;</code></li><li><code>}Person;</code></li></ol><p></p><p>Create a pointer to this struct named ''newPerson''. Allocate it room for 10 people. NOTE: use the alias defined by the typedef: (Person).</p>', 'Person * newPerson = malloc(10* sizeof(Person));', 'The struct is used in the same way regular types are. Use malloc() and free(). Remember, you are making room for 10 times the size of the struct Person.', 'C');
 
 -- --------------------------------------------------------
 
@@ -111,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `reg_login_attempt` (
   `login_success` tinyint(1) NOT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `reg_login_attempt`
@@ -127,7 +139,8 @@ INSERT INTO `reg_login_attempt` (`id`, `ip`, `email`, `login_success`, `ts`) VAL
 (7, '::1', 'cameronk313@cox.net', 1, '2014-05-02 07:50:02'),
 (8, '::1', 'cameronk313@cox.net', 1, '2014-05-04 02:13:48'),
 (9, '::1', 'cameronk313@cox.net', 1, '2014-05-04 02:20:24'),
-(10, '::1', 'cameronk313@cox.net', 1, '2014-05-04 04:17:06');
+(10, '::1', 'cameronk313@cox.net', 1, '2014-05-04 04:17:06'),
+(11, '::1', 'cameronk313@cox.net', 1, '2014-05-05 04:27:16');
 
 -- --------------------------------------------------------
 
@@ -161,7 +174,7 @@ CREATE TABLE IF NOT EXISTS `reg_users` (
 
 INSERT INTO `reg_users` (`id`, `first_name`, `last_name`, `password`, `email`, `rank`, `registered`, `last_login`, `token`, `token_validity`, `reg_ip`, `user_stat`, `current_task`, `task_list`) VALUES
 (1, 'Steven', 'Barney', 'acdd77bc283941db353f3936a5a9b847', 'srbarney@asu.edu', 3, '2014-03-13 05:10:12', '2014-04-05 15:03:44', '9dfb1c02b3a778c5132ee0d617fbdf293f85dc47', '2014-04-05 16:03:44', '0.0.0.0', 'A', 1, ''),
-(2, 'Cameron', 'Keith', 'c59b47fbcf66b482e2ed3db39ab05155', 'cameronk313@cox.net', 3, '2014-04-27 03:17:53', '2014-05-04 04:17:06', '0b5d3043aec96d49a7bc59d9bc5e145840535ca6', '2014-05-04 05:17:06', '0.0.0.0', 'A', 7, '{"task1": {"id": 1,"type": "L","taskid": 1},"task2": {"id": 2,"type": "Q","taskid": 2},"task3": {"id": 3,"type": "Q","taskid": 1},"task4": {"id": 4,"type": "Q","taskid": 5},"task5": {"id": 5,"type": "Q","taskid": 6},"task6": {"id": 6,"type": "A","taskid": 1},"task7": {"id": 7,"type": "Q","taskid": 4},"task8": {"id": 8,"type": "Q","taskid": 2},"task9": {"id": 9,"type": "Q","taskid": 5},"task10": {"id": 10,"type": "Q","taskid": 3},"task11": {"id": 11,"type": "A","taskid": 2}}');
+(2, 'Cameron', 'Keith', 'c59b47fbcf66b482e2ed3db39ab05155', 'cameronk313@cox.net', 3, '2014-04-27 03:17:53', '2014-05-05 04:27:16', '4017bbeccc09d262c073e23b8acde77b61ce67d1', '2014-05-05 05:27:16', '0.0.0.0', 'A', 7, '{"task1": {"id": 1,"type": "L","taskid": 1},"task2": {"id": 2,"type": "Q","taskid": 2},"task3": {"id": 3,"type": "Q","taskid": 1},"task4": {"id": 4,"type": "Q","taskid": 5},"task5": {"id": 5,"type": "Q","taskid": 6},"task6": {"id": 6,"type": "A","taskid": 1},"task7": {"id": 7,"type": "Q","taskid": 4},"task8": {"id": 8,"type": "Q","taskid": 2},"task9": {"id": 9,"type": "Q","taskid": 5},"task10": {"id": 10,"type": "Q","taskid": 3},"task11": {"id": 11,"type": "A","taskid": 2}}');
 
 -- --------------------------------------------------------
 
