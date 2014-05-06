@@ -1,7 +1,6 @@
 <table class="dashboard-menu-table">
     <tr>
-        <td>Mastery</td>
-        <td>Stats</td>
-        <td>Something Else</td>
+        <td><a class="white-text">Mastery Levels</a></td>
+        <td><a class="white-text">Task Completion</a></td>
     </tr>
 </table>

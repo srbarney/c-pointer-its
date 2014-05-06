@@ -19,12 +19,12 @@ function attemptsToHTML($array)
         {
             if (isset($value['correct']) && !strcmp($value['correct'],'1'))
             {
-                $src = __ROOT__ . "/icons/green-check-sm.png";
+                $src = "icons/green-check-sm.png";
                 $correct = "correct";
             }
             else
             {
-                $src = __ROOT__ . "/icons/red-x-sm.png";
+                $src = "icons/red-x-sm.png";
                 $correct = "incorrect";
             }
             if(!strcmp($index,'qhtml'))
@@ -65,7 +65,7 @@ function cLineIsComment($array)
 // Otherwise returns 0 if incorrect and 1 if correct
 function checkAnswer($id, $answer_string, $case_insensitive = 0)
 {
-    require __ROOT__ . "/db/main_db_open.php";
+    require "db/main_db_open.php";
 
     // Search the task database for the given ID
     //$query = "SELECT * FROM tasks WHERE id='" . $id . "';";
@@ -107,7 +107,7 @@ function checkAnswer($id, $answer_string, $case_insensitive = 0)
     else
         return (-1);
 
-    require __ROOT__ . "/db/main_db_close.php";
+    require "db/main_db_close.php";
 }
 
 // Chooses the next task ID (currently just increments it by one)
@@ -193,7 +193,7 @@ function generateTaskList()
 {
     // CONSTANTS THAT CAN BE CHANGED
     $QUESTIONS_PER_SECTION = 4;
-    $NUMBER_OF_LESSONS = 1;
+    $NUMBER_OF_LESSONS = 4;
 
     // COUNTERS -- do not change
     $id = 1;
@@ -248,7 +248,7 @@ function generateTaskList()
 
 function generateRandomQIDArray($length, $lesson, $cumulative = false)
 {
-    require __ROOT__ . "/db/main_db_open.php";
+    require "db/main_db_open.php";
 
     // Check if the question ID array is cumulative or not
     if ($cumulative)
@@ -266,7 +266,7 @@ function generateRandomQIDArray($length, $lesson, $cumulative = false)
         $array[$i] = mysql_result($result, $i, "id");
     }
 
-    require __ROOT__ . "/db/main_db_close.php";
+    require "db/main_db_close.php";
 
     // Build the random question ID array
     $i = 0;
@@ -306,7 +306,7 @@ function getCurrentLessonID()
 
 function getMasteryLevels($id=0)
 {
-    require __ROOT__ . "/db/main_db_open.php";
+    require "db/main_db_open.php";
 
     // If ID == 0 select all, otherwise select only the given ID
     if ($id > 0)
@@ -350,7 +350,7 @@ function getMasteryLevels($id=0)
         $data[$i] = $array;
     }
 
-    require __ROOT__ . "/db/main_db_close.php";
+    require "db/main_db_close.php";
 
     return $data;
 }
@@ -396,7 +396,7 @@ function getTaskType($id)
 
 function getUnreviewedAttempts($user_id)
 {
-    require __ROOT__ . "/db/main_db_open.php";
+    require "db/main_db_open.php";
 
     $query = "SELECT * FROM `task_attempts` WHERE `student_id`='" . $user_id . "' AND `reviewed`='0' ORDER BY id ASC;";
     $result = mysql_query($query);
@@ -430,7 +430,7 @@ function getUnreviewedAttempts($user_id)
         }
     }
 
-    require __ROOT__ . "/db/main_db_close.php";
+    require "db/main_db_close.php";
 
     return $attempt;
 }
@@ -516,7 +516,7 @@ function initializeHighChart($data="", $categories=array('Syntax', 'Basic Theory
 // Get task information with given ID and store it into the $_SESSION
 function loadTask($id)
 {
-    require __ROOT__ . "/db/main_db_open.php";
+    require "db/main_db_open.php";
 
     // Search the task database for the given ID
     //$query = "SELECT * FROM tasks WHERE id='" . $id . "';";
@@ -540,7 +540,7 @@ function loadTask($id)
             $result = mysql_query($query);
             if(mysql_numrows($result) == 1)
             {
-                $_SESSION['current_task']['ct_html'] = '<h2 class="white-text">QUESTION</h2><form method="post" action="select-task.php">'. mysql_result($result, 0, "question") . '<span class="answer-area"><p>Type your answer below:</p><p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" id="submit" type="submit" name="send" value="Submit">&nbsp;<input id="hint-button" class="button hint-tooltip" value="Hint" onclick="showHint()"/></p></span></form>'; // Store question HTML
+                $_SESSION['current_task']['ct_html'] = '<h2 class="white-text">QUESTION</h2><form method="post" action="select-task.php">'. mysql_result($result, 0, "question") . '<span class="answer-area"><p>Type your answer below:</p><p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" id="submit" type="submit" name="send" value="Submit">&nbsp;<span id="hint-button" class="button hint-tooltip" onclick="showHint()">Hint</span></p></span></form>'; // Store question HTML
                 $_SESSION['current_task']['ct_kc'] = mysql_result($result, 0, "kc"); // Store question knowledge component ID
                 $_SESSION['current_task']['ct_atype'] = mysql_result($result, 0, "answer_type"); // Store answer type
                 $_SESSION['current_task']['ct_hint'] = mysql_result($result, 0, "hint"); // Store hint
@@ -561,12 +561,12 @@ function loadTask($id)
             break;
     }
     //}
-    require __ROOT__ . "/db/main_db_close.php";
+    require "db/main_db_close.php";
 }
 
 function loadTaskList($user_id)
 {
-    require __ROOT__ . "/db/main_db_open.php";
+    require "db/main_db_open.php";
 
     // Search the reg_users database for the given ID
     $query = "SELECT * FROM `reg_users` WHERE id='" . $user_id . "';";
@@ -576,12 +576,12 @@ function loadTaskList($user_id)
         $_SESSION['json_task_list'] = mysql_result($result, 0, "task_list");
     }
 
-    require __ROOT__ . "/db/main_db_close.php";
+    require "db/main_db_close.php";
 }
 
 function logAttempt($user_id, $task_id, $user_answer, $correct)
 {
-    require __ROOT__ . "/db/main_db_open.php";
+    require "db/main_db_open.php";
 
     // Search the task database for the given ID
     //$query = "SELECT * FROM tasks WHERE id='" . $task_id . "' AND task_type='Q';";
@@ -597,7 +597,7 @@ function logAttempt($user_id, $task_id, $user_answer, $correct)
         mysql_query("INSERT INTO task_attempts(question_id, student_id, user_answer, correct) VALUES ('$question_id','$user_id', '$user_answer', '$correct')") or die("".mysql_error());
     //}
 
-    require __ROOT__ . "/db/main_db_close.php";
+    require "db/main_db_close.php";
 }
 
 // Main parsing function: takes a string and drives all of the necessary functions to output an array of tokens with error flags
@@ -660,7 +660,7 @@ function printCLine($array)
 // Stores the given task ID into the specified users profile in reg_users database
 function saveTaskID($user_id, $task_id)
 {
-    require __ROOT__ . "/db/main_db_open.php";
+    require "db/main_db_open.php";
 
     // Search the reg_users database for the given ID
     $query = "SELECT * FROM `reg_users` WHERE id='" . $user_id . "';";
@@ -670,23 +670,23 @@ function saveTaskID($user_id, $task_id)
         mysql_query("UPDATE `reg_users` SET current_task='" . $task_id . "' WHERE id='" . $user_id . "';");
     }
 
-    require __ROOT__ . "/db/main_db_close.php";
+    require "db/main_db_close.php";
 }
 
 function setReviewedAttempts($user_id)
 {
-    require __ROOT__ . "/db/main_db_open.php";
+    require "db/main_db_open.php";
 
     // Mark attempts as reviewed
     $query = "UPDATE `task_attempts` SET reviewed='1' WHERE `student_id`='" . $user_id . "' AND `reviewed`='0';";
     mysql_query($query);
 
-    require __ROOT__ . "/db/main_db_close.php";
+    require "db/main_db_close.php";
 }
 
 function storeTaskList($user_id, $list)
 {
-    require __ROOT__ . "/db/main_db_open.php";
+    require "db/main_db_open.php";
 
     // Search the reg_users database for the given ID
     $query = "SELECT * FROM `reg_users` WHERE id='" . $user_id . "';";
@@ -696,7 +696,7 @@ function storeTaskList($user_id, $list)
         mysql_query("UPDATE `reg_users` SET `task_list`='" . $list . "' WHERE id='" . $user_id . "';");
     }
 
-    require __ROOT__ . "/db/main_db_close.php";
+    require "db/main_db_close.php";
 }
 
 // Updates the learner model in the database
@@ -767,7 +767,7 @@ function updateUserProfile($user_id, $kc_id, $correct)
     // If the retry flag is not set, then log the answer
     if ($retry_flag == 0)
     {
-        require __ROOT__ . "/db/main_db_open.php";
+        require "db/main_db_open.php";
 
         // Search the user_profile database for the given ID
         $query = "SELECT * FROM `user_profile` WHERE user_id='" . $user_id . "';";
@@ -812,7 +812,7 @@ function updateUserProfile($user_id, $kc_id, $correct)
                 break;
         }
 
-        require __ROOT__ . "/db/main_db_close.php";
+        require "db/main_db_close.php";
     }
     return $retry_flag;
 }

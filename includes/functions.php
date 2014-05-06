@@ -188,7 +188,7 @@ function userStatToString($stat) {
 function validateToken() {
     if (isset($_SESSION['token']))
     {
-        require __ROOT__ . "/db/main_db_open.php";
+        require "db/main_db_open.php";
         $query = "SELECT * FROM reg_users WHERE token='" . $_SESSION['token'] . "';";
         $result = mysql_query($query);
 
@@ -241,7 +241,7 @@ function validateToken() {
                 mysql_query($query);
             }
         }
-        require __ROOT__ . "/db/main_db_close.php";
+        require "db/main_db_close.php";
     }
 }
 

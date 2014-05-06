@@ -243,3 +243,7 @@ ol.code li:nth-child(even) {
     width: 68px;
     padding: 1px 6px;
 }
+#hint-button {
+    max-width: 66px;
+    height: 24px;
+}

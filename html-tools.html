@@ -49,7 +49,7 @@
 
                 output = output + line;
             }
-            $('#preview').html('<form method="post" action="select-task.php">' + output + '<span class="answer-area"><p>Type your answer below:</p><p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" id="submit" type="submit" name="send" value="Submit">&nbsp;<input id="hint-button" class="button hint-tooltip" value="Hint" onclick="showHint()"/></p></span></form>');
+            $('#preview').html('<form method="post" action="select-task.php">' + output + '<span class="answer-area"><p>Type your answer below:</p><p><input type="text" name="answer">&nbsp;&nbsp;<input class="button" id="submit" type="submit" name="send" value="Submit">&nbsp;<span id="hint-button" class="button hint-tooltip">Hint</span></p></span></form>');
             $('#submit').on('click',function() {
                 $(this).attr("disabled","disabled");
             });

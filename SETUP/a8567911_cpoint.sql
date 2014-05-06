@@ -1,13 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.2.2
+-- version 4.0.4.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2014 at 12:26 AM
--- Server version: 5.5.27
--- PHP Version: 5.4.7
+-- Generation Time: May 06, 2014 at 06:33 AM
+-- Server version: 5.5.32
+-- PHP Version: 5.4.19
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `a8567911_cpoint`
 --
+CREATE DATABASE IF NOT EXISTS `a8567911_cpoint` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+USE `a8567911_cpoint`;
 
 -- --------------------------------------------------------
 
@@ -26,6 +28,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `knowledge_components`
 --
 
+DROP TABLE IF EXISTS `knowledge_components`;
 CREATE TABLE IF NOT EXISTS `knowledge_components` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `category` varchar(35) COLLATE utf8_unicode_ci NOT NULL,
@@ -39,6 +42,7 @@ CREATE TABLE IF NOT EXISTS `knowledge_components` (
 -- Table structure for table `lessons`
 --
 
+DROP TABLE IF EXISTS `lessons`;
 CREATE TABLE IF NOT EXISTS `lessons` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `html` varchar(15000) COLLATE utf8_unicode_ci NOT NULL,
@@ -61,6 +65,7 @@ INSERT INTO `lessons` (`id`, `html`) VALUES
 -- Table structure for table `questions`
 --
 
+DROP TABLE IF EXISTS `questions`;
 CREATE TABLE IF NOT EXISTS `questions` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `kc` int(11) NOT NULL,
@@ -77,23 +82,23 @@ CREATE TABLE IF NOT EXISTS `questions` (
 --
 
 INSERT INTO `questions` (`id`, `kc`, `lesson_tag`, `question`, `answer`, `hint`, `answer_type`) VALUES
-(1, 0, 1, '<p>Declare a pointer of type integer with the pointer name "intptr"</p> ', 'int * intptr;', 'EDIT ME', 'C'),
+(1, 0, 1, '<p>Declare a pointer of type integer with the pointer name "intptr"</p> ', 'int * intptr;', 'What special character do you use to declare a pointer?', 'C'),
 (2, 0, 1, '<p>Assign the address of an integer named "num" to a pointer named "numptr"</p> ', 'numptr = &amp;num;', 'Recall, a special characher ''&'' must be used.', 'C'),
-(3, 0, 1, '<p>Suppose you have a char variable:</p> <p>char charData;</p> <p>Store the contents of this variable into the location that a char pointer named "charptr" points to.</p> ', '*charptr = charData;', 'EDIT ME', 'C'),
-(4, 0, 1, '<p>Consider the following code:</p> <ol class="code"> <li><code>int * intPointer1;</code></li> <li><code>int * intPointer2 = malloc(sizeof(int));</code></li> <li><code>*intPointer2 = 8;</code></li> <li><code>*intPointer2 = *intPointer2 + 1;</code></li> <li><code>intPointer1 = intPointer2;</code></li> <li><code>*intPointer2 = *intPointer2 + 3;</code></li> </ol> <p>What value will will intPointer1 be pointing to?</p> ', '9', 'EDIT ME', 'T'),
-(5, 0, 1, '<p>Declare a pointer of type char with the pointer name "charptr"</p> ', 'char * charptr;', 'EDIT ME', 'C'),
-(6, 0, 1, '<p>Declare a double pointer of type char with the pointer name "doubleCharPtr"</p> ', 'char ** doubleCharPtr;', 'EDIT ME', 'C'),
-(7, 2, 2, '<p>Consider the following code: <ol class="code"> <li><code>int * intPointer1 = malloc(sizeof(int));</code></li> <li><code>int * intPointer2 = malloc(sizeof(int));</code></li> <li><code>*intPointer2 = 8;</code></li> <li><code>*intPointer2 = *intPointer2 + 1;</code></li> <li><code>intPointer1 = intPointer2;</code></li> <li><code>*intPointer2 = *intPointer2 - 6;</code></li> </ol> <p>On which line is memory leaked?</p> ', '5', 'EDIT ME', 'T'),
+(3, 0, 1, '<p>Suppose you have a char variable:</p> <p>char charData;</p> <p>Store the contents of this variable into the location that a char pointer named "charptr" points to.</p> ', '*charptr = charData;', 'Which special character do you use to access the value of the memory location "charptr" points to?', 'C'),
+(4, 0, 1, '<p>Consider the following code:</p> <ol class="code"> <li><code>int * intPointer1;</code></li> <li><code>int * intPointer2 = malloc(sizeof(int));</code></li> <li><code>*intPointer2 = 8;</code></li> <li><code>*intPointer2 = *intPointer2 + 1;</code></li> <li><code>intPointer1 = intPointer2;</code></li> <li><code>*intPointer2 = *intPointer2 + 3;</code></li> </ol> <p>What value will will intPointer1 be pointing to?</p> ', '9', 'Pay close attention to what is assigned on each line.', 'T'),
+(5, 0, 1, '<p>Declare a pointer of type char with the pointer name "charptr"</p> ', 'char * charptr;', 'What special character do you use to declare a pointer?', 'C'),
+(6, 0, 1, '<p>Declare a double pointer of type char with the pointer name "doubleCharPtr"</p> ', 'char ** doubleCharPtr;', 'You must use a two asterisks to declare a double pointer.', 'C'),
+(7, 2, 2, '<p>Consider the following code: <ol class="code"> <li><code>int * intPointer1 = malloc(sizeof(int));</code></li> <li><code>int * intPointer2 = malloc(sizeof(int));</code></li> <li><code>*intPointer2 = 8;</code></li> <li><code>*intPointer2 = *intPointer2 + 1;</code></li> <li><code>intPointer1 = intPointer2;</code></li> <li><code>*intPointer2 = *intPointer2 - 6;</code></li> </ol> <p>On which line is memory leaked?</p> ', '5', 'Look for the line where a pointer is overwritten.', 'T'),
 (8, 2, 2, '<p>Create an integer pointer named "intptr", allocate space for one integer and make your pointer point to it all in one line of code</p> ', 'int * intptr = malloc(sizeof(int));', 'You must use malloc() and sizeof().', 'C'),
-(9, 1, 1, '<p>Declare a pointer of type "double" and set it equal to NULL. Name the pointer nullPtr;</p>', 'double * nullPtr = NULL;', 'Don''t overthink this one. NULL just means ''nothing'' and is typed exactly how you see it. ', 'C'),
-(10, 1, 1, '<p>Lets say you want to create a pointer to a pointer named "iPoint" of type int. Is the code below the proper way to do this?</p><ol class="code"><li><code>iPoint ** int;</code></li></ol><p>Type "yes" or "no" (in lowercase).</p>', 'no', 'Think about the first thing you need to let the compiler know about the pointer.', 'C'),
-(11, 1, 1, '<p>Is this the proper way to dereference a pointer named "dereferenceMe"?</p><ol class="code"><li><code>int newData = &dereferenceMe;</code></li></ol><p>Type "yes" or "no" (in lowercase).</p>', 'no', 'Think about what character you need to use to dereference, does that one look right?', 'C'),
+(9, 1, 1, '<p>Declare a pointer of type "double" and set it equal to NULL. Name the pointer nullPtr;</p>', 'double * nullPtr = NULL;', 'Don''t overthink this one. NULL just means "nothing" and is typed exactly how you see it. ', 'C'),
+(10, 1, 1, '<p>Lets say you want to create a pointer to a pointer named "iPoint" of type int. Is the code below the proper way to do this?</p><ol class="code"><li><code>iPoint ** int;</code></li></ol><p>Type "yes" or "no" (in lowercase).</p>', 'no', 'Think about the first thing you need to let the compiler know about the pointer.', 'T'),
+(11, 1, 1, '<p>Is this the proper way to dereference a pointer named "dereferenceMe"?</p><ol class="code"><li><code>int newData = &dereferenceMe;</code></li></ol><p>Type "yes" or "no" (in lowercase).</p>', 'no', 'Think about what character you need to use to dereference, does that one look right?', 'T'),
 (12, 2, 2, '<p>Create a dynamic integer array by creating a pointer named myArray and allocating enough space for a size of "n".</p>', 'int * myArray = malloc(n * sizeof(int));', 'You will need to use malloc() as well as sizeof().', 'C'),
 (13, 2, 2, '<p>Create a char pointer and allocate enough space for just one char. Name it  "oneChar".</p>', 'char * oneChar = malloc(sizeof(char));', 'Recall the functions malloc() and sizeof()', 'C'),
 (14, 2, 2, '<p>Suppose you have a dynamic array defined as seen on line 1 in the code below. Lets say you want to create a for loop to populate the array at index content with the index. For instance, the content at index 2 will be 2, and the content at index 3 will be 3. Write the line of code in the text box that would accomplish this.</p><ol class="code"><li><code>int * dynamicArray = malloc(5 * sizeof(int));</code></li><li><code></code></li><li><code>int i;</code></li><li><code>for(i = 0; i < 5; i++)</code></li><li><code>{</code></li><li><code>//your code will go here</code></li><li><code>}</code></li></ol>', 'dynamicArray[i] = i;', 'Once you have created a dynamic array, you can access just like you would a non dynamic array.', 'C'),
-(15, 2, 2, '<p>Is this the proper way to release memory that was allocated to the pointer "temp" in C?</p><ol class="code"><li><code>destroy(temp);</code></li></ol><p>Type "yes" or "no" (in lower case)</p>', 'no', 'No hint available for this question. ', 'C'),
+(15, 2, 2, '<p>Is this the proper way to release memory that was allocated to the pointer "temp" in C?</p><ol class="code"><li><code>destroy(temp);</code></li></ol><p>Type "yes" or "no" (in lower case)</p>', 'no', 'No hint available for this question. ', 'T'),
 (16, 2, 2, '<p>Suppose you have a pointer "tempPoint", that has memory allocated to it. How would you properly release this memory?</p>', 'free(tempPoint);', 'This requires one function call with the pointer as an argument.', 'C'),
-(17, 2, 2, '<p>Is it okay to assign a pointer that has already been allocated memory a new address?</p><p>Type "yes" or "no" (all lower case)</p>', 'no', 'Think about what actually happens behind the scenes when you do this. ', 'C'),
+(17, 2, 2, '<p>Is it okay to assign a pointer that has already been allocated memory a new address?</p><p>Type "yes" or "no" (all lower case)</p>', 'no', 'Think about what actually happens behind the scenes when you do this. ', 'T'),
 (18, 2, 2, '<p>Given the following code:</p><ol class="code"><li><code>int * p1 = malloc(sizeof(int));</code></li><li><code>*p1 = 8;</code></li><li><code>int * p2 = malloc(sizeof(int));</code></li><li><code>p1 = p2;</code></li><li><code>*p2 = 20;</code></li></ol><p></p><p>Is there a problem with this code? If not, type "no". If there is, input the line number where the problem occurs.</p>', '4', 'In order to decide if there is a problem in this code, think about what is happening in memory with all instructions.', 'T'),
 (19, 3, 3, '<p>You are wanting to pass a pointer to a function. The function will have only one argument. Refer to the code below:</p><ol class="code"><li><code></code></li><li><code>//You want to pass an integer pointer to the function</code></li><li><code>void myFunction(/*what goes here?*/)</code></li><li><code>{</code></li><li><code>//code for function</code></li><li><code>}</code></li><li><code></code></li></ol><p></p><p>If the argument is an integer and the name of the argument is "arg", what would you replace the "/*what goes here?*/" comment with in the code above?</p>', 'int * arg', 'You must tell the function exactly what it is recieving.', 'C'),
 (20, 3, 3, '<p>You are calling a function named "foo" which recieves one char pointer as an argument. You are passing a variable named "fooVar". Write the line that would accomplish this function call.</p>', 'foo(&fooVar);', 'Remember you must pass an address', 'C'),
@@ -116,6 +121,7 @@ INSERT INTO `questions` (`id`, `kc`, `lesson_tag`, `question`, `answer`, `hint`,
 -- Table structure for table `reg_login_attempt`
 --
 
+DROP TABLE IF EXISTS `reg_login_attempt`;
 CREATE TABLE IF NOT EXISTS `reg_login_attempt` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `ip` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
@@ -123,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `reg_login_attempt` (
   `login_success` tinyint(1) NOT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `reg_login_attempt`
@@ -140,7 +146,12 @@ INSERT INTO `reg_login_attempt` (`id`, `ip`, `email`, `login_success`, `ts`) VAL
 (8, '::1', 'cameronk313@cox.net', 1, '2014-05-04 02:13:48'),
 (9, '::1', 'cameronk313@cox.net', 1, '2014-05-04 02:20:24'),
 (10, '::1', 'cameronk313@cox.net', 1, '2014-05-04 04:17:06'),
-(11, '::1', 'cameronk313@cox.net', 1, '2014-05-05 04:27:16');
+(11, '::1', 'cameronk313@cox.net', 1, '2014-05-05 04:27:16'),
+(12, '::1', 'student@asu.edu', 1, '2014-05-06 01:29:53'),
+(13, '::1', 'instructor@asu.edu', 1, '2014-05-06 02:08:21'),
+(14, '::1', 'srbarney@asu.edu', 1, '2014-05-06 04:26:18'),
+(15, '::1', 'student@asu.edu', 1, '2014-05-06 04:32:17'),
+(16, '::1', 'instructor@asu.edu', 1, '2014-05-06 04:32:36');
 
 -- --------------------------------------------------------
 
@@ -148,6 +159,7 @@ INSERT INTO `reg_login_attempt` (`id`, `ip`, `email`, `login_success`, `ts`) VAL
 -- Table structure for table `reg_users`
 --
 
+DROP TABLE IF EXISTS `reg_users`;
 CREATE TABLE IF NOT EXISTS `reg_users` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `first_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
@@ -161,20 +173,23 @@ CREATE TABLE IF NOT EXISTS `reg_users` (
   `token_validity` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `reg_ip` varchar(45) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0.0.0.0',
   `user_stat` varchar(3) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'U',
-  `current_task` int(11) unsigned NOT NULL DEFAULT '1',
-  `task_list` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
+  `current_task` int(6) unsigned NOT NULL DEFAULT '1',
+  `highest_lesson` int(6) unsigned NOT NULL DEFAULT '0',
+  `task_list` varchar(2000) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `token` (`token`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `reg_users`
 --
 
-INSERT INTO `reg_users` (`id`, `first_name`, `last_name`, `password`, `email`, `rank`, `registered`, `last_login`, `token`, `token_validity`, `reg_ip`, `user_stat`, `current_task`, `task_list`) VALUES
-(1, 'Steven', 'Barney', 'acdd77bc283941db353f3936a5a9b847', 'srbarney@asu.edu', 3, '2014-03-13 05:10:12', '2014-04-05 15:03:44', '9dfb1c02b3a778c5132ee0d617fbdf293f85dc47', '2014-04-05 16:03:44', '0.0.0.0', 'A', 1, ''),
-(2, 'Cameron', 'Keith', 'c59b47fbcf66b482e2ed3db39ab05155', 'cameronk313@cox.net', 3, '2014-04-27 03:17:53', '2014-05-05 04:27:16', '4017bbeccc09d262c073e23b8acde77b61ce67d1', '2014-05-05 05:27:16', '0.0.0.0', 'A', 7, '{"task1": {"id": 1,"type": "L","taskid": 1},"task2": {"id": 2,"type": "Q","taskid": 2},"task3": {"id": 3,"type": "Q","taskid": 1},"task4": {"id": 4,"type": "Q","taskid": 5},"task5": {"id": 5,"type": "Q","taskid": 6},"task6": {"id": 6,"type": "A","taskid": 1},"task7": {"id": 7,"type": "Q","taskid": 4},"task8": {"id": 8,"type": "Q","taskid": 2},"task9": {"id": 9,"type": "Q","taskid": 5},"task10": {"id": 10,"type": "Q","taskid": 3},"task11": {"id": 11,"type": "A","taskid": 2}}');
+INSERT INTO `reg_users` (`id`, `first_name`, `last_name`, `password`, `email`, `rank`, `registered`, `last_login`, `token`, `token_validity`, `reg_ip`, `user_stat`, `current_task`, `highest_lesson`, `task_list`) VALUES
+(1, 'Steven', 'Barney', 'acdd77bc283941db353f3936a5a9b847', 'srbarney@asu.edu', 3, '2014-03-13 05:10:12', '2014-05-06 13:26:18', '073a6769c46d088c2a39caf0aa91ae90a8c09474', '2014-05-06 14:26:18', '0.0.0.0', 'A', 2, 0, '{"task1": {"id": 1,"type": "L","taskid": 1},"task2": {"id": 2,"type": "Q","taskid": 9},"task3": {"id": 3,"type": "Q","taskid": 10},"task4": {"id": 4,"type": "Q","taskid": 6},"task5": {"id": 5,"type": "Q","taskid": 5},"task6": {"id": 6,"type": "A","taskid": 1},"task7": {"id": 7,"type": "Q","taskid": 11},"task8": {"id": 8,"type": "Q","taskid": 10},"task9": {"id": 9,"type": "Q","taskid": 3},"task10": {"id": 10,"type": "Q","taskid": 5},"task11": {"id": 11,"type": "A","taskid": 2},"task12": {"id": 12,"type": "L","taskid": 2},"task13": {"id": 13,"type": "Q","taskid": 17},"task14": {"id": 14,"type": "Q","taskid": 15},"task15": {"id": 15,"type": "Q","taskid": 16},"task16": {"id": 16,"type": "Q","taskid": 7},"task17": {"id": 17,"type": "A","taskid": 3},"task18": {"id": 18,"type": "Q","taskid": 16},"task19": {"id": 19,"type": "Q","taskid": 15},"task20": {"id": 20,"type": "Q","taskid": 4},"task21": {"id": 21,"type": "Q","taskid": 11},"task22": {"id": 22,"type": "A","taskid": 4},"task23": {"id": 23,"type": "L","taskid": 3},"task24": {"id": 24,"type": "Q","taskid": 22},"task25": {"id": 25,"type": "Q","taskid": 23},"task26": {"id": 26,"type": "Q","taskid": 20},"task27": {"id": 27,"type": "Q","taskid": 19},"task28": {"id": 28,"type": "A","taskid": 5},"task29": {"id": 29,"type": "Q","taskid": 2},"task30": {"id": 30,"type": "Q","taskid": 3},"task31": {"id": 31,"type": "Q","taskid": 8},"task32": {"id": 32,"type": "Q","taskid": 16},"task33": {"id": 33,"type": "A","taskid": 6},"task34": {"id": 34,"type": "L","taskid": 4},"task35": {"id": 35,"type": "Q","taskid": 30},"task36": {"id": 36,"type": "Q","taskid": 28},"task37": {"id": 37,"type": "Q","taskid": 25},"task38": {"id": 38,"type": "Q","taskid": 32},"task39": {"id": 39,"type": "A","taskid": 7},"task40": {"id": 40,"type": "Q","taskid": 1},"task41": {"id": 41,"type": "Q","taskid": 4},"task42": {"id": 42,"type": "Q","taskid": 24},"task43": {"id": 43,"type": "Q","taskid": 9},"task44": {"id": 44,"type": "A","taskid": 8}}'),
+(2, 'Cameron', 'Keith', 'c59b47fbcf66b482e2ed3db39ab05155', 'cameronk313@cox.net', 3, '2014-04-27 03:17:53', '2014-05-05 04:27:16', '4017bbeccc09d262c073e23b8acde77b61ce67d1', '2014-05-05 05:27:16', '0.0.0.0', 'A', 7, 0, ''),
+(3, 'Lydia', 'Fox', 'cd73502828457d15655bbd7a63fb0bc8', 'student@asu.edu', 1, '2014-03-13 05:10:12', '2014-05-06 13:32:17', '1c072e1fce335cbc9c00daf05e52f4b570a395ec', '2014-05-06 14:32:17', '0.0.0.0', 'A', 12, 0, '{"task1": {"id": 1,"type": "L","taskid": 1},"task2": {"id": 2,"type": "Q","taskid": 2},"task3": {"id": 3,"type": "Q","taskid": 3},"task4": {"id": 4,"type": "Q","taskid": 4},"task5": {"id": 5,"type": "Q","taskid": 6},"task6": {"id": 6,"type": "A","taskid": 1},"task7": {"id": 7,"type": "Q","taskid": 9},"task8": {"id": 8,"type": "Q","taskid": 11},"task9": {"id": 9,"type": "Q","taskid": 5},"task10": {"id": 10,"type": "Q","taskid": 6},"task11": {"id": 11,"type": "A","taskid": 2},"task12": {"id": 12,"type": "L","taskid": 2},"task13": {"id": 13,"type": "Q","taskid": 7},"task14": {"id": 14,"type": "Q","taskid": 14},"task15": {"id": 15,"type": "Q","taskid": 18},"task16": {"id": 16,"type": "Q","taskid": 17},"task17": {"id": 17,"type": "A","taskid": 3},"task18": {"id": 18,"type": "Q","taskid": 2},"task19": {"id": 19,"type": "Q","taskid": 3},"task20": {"id": 20,"type": "Q","taskid": 18},"task21": {"id": 21,"type": "Q","taskid": 8},"task22": {"id": 22,"type": "A","taskid": 4},"task23": {"id": 23,"type": "L","taskid": 3},"task24": {"id": 24,"type": "Q","taskid": 20},"task25": {"id": 25,"type": "Q","taskid": 22},"task26": {"id": 26,"type": "Q","taskid": 23},"task27": {"id": 27,"type": "Q","taskid": 21},"task28": {"id": 28,"type": "A","taskid": 5},"task29": {"id": 29,"type": "Q","taskid": 21},"task30": {"id": 30,"type": "Q","taskid": 24},"task31": {"id": 31,"type": "Q","taskid": 8},"task32": {"id": 32,"type": "Q","taskid": 9},"task33": {"id": 33,"type": "A","taskid": 6},"task34": {"id": 34,"type": "L","taskid": 4},"task35": {"id": 35,"type": "Q","taskid": 30},"task36": {"id": 36,"type": "Q","taskid": 32},"task37": {"id": 37,"type": "Q","taskid": 25},"task38": {"id": 38,"type": "Q","taskid": 26},"task39": {"id": 39,"type": "A","taskid": 7},"task40": {"id": 40,"type": "Q","taskid": 18},"task41": {"id": 41,"type": "Q","taskid": 30},"task42": {"id": 42,"type": "Q","taskid": 22},"task43": {"id": 43,"type": "Q","taskid": 9},"task44": {"id": 44,"type": "A","taskid": 8}}'),
+(4, 'Bill', 'Farmer', '175cca0310b93021a7d3cfb3e4877ab6', 'instructor@asu.edu', 2, '2014-03-13 05:10:12', '2014-05-06 13:32:36', 'dca2f3765744fe18b4aa27eec67cc8f391e0cdf4', '2014-05-06 14:32:36', '0.0.0.0', 'A', 23, 0, '{"task1": {"id": 1,"type": "L","taskid": 1},"task2": {"id": 2,"type": "Q","taskid": 4},"task3": {"id": 3,"type": "Q","taskid": 6},"task4": {"id": 4,"type": "Q","taskid": 9},"task5": {"id": 5,"type": "Q","taskid": 5},"task6": {"id": 6,"type": "A","taskid": 1},"task7": {"id": 7,"type": "Q","taskid": 3},"task8": {"id": 8,"type": "Q","taskid": 9},"task9": {"id": 9,"type": "Q","taskid": 1},"task10": {"id": 10,"type": "Q","taskid": 6},"task11": {"id": 11,"type": "A","taskid": 2},"task12": {"id": 12,"type": "L","taskid": 2},"task13": {"id": 13,"type": "Q","taskid": 17},"task14": {"id": 14,"type": "Q","taskid": 13},"task15": {"id": 15,"type": "Q","taskid": 15},"task16": {"id": 16,"type": "Q","taskid": 18},"task17": {"id": 17,"type": "A","taskid": 3},"task18": {"id": 18,"type": "Q","taskid": 4},"task19": {"id": 19,"type": "Q","taskid": 15},"task20": {"id": 20,"type": "Q","taskid": 16},"task21": {"id": 21,"type": "Q","taskid": 7},"task22": {"id": 22,"type": "A","taskid": 4},"task23": {"id": 23,"type": "L","taskid": 3},"task24": {"id": 24,"type": "Q","taskid": 22},"task25": {"id": 25,"type": "Q","taskid": 20},"task26": {"id": 26,"type": "Q","taskid": 24},"task27": {"id": 27,"type": "Q","taskid": 21},"task28": {"id": 28,"type": "A","taskid": 5},"task29": {"id": 29,"type": "Q","taskid": 11},"task30": {"id": 30,"type": "Q","taskid": 12},"task31": {"id": 31,"type": "Q","taskid": 6},"task32": {"id": 32,"type": "Q","taskid": 2},"task33": {"id": 33,"type": "A","taskid": 6},"task34": {"id": 34,"type": "L","taskid": 4},"task35": {"id": 35,"type": "Q","taskid": 26},"task36": {"id": 36,"type": "Q","taskid": 25},"task37": {"id": 37,"type": "Q","taskid": 29},"task38": {"id": 38,"type": "Q","taskid": 27},"task39": {"id": 39,"type": "A","taskid": 7},"task40": {"id": 40,"type": "Q","taskid": 29},"task41": {"id": 41,"type": "Q","taskid": 4},"task42": {"id": 42,"type": "Q","taskid": 27},"task43": {"id": 43,"type": "Q","taskid": 24},"task44": {"id": 44,"type": "A","taskid": 8}}');
 
 -- --------------------------------------------------------
 
@@ -182,6 +197,7 @@ INSERT INTO `reg_users` (`id`, `first_name`, `last_name`, `password`, `email`, `
 -- Table structure for table `task_attempts`
 --
 
+DROP TABLE IF EXISTS `task_attempts`;
 CREATE TABLE IF NOT EXISTS `task_attempts` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `question_id` int(11) unsigned NOT NULL,
@@ -193,7 +209,7 @@ CREATE TABLE IF NOT EXISTS `task_attempts` (
   `correct` int(4) unsigned NOT NULL,
   `reviewed` int(4) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `task_attempts`
@@ -207,7 +223,15 @@ INSERT INTO `task_attempts` (`id`, `question_id`, `student_id`, `tstamp`, `time_
 (5, 2, 2, '2014-05-04 04:17:47', '00:00:00', 0, 'numptr = &amp;num;', 1, 1),
 (6, 1, 2, '2014-05-04 04:18:08', '00:00:00', 0, 'int * intptr;', 1, 1),
 (7, 5, 2, '2014-05-04 04:18:26', '00:00:00', 0, 'char * charptr;', 1, 1),
-(8, 6, 2, '2014-05-04 04:21:04', '00:00:00', 0, 'char ** doubleCharPtr;', 1, 1);
+(8, 6, 2, '2014-05-04 04:21:04', '00:00:00', 0, 'char ** doubleCharPtr;', 1, 1),
+(9, 2, 3, '2014-05-06 01:32:11', '00:00:00', 0, 'numptr = &amp;num;', 1, 1),
+(10, 3, 3, '2014-05-06 01:32:22', '00:00:00', 0, '*charptr = charData;', 1, 1),
+(11, 4, 3, '2014-05-06 01:32:41', '00:00:00', 0, '9', 1, 1),
+(12, 6, 3, '2014-05-06 01:32:49', '00:00:00', 0, 'char **doubleCharPtr;', 1, 1),
+(13, 9, 3, '2014-05-06 01:36:14', '00:00:00', 0, 'double *nullPtr = NULL;', 1, 1),
+(14, 11, 3, '2014-05-06 01:36:36', '00:00:00', 0, 'no', 1, 1),
+(15, 5, 3, '2014-05-06 01:36:43', '00:00:00', 0, 'char *charptr;', 1, 1),
+(16, 6, 3, '2014-05-06 01:36:52', '00:00:00', 0, 'char **doubleCharPtr;', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -215,6 +239,7 @@ INSERT INTO `task_attempts` (`id`, `question_id`, `student_id`, `tstamp`, `time_
 -- Table structure for table `user_profile`
 --
 
+DROP TABLE IF EXISTS `user_profile`;
 CREATE TABLE IF NOT EXISTS `user_profile` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -227,14 +252,17 @@ CREATE TABLE IF NOT EXISTS `user_profile` (
   `KC4correct` double NOT NULL,
   `KC4attempts` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `user_profile`
 --
 
 INSERT INTO `user_profile` (`id`, `user_id`, `KC1correct`, `KC1attempts`, `KC2correct`, `KC2attempts`, `KC3correct`, `KC3attempts`, `KC4correct`, `KC4attempts`) VALUES
-(1, 2, 8, 8, 0, 0, 0, 0, 0, 0);
+(1, 1, 8, 8, 8, 8, 8, 8, 8, 8),
+(2, 2, 8, 8, 8, 8, 8, 8, 8, 8),
+(3, 3, 13, 14, 7, 10, 3, 8, 1, 8),
+(4, 4, 7, 8, 0, 0, 0, 0, 0, 0);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

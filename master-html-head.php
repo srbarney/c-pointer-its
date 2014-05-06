@@ -41,4 +41,10 @@
 <script type="text/javascript" src="js/md5.js"></script>
 <script type="text/javascript" src="js/nav-menu-init.js"></script>
 
+<script>
+     $(document).ready(function() {
+         $('table').hide();
+     });
+</script>
+
 </head>

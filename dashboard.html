@@ -3,9 +3,19 @@
     // If user is not logged in, redirect to login page
     passwordProtectRange($RANK_INSTRUCTOR,$RANK_ADMIN);
 
-    $data = getMasteryLevels(0);
+    if(isset($_GET['uid'])) $user_id = $_GET['uid']; else $user_id = "0";
+
+    $data = getMasteryLevels($user_id);
     initializeHighChart($data);
 ?>
+
+<script>
+    function loadUID()
+    {
+        var userID = document.getElementById('user-id-input').value;
+        location.href = 'dashboard.html?uid=' + userID;
+    }
+</script>
 
 <body>
 <?php require_once "master-site-header.php"; ?>
@@ -14,14 +24,13 @@
 <div id="main-content">
     <h1 class="page-title white-text"><span class="init-cap">D</span>ASHBOARD</h1>
     <div class="site-content dark">
-        <div class="dashboard-module-list-div">
-            <?php require "components/dashboard-module-list.php"; ?>
-        </div>
         <div class="dashboard-stats-div">
             <?php require "components/dashboard-menu.php"; ?>
             <?php require "components/dashboard-stats.php"; ?>
         </div>
-        <div class="clear"></div>
+        <div class="dashboard-module-list-div">
+            <?php require "components/dashboard-module-list.php"; ?>
+        </div>
     </div>
 </div>
 </body>

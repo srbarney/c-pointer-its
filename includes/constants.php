@@ -9,5 +9,5 @@ $RANK_STUDENT = 1;
 $RANK_INSTRUCTOR = 2;
 $RANK_ADMIN = 3;
 
-define('__ROOT__', $_SERVER['DOCUMENT_ROOT']);
+define('__ROOT__', $_SERVER['DOCUMENT_ROOT'] . '/public_html');
 ?>
